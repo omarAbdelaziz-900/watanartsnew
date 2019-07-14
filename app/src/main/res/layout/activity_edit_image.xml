@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/yellow"
+        android:id="@+id/toolbar_holder"
+        android:clickable="true"
+        >
+
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:id="@+id/toolbar_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_xxxlarge" />
+
+        <ImageView
+            android:id="@+id/toolbar_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            android:padding="16dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back" />
+
+        <com.WattanArt.Utils.widgets.CustomeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/view_submit"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:id="@+id/submit"/>
+
+    </RelativeLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/innerConstrain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/subControlsHolder"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_holder">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ucropFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <com.yalantis.ucrop.view.UCropView
+                android:id="@+id/ucrop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/lowPixelsIv"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_reslution" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/deleteImage"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/ucropFrame"
+            app:layout_constraintEnd_toEndOf="@+id/ucropFrame"
+            app:srcCompat="@drawable/ic_close" />
+
+
+        <Button
+            android:id="@+id/redundentView"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/ucropFrame"
+            app:layout_constraintEnd_toEndOf="@+id/ucropFrame"
+            app:srcCompat="@drawable/ic_close" />
+
+        <ImageView
+            android:id="@+id/repalceIv"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/ucropFrame"
+            app:layout_constraintEnd_toStartOf="@+id/deleteImage"
+            app:srcCompat="@drawable/ic_replace" />
+
+        <ImageView
+            android:id="@+id/borderIv"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/ucropFrame"
+            app:layout_constraintEnd_toStartOf="@+id/repalceIv"
+            app:srcCompat="@drawable/ic_plied" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/subControlsHolder"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include
+            android:layout_gravity="bottom"
+            layout="@layout/ratio_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/rotate_holder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sub_bottom_height"
+            android:visibility="gone">
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/flip_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/color_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <com.WattanArt.Utils.widgets.CustomeTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/saturation" />
+
+            <SeekBar
+                android:splitTrack="false"
+                android:id="@+id/saturationSeekbar"
+                android:layout_width="match_parent"
+                android:progress="50"
+                android:minHeight="10dp"
+                android:maxHeight="10dp"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/seekbar_style"
+                android:thumb="@drawable/custom_thumb"/>
+            <!--<com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar-->
+                <!--android:id="@+id/saturationSeekbar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <com.WattanArt.Utils.widgets.CustomeTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hue" />
+
+            <SeekBar
+                android:splitTrack="false"
+                android:id="@+id/hueSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:maxHeight="10dp"
+                android:progressDrawable="@drawable/seekbar_style"
+                android:thumb="@drawable/custom_thumb"/>
+            <!--<com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar-->
+                <!--android:id="@+id/hueSeekBar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:max="360"-->
+                <!--android:min="0" />-->
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/filter_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mFilterRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/contrast_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone">
+
+            <!--<com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar-->
+                <!--android:id="@+id/contrastSeekBar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+            <SeekBar
+                android:splitTrack="false"
+                android:id="@+id/contrastSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:maxHeight="10dp"
+
+                android:progressDrawable="@drawable/seekbar_style"
+                android:thumb="@drawable/custom_thumb"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/light_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone">
+
+            <!--<com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar-->
+                <!--android:id="@+id/lightSeekBar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+            <SeekBar
+                android:splitTrack="false"
+                android:id="@+id/lightSeekBar"
+                android:layout_width="match_parent"
+                android:progressDrawable="@drawable/seekbar_style"
+                android:thumb="@drawable/custom_thumb"
+                android:minHeight="10dp"
+                android:maxHeight="10dp"
+                android:layout_height="wrap_content" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"></FrameLayout>
+    </FrameLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/bottomControlsHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/ratioBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/background_selected">
+
+                <ImageView
+                    android:id="@+id/imageRatio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_ratio" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imageRatio"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="Ratio"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rotateBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:id="@+id/imageRotate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_rotate" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imageRotate"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="Rotate"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/flipBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:id="@+id/imageflip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_flip" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imageflip"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="Flip"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/colorBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:id="@+id/imagecolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_color" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imagecolor"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="Color"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/filterBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:id="@+id/imagefilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_filter" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imagefilter"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="Filter"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contrastBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:id="@+id/imagecontrast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_contrast" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imagecontrast"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="Contrast"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lightBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:id="@+id/imagelight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_light" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imagelight"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:text="Light"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/textBottomHolder"
+                android:layout_width="@dimen/bottom_height"
+                android:layout_height="@dimen/bottom_height"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_unselected"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:text="TEXT"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">وطن ارت</string>
+    <string name="action_search">البحث</string>
+    <string name="view_cancel">إلغاء</string>
+    <string name="view_submit">حفظ</string>
+    <string name="no_item_1">" عدد . "</string>
+    <string name="no_item_2">" صوره"</string>
+    <string name="verify_city">من فضلك أختر مدينه</string>
+    <string name="verify_country">من فضلك أختر دوله</string>
+    <string name="verify_address">من فضلك أدخل العنوان</string>
+    <string name="price_item_1">السعر</string>
+    <string name="price_item_2">L.E</string>
+    <string name="error_no_internet_connection">لديك مشكله فى الاتصال بشبكه اللإنترنت</string>
+    <string name="strEmptyStateMessage">لا يوجد بيانات</string>
+    <string name="price">السعر :</string>
+    <string name="date">التاريخ :</string>
+    <string name="status">الحالة :</string>
+    <string name="no_order">لا يوجد طلبيات</string>
+    <string name="no_faq">لا يوجد أسئلة شائعة</string>
+    <string name="city">المدينة</string>
+    <string name="country">الدولة</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="change">تغيير</string>
+    <string name="change_password">تغير كلمة المرور ؟</string>
+    <string name="password">كلمه المرور</string>
+    <string name="invalid_old_password">من فضلك أدخل كلمة المرور القديمة</string>
+    <string name="invalid_new_password">من فضلك أدخل كلمة المرور الجديدة</string>
+    <string name="invalid_confirm_pass_hint">من فضلك قم بتأكيد كلمه المرور</string>
+    <string name="item_more_3">يجب ان يحتوي الطلب علي الاقل علي 3 قطع لتتمكن من تنفيذ الطلب   </string>
+    <string name="terms">الشروط و الأحكام </string>
+
+    <string name="fail_login">البريد الإلكترونى أو كلمة المرور غير صحيحة</string>
+    <string name="email_exist">البريد الإلكترونى مسجل مسبقا.. من فضلك قم بإدخال بريد إلكترونى جديد</string>
+    <string name="update_profile_fail">فشل تحديث الملف الشخصى </string>
+    <string name="update_profile_success"> تم تحديث الملف الشخصى بنجاح</string>
+
+    <string name="register_fail">فشل تسجيل الدخول </string>
+    <string name="login_first">من فضلك قم بتسجيل الدخول لتتمكن من عمل طلبية</string>
+
+    <string name="register_success">تم تسجيل الحساب بنجاح </string>
+    <string name="login_success">تم تسجيل الدخول بنجاح </string>
+
+
+    <string name="email">البريد الإلكترونى</string>
+    <string name="full_name">الإسم بالكامل</string>
+    <string name="phone"> الجوال</string>
+    <string name="select_city">اختر مدينه</string>
+    <string name="select_country">اختر دوله</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="remember_me">تذكرنى</string>
+    <string name="forget_password"> نسيت كلمه المرور ؟</string>
+    <string name="login"> دخول</string>
+    <string name="skip">تخطي</string>
+    <string name="signup">تسجيل الدخول</string>
+    <string name="login_with_face"> دخول بالفيسبوك</string>
+    <string name="register_with_face">تسجيل الدخول بالفيسبوك</string>
+    <string name="dolar">&#36;</string>
+    <string name="le">جنيه</string>
+    <string name="OR">أو</string>
+    <string name="action_settings">الإعدادات</string>
+    <string name="save">حفظ</string>
+    <string name="title_about">عنا</string>
+    <string name="title_contact_us"> راسلنا</string>
+    <string name="contact_us">تواصل معنا</string>
+
+    <string name="faq">الأسئلة الشائعة</string>
+    <string name="text_code_empty">ادخل كود الخصم اولا</string>
+
+    <string name="title_activity_order_details">تفاصيل الطلبية</string>
+    <string name="str_empty_state_message">لايوجد  بيانات</string>
+    <string name="choose">اختر</string>
+    <string name="login_before">قم بتسجيل الدخول اولا</string>
+    <string name="no_Of_order">رقم الطلب :</string>
+    <string name="enter_requied_field">ادخل البيانات</string>
+    <string name="invalid_confirm_password">"كلمتاالمرور غير متطابقتان تأكيد كلمه المرور "</string>
+    <string name="name_hint">من فضلك أدخل اسمك</string>
+    <string name="messeage_hint">من فضلك أدخل  رسالتك</string>
+    <string name="send_messege_fail">فشلت إرسال الرساله</string>
+    <string name="send_messege_succsess">تم إرسال الرساله بنجاح</string>
+    <string name="pass_changed_succsess">تم تغير كلمة المرور بنجاح </string>
+    <string name="fail_changed_succsess">  كلمة المرور القديمة غير صحيحة  </string>
+    <!--forget pass message-->
+    <string name="forget_pass_succsess">من فضلك راجع بريدك الإلكتروني للحصول علي كلمة المرور الجديدة  </string>
+    <string name="invalid_email_forget_pass">من فضلك ادخل بريدك الإلكتروني المسجل</string>
+    <string name="request_done">تم انهاء طلبك بنجاح  </string>
+    <string name="code_not_valid">الكود الذي ادخلته غير صحيح</string>
+
+    <string name="create">إنشاء</string>
+    <string name="info">اتصل بنا</string>
+    <string name="website">الموقع الألكترونى</string>
+    <string name="message">الرسالة</string>
+    <string name="subject"> الموضوع</string>
+    <string name="email_edit">البريد الإلكترونى</string>
+    <string name="full_name_edit">الإسم بالكامل</string>
+    <string name="title_setting">الإعدادات</string>
+    <string name="title_home">الرئيسية</string>
+    <string name="address">العنوان</string>
+    <string name="send">ارسال</string>
+    <string name="cash">الدفع عند التوصيل</string>
+    <string name="online">الدفع عبر الإنترنت</string>
+    <string name="check_code">تحقق من الكود</string>
+    <string name="payment_Methods">طرق الدفع</string>
+    <string name="payment">الدفع</string>
+    <string name="coupon">كوبون</string>
+    <string name="phone_edit">الهاتف المحمول</string>
+    <string name="title_meshCanvas">وطن أرت</string>
+    <string name="contact">تواصل معنا</string>
+    <string name="share">مشاركه التطبيق</string>
+    <string name="language">اللغة</string>
+    <string name="edit_Profile">تعديل الملف الشخصي</string>
+    <string name="can_not_change_ratio">لايمكن تحديد هذه النسبه حيث انها تؤدي الي جوده صوره ضعيفه  </string>
+    <string name="can_not_submit">لايمكن تحديد هذه الاعدادات حيث انها تؤدي الي جوده صوره ضعيفه  </string>
+    <string name="replace">استبدال الصوره  </string>
+    <string name="confirm_replace">هل انت متاكد من رغبتك باستبدال الصورة ؟  </string>
+    <string name="confirm_delete">هل انت متاكد من رغبتك بحذف الصورة ؟ </string>
+
+    <string name="no_Of_order_">رقم الطلب : </string>
+    <string name="no_of_Canvas">عدد القطع :  </string>
+    <string name="ratio">النسبة :</string>
+    <string name="quantity">الكمية :</string>
+    <string name="total_price">السعر الكلى :</string>
+    <string name="arabic">العربية </string>
+    <string name="english">English </string>
+    <string name="title_canvas_print">طباعة الصور</string>
+    <string name="photo_chooser_title">تحميل صوره</string>
+    <string name="gallery_chooser_title">اختيار صوره</string>
+    <string name="photo_chooser_gallery">معرض الصور</string>
+    <string name="photo_chooser_camera">الكاميرا</string>
+    <string name="title_activity_search_show_case">بحث</string>
+    <string name="some_error">حدث خطأ … حاول مره أخرى</string>
+    <string name="slow_connection">لديك مشكله ف الاتصال بالإنترنت</string>
+    <string name="api_return_null">لا يوجد  بيانات</string>
+    <string name="email_hint">من فضلك أدخل بريدك الإلكترونى</string>
+    <string name="phone_hint">"من فضلك أدخل رقم الهاتف "</string>
+    <string name="password_hint">من فضلك أدخل كلمة كلمه المرور</string>
+    <string name="password_pattern">كلمه المرور يجب ان تحتوى على الأقل على 6 ارقام و حروف</string>
+    <string name="password_pattern2">كلمه المرور يجب ان تحتوى على الأقل على 6 ارقام أو حروف </string>
+    <string name="invalid_email">البريد الإلكترونى غير صحيح</string>
+    <string name="invalid_phone">رقم الهاتف يجب ألا يقل عن 11 رقم</string>
+    <string name="country_city_validation">من فضلك قم باختيار الدولة والمدينة</string>
+
+    <string name="enter_password">أدخل كلمة المرور</string>
+    <string name="enter_full_name">أدخل اسمك بالكامل</string>
+    <string name="title_history">طلبياتي</string>
+    <string name="complete">إكمال</string>
+    <string name="title_shipping_order">الطلبيه</string>
+    <string name="delete">مسح الصوره</string>
+    <string name="delete_all">مسح الكل</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">موافق</string>
+    <string name="add">إضافه صور</string>
+    <string name="title_edit_images">تعديل الصور</string>
+    <string name="delivery_time">وقت الشحن :</string>
+    <string name="delivery_price">مبلغ الشحن :</string>
+    <string name="days">ايام</string>
+    <string name="confirm_delete_all">هل تريد فعلا مسح كل الصور من هذه الطلبيه؟  </string>
+    <string name="img_resoluyion">جوده الصورة رديئه وقد تكون سيئه عند الطباعه</string>
+
+    <string name="old_pass">كلمة المرور القديمة</string>
+    <string name="new_pass">كلمة المرور الجديدة</string>
+    <string name="or">أو</string>
+
+</resources>

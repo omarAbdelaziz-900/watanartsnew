@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+        maven { url 'https://maven.google.com' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.google.gms:google-services:4.0.1'
+//        classpath 'com.google.gms:google-services:1.5.0-beta2'
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // butterknife
+//        classpath "io.realm:realm-gradle-plugin:4.1.1"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://maven.google.com' }
+
+    }
+}

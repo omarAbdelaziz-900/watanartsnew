@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "525175320053",
+    "firebase_url": "https://wattanart-87603.firebaseio.com",
+    "project_id": "wattanart-87603",
+    "storage_bucket": "wattanart-87603.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525175320053:android:c5637e6de4a962e8",
+        "android_client_info": {
+          "package_name": "com.wattanart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525175320053-juf42p3uedobbhke2meurfqqtfk8notr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLpTUQnk1YFufVxSmmVwn1gNGP9qyEobI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

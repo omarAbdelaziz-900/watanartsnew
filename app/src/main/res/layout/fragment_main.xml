@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+
+    <com.WattanArt.Utils.widgets.ATCButton
+        android:id="@+id/buttonShowList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/inner_spacing"
+        android:text="Show List" />
+
+
+    <com.WattanArt.Utils.widgets.ATCButton
+        android:id="@+id/buttonShowMapActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonShowList"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/inner_spacing"
+        android:text="Show Maps Activity" />
+
+
+    <com.WattanArt.Utils.widgets.ATCButton
+        android:id="@+id/btn_check_network_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Check Network Retry" />
+
+    <com.WattanArt.Utils.widgets.ATCButton
+        android:id="@+id/btn_force_crash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_check_network_retry"
+        android:layout_centerHorizontal="true"
+        android:text="Force Crash" />
+
+    <com.WattanArt.Utils.widgets.ATCButton
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_force_crash"
+        android:layout_centerHorizontal="true"
+        android:text="Search" />
+
+
+    <com.WattanArt.Utils.widgets.ATCTextView
+        android:id="@+id/tv_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_search"
+        android:padding="10dp"
+        android:text="Facebook"
+        />
+
+    <com.WattanArt.Utils.widgets.ATCTextView
+        android:id="@+id/tv_google_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_facebook"
+        android:padding="10dp"
+        android:text="GooglePlus"
+        />
+
+    <com.WattanArt.Utils.widgets.ATCTextView
+        android:id="@+id/tv_linked_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_google_plus"
+        android:padding="10dp"
+        android:text="LinkedIn"
+        />
+
+    <com.WattanArt.Utils.widgets.ATCTextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonShowMapActivity"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/inner_spacing"
+        android:text="Login with Facebook"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIMPLE SETTINGS"
+        android:id="@+id/button1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+       />
+
+
+
+
+
+</RelativeLayout>

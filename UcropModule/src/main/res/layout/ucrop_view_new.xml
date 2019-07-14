@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Padding for both views can be different -->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/ucropview_defined"
+        android:clickable="true"
+        android:layout_height="wrap_content">
+
+        <com.yalantis.ucrop.view.UpdatedViews.GestureCropImageViewUpdated
+            android:id="@+id/image_view_crop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/view_overlay"
+            app:layout_constraintEnd_toEndOf="@+id/view_overlay"
+            app:layout_constraintStart_toStartOf="@+id/view_overlay"
+            app:layout_constraintTop_toTopOf="@+id/view_overlay" />
+
+        <com.yalantis.ucrop.view.UpdatedViews.OverlayViewUpdated
+            android:id="@+id/view_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+</merge>

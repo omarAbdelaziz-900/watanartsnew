@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.WattanArt.Utils.widgets.CustomeTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/txv_event_filter"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:text=" "
+    android:layout_gravity="center"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginTop="20dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:gravity="start|center"
+    android:textAlignment="viewStart"
+    android:textSize="14sp"
+    android:textColor="@color/dark_grey"
+    android:textColorHint="@color/dark_grey" />

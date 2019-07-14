@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="3dp"
+    android:layout_margin="@dimen/activity_margin_half"
+    app:contentPadding="5dp">
+
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/iv_avatar_img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            tools:src="@drawable/avatar" />
+
+
+        <com.WattanArt.Utils.widgets.ATCTextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_margin_half"
+            android:layout_toRightOf="@id/iv_avatar_img"
+            android:padding="@dimen/inner_spacing"
+            android:textColor="@color/colStrThird"
+            android:textSize="@dimen/normal_text_size"
+            tools:text="Some Title" />
+
+        <com.WattanArt.Utils.widgets.ATCTextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTitle"
+            android:layout_margin="@dimen/inner_spacing"
+            android:layout_marginStart="@dimen/activity_margin_half"
+            android:layout_toRightOf="@id/iv_avatar_img"
+            android:gravity="center"
+            android:padding="@dimen/inner_spacing"
+            android:textColor="#000ffa"
+            android:textSize="@dimen/normal_text_size"
+            tools:text="sss" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

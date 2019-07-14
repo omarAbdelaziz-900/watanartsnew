@@ -1,0 +1,305 @@
+package com.WattanArt.model.Response;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+/**
+ * Created by Android Team on 1/21/2018.
+ */
+
+public class EventModel {
+
+    @SerializedName("result")
+    @Expose
+    private List<Result> result = null;
+    @SerializedName("ISResultHasData")
+    @Expose
+    private Integer iSResultHasData;
+
+    public List<Result> getResult() {
+        return result;
+    }
+
+    public void setResult(List<Result> result) {
+        this.result = result;
+    }
+
+    public Integer getISResultHasData() {
+        return iSResultHasData;
+    }
+
+    public void setISResultHasData(Integer iSResultHasData) {
+        this.iSResultHasData = iSResultHasData;
+    }
+
+    public class Result {
+
+        @SerializedName("EventID")
+        @Expose
+        private Integer eventID;
+        @SerializedName("Name")
+        @Expose
+        private String name;
+        @SerializedName("Description")
+        @Expose
+        private String description;
+        @SerializedName("EventPlace")
+        @Expose
+        private String eventPlace;
+        @SerializedName("EventImage")
+        @Expose
+        private String eventImage;
+        @SerializedName("EventStartDate")
+        @Expose
+        private String eventStartDate;
+        @SerializedName("EventStartDate_Str")
+        @Expose
+        private String eventStartDateStr;
+        @SerializedName("EventEndDate")
+        @Expose
+        private String eventEndDate;
+        @SerializedName("EventEndDate_Str")
+        @Expose
+        private String eventEndDateStr;
+        @SerializedName("CreateDate")
+        @Expose
+        private String createDate;
+        @SerializedName("Longtiude")
+        @Expose
+        private String longtiude;
+        @SerializedName("Latitude")
+        @Expose
+        private String latitude;
+        @SerializedName("EventStartTime")
+        @Expose
+        private String eventStartTime;
+        @SerializedName("EventStartTime_Str")
+        @Expose
+        private String eventStartTimeStr;
+        @SerializedName("EventEndTime")
+        @Expose
+        private String eventEndTime;
+        @SerializedName("EventEndTime_Str")
+        @Expose
+        private String eventEndTimeStr;
+        @SerializedName("IsActive")
+        @Expose
+        private Boolean isActive;
+        @SerializedName("Language")
+        @Expose
+        private Integer language;
+        @SerializedName("Base64")
+        @Expose
+        private Object base64;
+        @SerializedName("Extension")
+        @Expose
+        private Object extension;
+        @SerializedName("SharedLink")
+        @Expose
+        private Object sharedLink;
+        @SerializedName("PagesCount")
+        @Expose
+        private Integer pagesCount;
+        @SerializedName("CurrentPage")
+        @Expose
+        private Integer currentPage;
+        @SerializedName("RowsPerPage")
+        @Expose
+        private Integer rowsPerPage;
+
+        public Integer getEventID() {
+            return eventID;
+        }
+
+        public void setEventID(Integer eventID) {
+            this.eventID = eventID;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getEventPlace() {
+            return eventPlace;
+        }
+
+        public void setEventPlace(String eventPlace) {
+            this.eventPlace = eventPlace;
+        }
+
+        public String getEventImage() {
+            return eventImage;
+        }
+
+        public void setEventImage(String eventImage) {
+            this.eventImage = eventImage;
+        }
+
+        public String getEventStartDate() {
+            return eventStartDate;
+        }
+
+        public void setEventStartDate(String eventStartDate) {
+            this.eventStartDate = eventStartDate;
+        }
+
+        public String getEventStartDateStr() {
+            return eventStartDateStr;
+        }
+
+        public void setEventStartDateStr(String eventStartDateStr) {
+            this.eventStartDateStr = eventStartDateStr;
+        }
+
+        public String getEventEndDate() {
+            return eventEndDate;
+        }
+
+        public void setEventEndDate(String eventEndDate) {
+            this.eventEndDate = eventEndDate;
+        }
+
+        public String getEventEndDateStr() {
+            return eventEndDateStr;
+        }
+
+        public void setEventEndDateStr(String eventEndDateStr) {
+            this.eventEndDateStr = eventEndDateStr;
+        }
+
+        public String getCreateDate() {
+            return createDate;
+        }
+
+        public void setCreateDate(String createDate) {
+            this.createDate = createDate;
+        }
+
+        public String getLongtiude() {
+            return longtiude;
+        }
+
+        public void setLongtiude(String longtiude) {
+            this.longtiude = longtiude;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getEventStartTime() {
+            return eventStartTime;
+        }
+
+        public void setEventStartTime(String eventStartTime) {
+            this.eventStartTime = eventStartTime;
+        }
+
+        public String getEventStartTimeStr() {
+            return eventStartTimeStr;
+        }
+
+        public void setEventStartTimeStr(String eventStartTimeStr) {
+            this.eventStartTimeStr = eventStartTimeStr;
+        }
+
+        public String getEventEndTime() {
+            return eventEndTime;
+        }
+
+        public void setEventEndTime(String eventEndTime) {
+            this.eventEndTime = eventEndTime;
+        }
+
+        public String getEventEndTimeStr() {
+            return eventEndTimeStr;
+        }
+
+        public void setEventEndTimeStr(String eventEndTimeStr) {
+            this.eventEndTimeStr = eventEndTimeStr;
+        }
+
+        public Boolean getIsActive() {
+            return isActive;
+        }
+
+        public void setIsActive(Boolean isActive) {
+            this.isActive = isActive;
+        }
+
+        public Integer getLanguage() {
+            return language;
+        }
+
+        public void setLanguage(Integer language) {
+            this.language = language;
+        }
+
+        public Object getBase64() {
+            return base64;
+        }
+
+        public void setBase64(Object base64) {
+            this.base64 = base64;
+        }
+
+        public Object getExtension() {
+            return extension;
+        }
+
+        public void setExtension(Object extension) {
+            this.extension = extension;
+        }
+
+        public Object getSharedLink() {
+            return sharedLink;
+        }
+
+        public void setSharedLink(Object sharedLink) {
+            this.sharedLink = sharedLink;
+        }
+
+        public Integer getPagesCount() {
+            return pagesCount;
+        }
+
+        public void setPagesCount(Integer pagesCount) {
+            this.pagesCount = pagesCount;
+        }
+
+        public Integer getCurrentPage() {
+            return currentPage;
+        }
+
+        public void setCurrentPage(Integer currentPage) {
+            this.currentPage = currentPage;
+        }
+
+        public Integer getRowsPerPage() {
+            return rowsPerPage;
+        }
+
+        public void setRowsPerPage(Integer rowsPerPage) {
+            this.rowsPerPage = rowsPerPage;
+        }
+
+    }
+}

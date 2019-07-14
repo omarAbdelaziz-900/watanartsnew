@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical">-->
+
+
+        <TextView
+            android:id="@+id/english"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/english"
+            android:background="@color/white"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/font_size_xlarge"
+            android:visibility="visible" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@color/colorPrimaryDark"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/arabic"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="@string/arabic"
+            android:textColor="@color/yellow"
+            android:textSize="@dimen/font_size_xlarge"
+            android:visibility="visible" />
+
+
+    <!--</LinearLayout>-->
+
+
+</LinearLayout>

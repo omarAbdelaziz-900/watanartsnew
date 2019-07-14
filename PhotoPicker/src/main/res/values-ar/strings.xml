@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="__picker_title">الصور</string>
+    <string name="__picker_delete">مسح</string>
+    <string name="__picker_done">تم</string>
+    <string name="__picker_yes">موافق</string>
+    <string name="__picker_cancel">إلغاء</string>
+    <string name="__picker_all_image">كل الصور</string>
+    <string name="__picker_gallery">معرض الصور</string>
+    <string name="__picker_low_res">الصوره سيئة الجوده ولايمكن اختيارها للطباعه</string>
+
+</resources>
