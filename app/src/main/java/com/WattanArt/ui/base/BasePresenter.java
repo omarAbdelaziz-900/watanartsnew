@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.WattanArt.R;
 import com.WattanArt.network.AppDataManager;
+import com.WattanArt.ui.getFreeCredit.IGetFreeCredit;
 
 import java.net.SocketTimeoutException;
 

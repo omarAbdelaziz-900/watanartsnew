@@ -44,6 +44,9 @@ import com.WattanArt.ui.Setting.SettingPresenterImp;
 import com.WattanArt.ui.Shipping.ShippingMvpView;
 import com.WattanArt.ui.Shipping.ShippingPresenter;
 import com.WattanArt.ui.Shipping.ShippingPresenterMvp;
+import com.WattanArt.ui.getFreeCredit.GetFreeCreditPresenter;
+import com.WattanArt.ui.getFreeCredit.IGetFreeCredit;
+import com.WattanArt.ui.getFreeCredit.IGetFreeCreditPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -194,7 +197,7 @@ public class ActivityModule {
     @Provides
     @PerActivity
     RegisterMvpPresenter<RegisterMvpView> provideRegisterPresenter
-            (RegisterPresenterImp<RegisterMvpView> presenterImp){
+            (RegisterPresenterImp<RegisterMvpView> presenterImp) {
 
         return presenterImp;
     }
@@ -202,7 +205,7 @@ public class ActivityModule {
     @Provides
     @PerActivity
     HomeMvpPresenter<HomeMvpView> provideHomePresenter
-            (HomePresenterImp<HomeMvpView> presenterImp){
+            (HomePresenterImp<HomeMvpView> presenterImp) {
 
         return presenterImp;
     }
@@ -210,21 +213,23 @@ public class ActivityModule {
     @Provides
     @PerActivity
     EditProfileMvpPresenter<EditProfileMvpView> provideEditProfilePresenter
-            (EditProfilePresenterImp<EditProfileMvpView> presenterImp){
+            (EditProfilePresenterImp<EditProfileMvpView> presenterImp) {
 
         return presenterImp;
     }
+
     @Provides
     @PerActivity
     OrderHistoryMvpPresenter<OrderHistoryMvpView> provideOrderHistoryPresenter
-            (OrderHistoryPresenterImp<OrderHistoryMvpView> presenterImp){
+            (OrderHistoryPresenterImp<OrderHistoryMvpView> presenterImp) {
 
         return presenterImp;
     }
+
     @Provides
     @PerActivity
     CanvasPrintMvpPresnter<CanvasPrintMvpView> provideCanvasPrintPresenter
-            (CanvasPrintPresenterImp<CanvasPrintMvpView> presenterImp){
+            (CanvasPrintPresenterImp<CanvasPrintMvpView> presenterImp) {
 
         return presenterImp;
     }
@@ -232,7 +237,7 @@ public class ActivityModule {
     @Provides
     @PerActivity
     OrderDetailsMvpPresenter<OrderDetailsMvpView> provideOrderDetailsPresenter
-            (OrderDetailsPresenterImp<OrderDetailsMvpView> presenterImp){
+            (OrderDetailsPresenterImp<OrderDetailsMvpView> presenterImp) {
 
         return presenterImp;
     }
@@ -243,19 +248,29 @@ public class ActivityModule {
             AboutPresenterImp<AboutMvpView> presenter) {
         return presenter;
     }
+
+    @Provides
+    @PerActivity
+    IGetFreeCreditPresenter<IGetFreeCredit> providesGetFreeCredit(
+            GetFreeCreditPresenter<IGetFreeCredit> presenter) {
+        return presenter;
+    }
+
     @Provides
     @PerActivity
     ContactUsPresenterMvp<ContactUsMvpView> provideContactUsPresenter(
             ContactUsPresenterImp<ContactUsMvpView> presenter) {
         return presenter;
     }
+
     @Provides
     @PerActivity
     FAQMvpViewPresenter<FAQMvpView> provideFAQPresenter(
             FAQMvpPresenterImp<FAQMvpView> presenter) {
         return presenter;
     }
-//
+
+    //
     //end
 //    @Provides
 //    @PerActivity

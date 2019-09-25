@@ -241,6 +241,11 @@
     <string name="low_reselution">Low Resolution Images detected</string>
     <string name="facebook_app_id" translatable="false">108822879979679</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>
+    <string name="get_10_egp_free_Credit">Get your 10 EGP free credits!</string>
+    <string name="shareyourcode">Share your code with your \n friends to get 15 el free</string>
+    <string name="copy">Copy</string>
+    <string name="promoCode">Promo Code</string>
+    <string name="copied">Copied</string>
 
 
     <!-- Twitter Data-->

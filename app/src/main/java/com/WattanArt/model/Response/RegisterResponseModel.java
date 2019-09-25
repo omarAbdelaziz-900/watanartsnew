@@ -95,6 +95,7 @@ public class RegisterResponseModel {
             private String Email;
             private String Phone;
             private String FB;
+            private String Promocode;
             private Object Fcm_Token;
             private int CountryID;
             private int cityID;
@@ -232,6 +233,14 @@ public class RegisterResponseModel {
 
             public int getRowsPerPage() {
                 return RowsPerPage;
+            }
+
+            public String getPromocode() {
+                return Promocode;
+            }
+
+            public void setPromocode(String promocode) {
+                Promocode = promocode;
             }
         }
     }

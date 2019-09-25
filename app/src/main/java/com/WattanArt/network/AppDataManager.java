@@ -51,6 +51,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -131,6 +132,7 @@ public class AppDataManager implements ApiService {
 //    }
 
     //    @Inject //@ApplicationContext Context context
+
     public AppDataManager() {
         //    @Inject //@ApplicationContext Context context
 

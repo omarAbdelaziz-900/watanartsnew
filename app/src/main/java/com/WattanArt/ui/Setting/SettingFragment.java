@@ -29,6 +29,7 @@ import com.WattanArt.ui.FAQ.FaqActivity;
 import com.WattanArt.ui.Home.HomeActivity;
 import com.WattanArt.ui.Login.LoginActivity;
 import com.WattanArt.ui.base.BaseFragment;
+import com.WattanArt.ui.getFreeCredit.GetFreeCreditActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.gson.JsonObject;
@@ -104,6 +105,25 @@ public class SettingFragment extends BaseFragment implements SettingMvpView {
 
                         if (!userId.isEmpty()) {
                             startActivity(new Intent(getActivity(), EditProfileActivity.class));
+                        } else {
+                            showMessage(getString(R.string.login_before));
+                        }
+
+                    } else {
+                        showMessage(getString(R.string.error_no_internet_connection));
+                    }
+
+                }
+            });
+
+        if (view.findViewById(R.id.promoCodeLinear) != null)
+            view.findViewById(R.id.promoCodeLinear).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isNetworkConnected()) {
+
+                        if (!userId.isEmpty()) {
+                            startActivity(new Intent(getActivity(), GetFreeCreditActivity.class));
                         } else {
                             showMessage(getString(R.string.login_before));
                         }

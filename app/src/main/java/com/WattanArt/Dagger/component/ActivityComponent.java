@@ -32,6 +32,7 @@ import com.WattanArt.ui.Order.OrderHistory.OrderHistoryFragment;
 import com.WattanArt.ui.Setting.SettingFragment;
 import com.WattanArt.ui.Shipping.ShippingActivity;
 import com.WattanArt.ui.Terms.TermsActivity;
+import com.WattanArt.ui.getFreeCredit.GetFreeCreditActivity;
 
 import dagger.Component;
 
@@ -51,6 +52,7 @@ public interface ActivityComponent {
     void inject(ShippingActivity shippingActivity);
     void inject(OrderDetailsActivity orderDetailsActivity);
     void inject(AboutActivity aboutActivity);
+    void inject(GetFreeCreditActivity getFreeCreditActivity);
     void inject(ContactUsActivity contactUsActivity);
     void inject(InfoFragment infoFragment);
     void inject(ContactInnerFragment contactInnerFragment);

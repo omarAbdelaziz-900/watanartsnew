@@ -219,6 +219,10 @@
             android:name=".ui.Payment.WebviewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar"></activity>
+        <activity android:name=".ui.getFreeCredit.GetFreeCreditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            />
 
     </application>
 

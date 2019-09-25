@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/UcropModule/UcropModule.iml" filepath="$PROJECT_DIR$/UcropModule/UcropModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/WatanArt.iml" filepath="$PROJECT_DIR$/WatanArt.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/watanarts.iml" filepath="$PROJECT_DIR$/watanarts.iml" />
     </modules>
   </component>
 </project>
