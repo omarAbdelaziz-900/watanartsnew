@@ -1,1 +1,1 @@
-include ':app', ':PhotoPicker', ':UcropModule'
+include ':app', ':PhotoPicker', ':UcropModule'//, ':imagecomponentmodule'

@@ -17,7 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
@@ -37,16 +38,11 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.Objects;
+import me.iwf.photopicker.PhotoPicker;
 
 import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import me.iwf.photopicker.PhotoPicker;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 

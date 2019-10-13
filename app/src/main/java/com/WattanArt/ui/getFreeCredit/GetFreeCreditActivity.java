@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredit  {
+public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredit {
 
     @Inject
     GetFreeCreditPresenter<IGetFreeCredit> mPresenter;
@@ -40,16 +40,17 @@ public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredi
 
 
     @OnClick(R.id.copy)
-    public void copy(View view){
-       setClipboard(this,theCode.getText().toString());
+    public void copy(View view) {
+        setClipboard(this, theCode.getText().toString());
     }
 
     private void setClipboard(Context context, String text) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("Copied Text", text);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context,getString(R.string.copied),Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, getString(R.string.copied), Toast.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredi
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        mToolbarBackImageView.setVisibility(View.VISIBLE);
-        mToolbarTitleTextView.setText(getString(R.string.title_about));
+        mToolbarTitleTextView.setText(getString(R.string.promoCode));
         mToolbarBackImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,12 +77,11 @@ public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredi
         userData = new UserData();
         if (isNetworkConnected()) {
             mPresenter.getProfileData(this);
-
         } else {
             showMessage(getString(R.string.error_no_internet_connection));
-
         }
     }
+
     @Override
     protected void setUpActivityOrFragmentRequirment() {
 

@@ -128,7 +128,7 @@ public class EditImageActivity extends AppCompatActivity implements
     boolean isRotateEstablished = false;
     //    boolean isReplaceIstablished = false;
     boolean isLowResolution;
-    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f};
+    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f,12f/12f,12f/16f,12f/20f};
     @Inject
     EditImagePresenterImp mPresenter;
     private ArrayList<ThumbnailItem> thumbnailItemList = new ArrayList<>();

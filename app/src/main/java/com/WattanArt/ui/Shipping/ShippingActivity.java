@@ -803,7 +803,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
             } else {
                 if (isNetworkConnected()) {
                     CouponCodeModel couponCodeModel = new CouponCodeModel();
-                    couponCodeModel.setCouponCode(checkCode.getText().toString().trim());
+                    couponCodeModel.setCouponCode(couponEditText.getText().toString().trim());
                     couponCodeModel.setUserID(userData.getUserID(ShippingActivity.this));
                     mPresenter.checkCouponCode(couponCodeModel);
                 } else {
