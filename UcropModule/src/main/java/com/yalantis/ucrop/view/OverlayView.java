@@ -84,8 +84,7 @@ public class OverlayView extends View {
     private onAllThreadsDone onAllThreadsDone;
 
 
-
-    boolean isGridDrawn = false ;
+    boolean isGridDrawn = false;
 
     private boolean mShouldSetupCropBounds;
 
@@ -115,6 +114,7 @@ public class OverlayView extends View {
     public void setOverlayViewChangeListener(OverlayViewChangeListener callback) {
         mCallback = callback;
     }
+
     public void setOnAllThreadsDone(onAllThreadsDone callback) {
         onAllThreadsDone = callback;
     }
@@ -179,6 +179,13 @@ public class OverlayView extends View {
      */
     public void setCropGridColumnCount(@IntRange(from = 0) int cropGridColumnCount) {
         mCropGridColumnCount = cropGridColumnCount;
+//        mCropGridRowCount= cropGridColumnCount;
+        mGridPoints = null;
+    }
+
+    public void setCropGridColumnCount(@IntRange(from = 0) int cropGridColumnCount, @IntRange(from = 0) int cropGridRowsCount) {
+        mCropGridColumnCount = cropGridColumnCount;
+        mCropGridRowCount = cropGridRowsCount;
         mGridPoints = null;
     }
 
@@ -268,7 +275,6 @@ public class OverlayView extends View {
         requestLayout();
 
 
-
     }
 
     /**
@@ -344,15 +350,15 @@ public class OverlayView extends View {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         Log.e(OverlayView.class.getSimpleName(), "MeasureSpec:" + mTargetAspectRatio + ": widthSize:" + String.valueOf(widthSize) + ", heightSize:" + String.valueOf(heightSize));
 
-        int width ;
-        int height ;
+        int width;
+        int height;
 
         int heightWindow = displayMetrics.heightPixels;
         int widthWindow = displayMetrics.widthPixels;
         Log.e(OverlayView.class.getSimpleName(), "MeasureSpec:: widthWindow:" + String.valueOf(widthWindow) + ", heightWindow:" + String.valueOf(heightWindow));
 
-        if (heightSize > (heightWindow /1.7f))
-            heightSize = (int) (heightWindow / 1.7f) ;
+        if (heightSize > (heightWindow / 1.7f))
+            heightSize = (int) (heightWindow / 1.7f);
 
         //Measure Height
         if (heightMode == MeasureSpec.EXACTLY) {
@@ -639,7 +645,7 @@ public class OverlayView extends View {
 
 //        if (!isGridDrawn) {
 //            isGridDrawn = true;
-            onAllThreadsDone.onAllDone();
+        onAllThreadsDone.onAllDone();
 //        }
     }
 
