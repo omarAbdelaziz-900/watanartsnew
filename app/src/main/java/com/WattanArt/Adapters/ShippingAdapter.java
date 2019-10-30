@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,10 +31,56 @@ import java.util.List;
 
 public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyViewHolder> {
 
-//    private List<ImageModel> ShippingActivity.imageModelList;
+    //    private List<ImageModel> ShippingActivity.imageModelList;
     private Context mContext;
     DisplayMetrics displayMetrics;
-    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f};
+//    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f};
+
+    float[] ratios = new float[]{
+            20f / 20f,
+            20f / 30f,
+            30f / 20f,
+            60f / 20f,
+            60f / 30f,
+            90f / 20f,
+
+            30f / 30f,
+            30f / 40f,
+            30f / 50f,
+
+            20f / 20f,
+            20f / 20f,
+            20f / 20f};
+
+    Pair<Integer, Integer>[] pairDimens = new Pair[]{
+            new Pair(600, 600),
+            new Pair(600, 800),
+            new Pair(800, 600),
+            new Pair(1200, 600),
+            new Pair(1200, 800),
+            new Pair(1400, 600),
+            new Pair(800, 800),
+            new Pair(800, 1000),
+            new Pair(800, 1200),
+            new Pair(1000, 1000),
+            new Pair(1200, 1200),
+            new Pair(2000, 2000)};
+
+    Pair<Integer, Integer>[] pairPieces = new Pair[]{
+            new Pair(0, 0),
+            new Pair(0, 0),
+            new Pair(0, 0),
+            new Pair(2, 0),
+            new Pair(2, 0),
+            new Pair(2, 0),
+
+            new Pair(0, 0),
+            new Pair(0, 0),
+            new Pair(0, 0),
+
+            new Pair(3, 0),
+            new Pair(2, 2),
+            new Pair(3, 3)};
 
     List<RatioDimensions> ratioDimensions = new ArrayList<>();
 
@@ -89,9 +136,9 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 
         //work around
 //        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.LOLLIPOP){
-            //No implement here
+        //No implement here
 //        }else {
-            holder.gestureCropImageView.forceResetCropImageView();
+        holder.gestureCropImageView.forceResetCropImageView();
 //        }
 
         holder.gestureCropImageView.getCropImageView().setImageBitmap(null);
@@ -158,7 +205,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
                                 if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >= 1000 &&
                                         ShippingActivity.imageModelList.get(position).getMainImageWidth() >= 1000 &&
                                         (((float) ShippingActivity.imageModelList.get(position).getMainImageWidth()) / 1.5f) >= 1000
-                                        ) {
+                                ) {
                                     ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView, 12f / 8f);
                                     ShippingActivity.imageModelList.get(position).setCurrentRatio(12f / 8f);
                                 } else {
@@ -170,18 +217,21 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
                             ShippingActivity.imageModelList.get(position).setSegmented(false);
                             holder.gestureCropImageView.getOverlayView().drawCropGrid(new Canvas());
                         } else {
+                            holder.gestureCropImageView.getOverlayView().setCropGridColumnCount(pairPieces[(int) ShippingActivity.imageModelList.get(position).getCurrentRatioIndex()].first);
+                            holder.gestureCropImageView.getOverlayView().setCropGridRowCount(pairPieces[(int) ShippingActivity.imageModelList.get(position).getCurrentRatioIndex()].second);
+                            ShippingActivity.imageModelList.get(position).setSegmented(ShippingActivity.imageModelList.get(position).isSegmented());
 
-                            if (ShippingActivity.imageModelList.get(position).getCurrentRatio() == ratios[0]
-                                    || ShippingActivity.imageModelList.get(position).getCurrentRatio() == ratios[1] ||
-                                    ShippingActivity.imageModelList.get(position).getCurrentRatio() == ratios[2]) {
-                                holder.gestureCropImageView.getOverlayView().setCropGridColumnCount(0);
-                                ShippingActivity.imageModelList.get(position).setSegmented(false);
-                            } else {
-                                holder.gestureCropImageView.getOverlayView().setCropGridColumnCount(2);
-                                ShippingActivity.imageModelList.get(position).setSegmented(true);
-                            }
+//                            if (ShippingActivity.imageModelList.get(position).getCurrentRatio() == ratios[0]
+//                                    || ShippingActivity.imageModelList.get(position).getCurrentRatio() == ratios[1] ||
+//                                    ShippingActivity.imageModelList.get(position).getCurrentRatio() == ratios[2]) {
+//                                holder.gestureCropImageView.getOverlayView().setCropGridColumnCount(0);
+//                                ShippingActivity.imageModelList.get(position).setSegmented(false);
+//                            } else {
+//                                holder.gestureCropImageView.getOverlayView().setCropGridColumnCount(2);
+//                                ShippingActivity.imageModelList.get(position).setSegmented(true);
+//                            }
                             holder.gestureCropImageView.getOverlayView().drawCropGrid(new Canvas());
-                            Log.e("dad" , ""+ShippingActivity.imageModelList.get(position).getCurrentRatio());
+                            Log.e("dad", "" + ShippingActivity.imageModelList.get(position).getCurrentRatio());
                             ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView,
                                     ShippingActivity.imageModelList.get(position).getCurrentRatio());
                         }
@@ -256,22 +306,26 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         int pieces = 0;
 
 
-        for (ImageModel imageModel : ShippingActivity.imageModelList) {
-
-            if (imageModel.getCurrentRatio() == 0) {
-
-                pieces += 1 * imageModel.getQuantity();
-
-            } else {
-
-                if (imageModel.getCurrentRatio() == ratios[0] || imageModel.getCurrentRatio() == ratios[1] || imageModel.getCurrentRatio() == ratios[2]) {
-                    pieces += 1 * imageModel.getQuantity();
-                } else {
-                    pieces += 3 * imageModel.getQuantity();
-                }
-
-            }
+        for (int i = 0; i < ShippingActivity.imageModelList.size(); i++) {
+            Pair<Integer, Integer> piece = pairPieces[(int) ShippingActivity.imageModelList.get(i).getCurrentRatioIndex()];
+            pieces += (piece.first+1) * (piece.second+1);
         }
+//        for (ImageModel imageModel : ShippingActivity.imageModelList) {
+
+//            if (imageModel.getCurrentRatio() == 0) {
+
+//                pieces += 1 * imageModel.getQuantity();
+//
+//            } else {
+//
+//                if (imageModel.getCurrentRatio() == ratios[0] || imageModel.getCurrentRatio() == ratios[1] || imageModel.getCurrentRatio() == ratios[2]) {
+//                    pieces += 1 * imageModel.getQuantity();
+//                } else {
+//                    pieces += 3 * imageModel.getQuantity();
+//                }
+//
+//            }
+//        }
 
         Log.e("Pieces", "" + pieces);
         getNewpieces.returnPrice(pieces);

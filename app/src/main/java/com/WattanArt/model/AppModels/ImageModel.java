@@ -38,6 +38,7 @@ public class ImageModel implements Parcelable {
     int quantity;
 
     int viewWidth , viewHeight ;
+    private float currentRatioIndex;
 
     public int getViewWidth() {
         return viewWidth;
@@ -491,7 +492,7 @@ public class ImageModel implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ImageModel> CREATOR = new Parcelable.Creator<ImageModel>() {
+    public static final Creator<ImageModel> CREATOR = new Creator<ImageModel>() {
         @Override
         public ImageModel createFromParcel(Parcel in) {
             return new ImageModel(in);
@@ -502,5 +503,13 @@ public class ImageModel implements Parcelable {
             return new ImageModel[size];
         }
     };
+
+    public void setCurrentRatioIndex(float currentRatioIndex) {
+        this.currentRatioIndex = currentRatioIndex;
+    }
+
+    public float getCurrentRatioIndex() {
+        return currentRatioIndex;
+    }
 }
 
