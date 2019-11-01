@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.yalantis.ucrop.callback.BitmapLoadCallback;
 import com.yalantis.ucrop.model.ExifInfo;
@@ -20,6 +19,8 @@ import com.yalantis.ucrop.util.BitmapLoadUtils;
 import com.yalantis.ucrop.util.FastBitmapDrawable;
 import com.yalantis.ucrop.util.RectUtils;
 import com.yalantis.ucrop.view.photoview.PhotoView;
+
+import carbon.widget.ImageView;
 
 /**
  * Created by Oleksii Shliama (https://github.com/shliama).

@@ -109,7 +109,7 @@ public class PictUtil {
 //                }
 //
 //                @Override
-//                public void onNext(Object o) {
+//                public void onNext(Object o) {s
 //                }
 //
 //                @Override
@@ -166,7 +166,7 @@ public class PictUtil {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 callback.onFail(e);
-            } catch (IOException e) {
+             } catch (IOException e) {
                 e.printStackTrace();
                 callback.onFail(e);
             } catch (Exception e) {

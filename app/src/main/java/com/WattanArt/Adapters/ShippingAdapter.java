@@ -308,7 +308,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 
         for (int i = 0; i < ShippingActivity.imageModelList.size(); i++) {
             Pair<Integer, Integer> piece = pairPieces[(int) ShippingActivity.imageModelList.get(i).getCurrentRatioIndex()];
-            pieces += (piece.first+1) * (piece.second+1);
+            pieces += (piece.first+1) * (piece.second+1) *  ShippingActivity.imageModelList.get(i).getQuantity();
         }
 //        for (ImageModel imageModel : ShippingActivity.imageModelList) {
 

@@ -28,7 +28,7 @@ android {
     }
 
 
-    packagingOptions {
+        packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
 
@@ -36,6 +36,9 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+//    dataBinding {
+//        enabled = true
+//    }
 
 //    buildTypes {
 //        release {
@@ -184,7 +187,6 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }
-
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def requested = details.requested
