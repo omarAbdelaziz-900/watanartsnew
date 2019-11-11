@@ -35,6 +35,15 @@ public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredi
     @BindView(R.id.theCode)
     CustomeTextViewBold theCode;
 
+    @BindView(R.id.num_of_tries)
+    CustomeTextViewBold num_of_tries;
+
+    @BindView(R.id.get_free)
+    CustomeTextViewBold get_free;
+
+    @BindView(R.id.share_code_txt)
+    CustomeTextView share_code_txt;
+
 
     private UserData userData;
 
@@ -89,7 +98,26 @@ public class GetFreeCreditActivity extends BaseActivity implements IGetFreeCredi
 
     @Override
     public void returnProfileData(RegisterResponseModel responseModel) {
+        if (responseModel.getResult().getObj().getPromocode()!=null)
         theCode.setText(responseModel.getResult().getObj().getPromocode());
+
+
+        share_code_txt.setText(getString(R.string.shareyourcode1)+" "+
+                responseModel.getResult().getObj().getDiscountRate()+"% "
+        +getString(R.string.shareyourcode2));
+
+        get_free.setText(getString(R.string.get_10_egp_free_Credit1)+" "+
+                responseModel.getResult().getObj().getDiscountRate()+"% "
+        +getString(R.string.get_10_egp_free_Credit2));
+
+
+        if (responseModel.getResult().getObj().getAvailableTime()!=0) {
+            num_of_tries.setText(getString(R.string.have) + " " + responseModel.getResult().getObj().getDiscountRate() + "% "
+                    + getString(R.string.discount) + " " + responseModel.getResult().getObj().getAvailableTime() +
+                    " " + getString(R.string.order));
+        }else {
+            num_of_tries.setText(getString(R.string.not_have_count));
+        }
     }
 
     @Override

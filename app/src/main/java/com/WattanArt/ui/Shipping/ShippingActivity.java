@@ -160,6 +160,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
 
     @BindView(R.id.radioGroupPayment)
     RadioGroup radioGroupPayment;
+    int validCode=0;
 
     @Inject
     ShippingPresenterMvp<ShippingMvpView> mPresenter;
@@ -331,7 +332,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
                                                             if (ShippingActivity.imageModelList.get(finalPosition).getMainImageHeight() >= 1000 &&
                                                                     ShippingActivity.imageModelList.get(finalPosition).getMainImageWidth() >= 1000 &&
                                                                     (((float) ShippingActivity.imageModelList.get(finalPosition).getMainImageWidth()) / 1.5f) >= 1000
-                                                                    ) {
+                                                            ) {
                                                                 ShippingActivity.imageModelList.get(finalPosition).setCurrentRatio(12f / 8f);
                                                             } else {
                                                                 ShippingActivity.imageModelList.get(finalPosition).setCurrentRatio(1f);
@@ -698,15 +699,21 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
 
     @Override
     public void applyCouponCode(boolean isValid) {
+
         hasCouponChecked=true;
         if (adapter == null || pattenList == null) {
             return;
         }
         if (isValid) {
+            if (validCode==0) {
+                Toast.makeText(this, getString(R.string.code_is_valid), Toast.LENGTH_LONG).show();
+                validCode=1;
+            }
             isCouponCodeApplied = isValid;
 
             if (pattenList != null) {
-                int afterDiscountRate = (100 - pattenList.getPrices().getDiscountRate()) / 100;
+                double afterDiscountRate =  (Double.valueOf(100) - Double.valueOf(pattenList.getPrices().
+                        getDiscountRate())) / Double.valueOf(100);
 
 
                 if (adapter.getPiecesNumber() == 3) {
@@ -783,7 +790,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
             }
             if (hasCouponChecked){
                 completeOrder();
-                }else {
+            }else {
                 Toast.makeText(this,getString(R.string.check_code),Toast.LENGTH_LONG).show();
             }
         } else if (v.getId() == R.id.add_holder) {

@@ -81,6 +81,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.WattanArt.ui.EditImage.EditImageActivity.typeOmar;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
 import static com.WattanArt.ui.Shipping.ShippingActivity.OPEN_REGISTERATION_CODE;
 import static com.WattanArt.ui.Shipping.ShippingActivity.REQUEST_STORAGE_READ_ACCESS_PERMISSION;
@@ -113,8 +114,57 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
     List<OrderDetailsItem> orderDetailsItemsList = new ArrayList();
 
     List<ImageModel> imageModels;
-    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f};
 
+//    float[] ratios = new float[]{
+//            1f
+//            ,8f / 12f
+//            , 12f / 8f
+//            , 24f / 8f
+//            , 24f / 12f
+//            , 36f / 8f
+//
+//
+//            ,1f
+//            ,12f/16f
+//            ,12f/20f
+//            ,1f,
+//            1f ,
+//            1f
+//    };
+
+//    float[] ratios = new float[]{
+//            1f
+//            ,8f / 12f
+//            , 12f / 8f
+//            , 24f / 8f
+//            , 24f / 12f
+//            , 36f / 8f
+//
+//
+//            ,1f
+//            ,12f/16f
+//            ,12f/20f
+//            ,4f/4f,
+//            6f/6f ,
+//            8f/8f
+//    };
+
+    float[] ratios = new float[]{
+            20f / 20f,//0
+            20f / 30f,//1
+            30f / 20f,//2
+
+            60f / 20f,//3
+            60f / 30f,//4
+            90f / 20f,//5
+
+            30f / 30f,//6
+            40f / 30f,//7
+            50f / 30f,//8
+
+            40f / 40f,//9
+            60f / 60f,//10
+            80f / 80f};//11
 
     EditText address, code, phone;
     int city, country, buyType;
@@ -202,7 +252,6 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
         ShippingRequest.Order order = new ShippingRequest.Order();
         order.setAddress1(address.getText().toString());
         order.setPhoneNumber(phone.getText().toString());
-
         order.setCityID(city);
         order.setCountryID(country);
 
@@ -802,9 +851,13 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
     public boolean checkOrderQuantity(List<ImageModel> imageModels) {
         int quantity = 0;
         for (ImageModel imageModel : imageModels) {
-            if (imageModel.getCurrentRatio() == ratios[0] ||
+            Log.e("TypePaternOrderQuantity",imageModel.getTypeOmarPattern()+"");
+            if ((imageModel.getCurrentRatio() == ratios[0] && (imageModel.getTypeOmarPattern()==1 || imageModel.getTypeOmarPattern() == 7))||
                     imageModel.getCurrentRatio() == ratios[1] ||
-                    imageModel.getCurrentRatio() == ratios[2]) {
+                    imageModel.getCurrentRatio() == ratios[2]
+                    ||(imageModel.getCurrentRatio() == ratios[6] && imageModel.getTypeOmarPattern() == 7)
+                    ||imageModel.getCurrentRatio() == ratios[7]
+                    ||imageModel.getCurrentRatio() == ratios[8]) {
                 quantity += imageModel.getQuantity();
             } else {
                 quantity += imageModel.getQuantity() * 3;
@@ -835,11 +888,117 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
         }
     }
 
-    private int getPatternId(float ratio, List<SelectCountryCitiyListsResponseModel.Result.PatternType> pattenList) {
+//    private int getPatternId(float ratio, List<SelectCountryCitiyListsResponseModel.Result.PatternType> pattenList) {
+//
+//        int id = 0;
+//
+//        if (ratio == ratios[0]) {
+//            id = 1;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x8")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        } else if (ratio == ratios[1]) {
+//            id = 5;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x12")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        } else if (ratio == ratios[2]) {
+//            id = 2;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x8")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        } else if (ratio == ratios[3]) {
+//            id = 3;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x24")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        } else if (ratio == ratios[4]) {
+//            id = 6;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x24")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        } else if (ratio == ratios[5]) {
+//            id = 4;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+////            ssaa
+//        }else if (ratio == ratios[6]) {
+//            id = 7;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        }else if (ratio == ratios[7]) {
+//            id = 8;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        }else if (ratio == ratios[8]) {
+//            id = 9;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        }else if (ratio == ratios[9]) {
+//            id = 10;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        }else if (ratio == ratios[10]) {
+//            id = 11;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        }else if (ratio == ratios[11]) {
+//            id = 12;
+////            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+////                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+////                    id = patternTypeEntity.getID();
+////                    break;
+////                }
+////            }
+//        }
+//
+//        return id;
+//    }
+
+    private int getPatternId(float ratio, List<SelectCountryCitiyListsResponseModel.Result.PatternType> pattenList,int type) {
 
         int id = 0;
 
-        if (ratio == ratios[0]) {
+        if (ratio == ratios[0] && type==1) {
             id = 1;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x8")) {
@@ -847,40 +1006,89 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 //                    break;
 //                }
 //            }
-        } else if (ratio == ratios[1]) {
-            id = 5;
+        } else if (ratio == ratios[1]&& type==2) {
+            id = 2;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x12")) {
 //                    id = patternTypeEntity.getID();
 //                    break;
 //                }
 //            }
-        } else if (ratio == ratios[2]) {
-            id = 2;
+        } else if (ratio == ratios[2] && type==3) {
+            id = 3;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x8")) {
 //                    id = patternTypeEntity.getID();
 //                    break;
 //                }
 //            }
-        } else if (ratio == ratios[3]) {
-            id = 3;
+        } else if (ratio == ratios[3] && type==4) {
+            id = 4;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x24")) {
 //                    id = patternTypeEntity.getID();
 //                    break;
 //                }
 //            }
-        } else if (ratio == ratios[4]) {
-            id = 6;
+        } else if (ratio == ratios[4] && type==5) {
+            id = 5;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x24")) {
 //                    id = patternTypeEntity.getID();
 //                    break;
 //                }
 //            }
-        } else if (ratio == ratios[5]) {
-            id = 4;
+        } else if (ratio == ratios[5] && type==6) {
+            id = 6;
+//            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+//                    id = patternTypeEntity.getID();
+//                    break;
+//                }
+//            }
+//            ssaa
+        }else if (ratio == ratios[6] && type==7) {
+            id = 7;
+//            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+//                    id = patternTypeEntity.getID();
+//                    break;
+//                }
+//            }
+        }else if (ratio == ratios[7] && type==8) {
+            id = 8;
+//            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+//                    id = patternTypeEntity.getID();
+//                    break;
+//                }
+//            }
+        }else if (ratio == ratios[8] && type==9) {
+            id = 9;
+//            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+//                    id = patternTypeEntity.getID();
+//                    break;
+//                }
+//            }
+        }else if (ratio == ratios[9] && type==10) {
+            id = 10;
+//            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+//                    id = patternTypeEntity.getID();
+//                    break;
+//                }
+//            }
+        }else if (ratio == ratios[10] && type==11) {
+            id = 11;
+//            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
+//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
+//                    id = patternTypeEntity.getID();
+//                    break;
+//                }
+//            }
+        }else if (ratio == ratios[11] && type==12) {
+            id = 12;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
 //                    id = patternTypeEntity.getID();
@@ -891,6 +1099,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 
         return id;
     }
+
 
 
     /**
@@ -1139,6 +1348,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                 sucessParts++;
                 serverUploadIndex++;
 
+                Log.e("Stateee",response.body().getState()+"");
                 if (response.code() == 200) {
                     if (response.body().getState() == 1) {
                         //could not find file
@@ -1160,7 +1370,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                         try {
                             OrderDetailsItem orderDetailsItems = new OrderDetailsItem();
                             orderDetailsItems.setMainImage(response.body().getFileName());
-                            orderDetailsItems.setPatternID(getPatternId(imageModels.get(orderDetailsItemsIndex).getCurrentRatio(), patternTypeEntityList));
+                            orderDetailsItems.setPatternID(getPatternId(imageModels.get(orderDetailsItemsIndex).getCurrentRatio(), patternTypeEntityList,imageModels.get(orderDetailsItemsIndex).getTypeOmarPattern()));
                             orderDetailsItems.setQuantiy(imageModels.get(orderDetailsItemsIndex).getQuantity());
                             orderDetailsItemsList.add(orderDetailsItems);
                         } catch (Exception e) {
@@ -1200,6 +1410,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 
                 serverUploadIndex++;
                 if (bs.size() > serverUploadIndex) {
+                    getMvpView().hideLoading();
                     uploadFile(listPaths);
                 } else if (!orderDetailsItemsList.isEmpty()) {
                     //some images failed to upload , just make order with the completed parts

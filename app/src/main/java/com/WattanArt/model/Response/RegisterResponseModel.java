@@ -87,6 +87,8 @@ public class RegisterResponseModel {
              * PagesCount : 0
              * CurrentPage : 0
              * RowsPerPage : 10
+             * AvailableTime : 10
+             * DiscountRate : 1.0
              */
 
             private String UserID;
@@ -106,6 +108,9 @@ public class RegisterResponseModel {
             private int PagesCount;
             private int CurrentPage;
             private int RowsPerPage;
+
+            private int AvailableTime;
+            private double DiscountRate;
 
             public void setUserID(String UserID) {
                 this.UserID = UserID;
@@ -241,6 +246,22 @@ public class RegisterResponseModel {
 
             public void setPromocode(String promocode) {
                 Promocode = promocode;
+            }
+
+            public int getAvailableTime() {
+                return AvailableTime;
+            }
+
+            public void setAvailableTime(int availableTime) {
+                AvailableTime = availableTime;
+            }
+
+            public double getDiscountRate() {
+                return DiscountRate;
+            }
+
+            public void setDiscountRate(double discountRate) {
+                DiscountRate = discountRate;
             }
         }
     }

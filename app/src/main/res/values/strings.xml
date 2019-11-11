@@ -188,6 +188,7 @@
     <string name="can_not_submit">You can\'t submit these setting as it leads to low resolution image  </string>
     <string name="request_done">Your request is done  </string>
     <string name="code_not_valid">Your code is not valid  </string>
+    <string name="code_is_valid">Your code is  valid  </string>
 
     <string name="confirm_replace">Are You really want to replace image ?  </string>
     <string name="replace">Replace Image  </string>
@@ -241,12 +242,27 @@
     <string name="low_reselution">Low Resolution Images detected</string>
     <string name="facebook_app_id" translatable="false">108822879979679</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>
-    <string name="get_10_egp_free_Credit">Get your 10 EGP free credits!</string>
-    <string name="shareyourcode">Share your code with your \n friends to get 15 el free</string>
+
+    <string name="get_10_egp_free_Credit1">Get your</string>
+    <string name="get_10_egp_free_Credit2"> free credits!</string>
+
+    <string name="shareyourcode1">Share your code with your \n friends to get</string>
+    <string name="shareyourcode2">free</string>
     <string name="copy">Copy</string>
     <string name="promoCode">Promo Code</string>
     <string name="copied">Copied</string>
 
+
+    <string name="exit_logout">Are You Sure to Exit ?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+    <string name="have">You have</string>
+    <string name="discount">discount for</string>
+    <string name="order">orders</string>
+    <string name="not_have_count">You don\'t have any discount ! \n Please share this code to get more credit .</string>
 
     <!-- Twitter Data-->
 

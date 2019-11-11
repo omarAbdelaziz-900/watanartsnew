@@ -28,6 +28,7 @@ public class ImageModel implements Parcelable {
 
     boolean isFlipped;
     float currentRatio;
+    int typeOmarPattern=1;
     int positionX;
     int positionY;
     float Hue;
@@ -322,6 +323,14 @@ public class ImageModel implements Parcelable {
         this.currentRatio = currentRatio;
     }
 
+    public int getTypeOmarPattern() {
+        return typeOmarPattern;
+    }
+
+    public void setTypeOmarPattern(int typeOmarPattern) {
+        this.typeOmarPattern = typeOmarPattern;
+    }
+
     public int getPositionX() {
         return positionX;
     }
@@ -414,9 +423,10 @@ public class ImageModel implements Parcelable {
 
     }
 
-    public ImageModel(Uri uri, float currentRatio) {
+    public ImageModel(Uri uri, float currentRatio ) {
         this.uri = uri;
         this.currentRatio = currentRatio;
+//        this.typeOmarPattern = typeOmarPattern;
     }
 
     public ImageModel(Bitmap bitmap, float currentRatio, String path) {
@@ -438,6 +448,7 @@ public class ImageModel implements Parcelable {
         currentRotate = in.readFloat();
         isFlipped = in.readByte() != 0x00;
         currentRatio = in.readFloat();
+        typeOmarPattern=in.readInt();
         positionX = in.readInt();
         positionY = in.readInt();
         Hue = in.readInt();
@@ -474,6 +485,7 @@ public class ImageModel implements Parcelable {
         dest.writeFloat(currentRotate);
         dest.writeByte((byte) (isFlipped ? 0x01 : 0x00));
         dest.writeFloat(currentRatio);
+        dest.writeInt(typeOmarPattern);
         dest.writeInt(positionX);
         dest.writeInt(positionY);
         dest.writeFloat(Hue);

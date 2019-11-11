@@ -131,10 +131,29 @@ public class EditImageActivity extends AppCompatActivity implements
     boolean isRotateEstablished = false;
     //    boolean isReplaceIstablished = false;
     boolean isLowResolution;
+
+    public static int typeOmar;
 //    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f, 12f / 12f, 12f / 16f, 12f / 20f};
 //
 //    Pair<Integer, Integer>[] pairDimens = new Pair[]{new Pair(600, 600), new Pair(1000, 1000), new Pair(1000, 1000),
 //            new Pair(1800, 600), new Pair(3000, 1000), new Pair(3000, 1000)};
+
+//    float[] ratios = new float[]{
+//            1f
+//            ,8f / 12f
+//            , 12f / 8f
+//            , 24f / 8f
+//            , 24f / 12f
+//            , 36f / 8f
+//
+//
+//            ,1f
+//            ,12f/16f
+//            ,12f/20f
+//            ,4f/4f,
+//            6f/6f ,
+//            8f/8f
+//    };
 
     float[] ratios = new float[]{
             20f / 20f,
@@ -145,23 +164,32 @@ public class EditImageActivity extends AppCompatActivity implements
             90f / 20f,
 
             30f / 30f,
-            30f / 40f,
-            30f / 50f,
 
-            20f / 20f,
-            20f / 20f,
-            20f / 20f};
+            40f / 30f,
+            50f / 30f,
+
+            40f / 40f,
+            60f / 60f,
+            80f / 80f};
 
     Pair<Integer, Integer>[] pairDimens = new Pair[]{
             new Pair(600, 600),
             new Pair(600, 800),
             new Pair(800, 600),
             new Pair(1200, 600),
+
             new Pair(1200, 800),
+
             new Pair(1400, 600),
+
             new Pair(800, 800),
-            new Pair(800, 1000),
-            new Pair(800, 1200),
+
+//            new Pair(800, 1000),
+            new Pair(1000, 800),
+
+//            new Pair(800, 1200),
+            new Pair(1200, 800),
+
             new Pair(1000, 1000),
             new Pair(1200, 1200),
             new Pair(2000, 2000)};
@@ -180,7 +208,8 @@ public class EditImageActivity extends AppCompatActivity implements
 
             new Pair(3, 0),
             new Pair(2, 2),
-            new Pair(3, 3)};
+            new Pair(3, 3)
+    };
 
     @Inject
     EditImagePresenterImp mPresenter;
@@ -401,7 +430,12 @@ public class EditImageActivity extends AppCompatActivity implements
         currentRatioIndex = mainImageModel.getCurrentRatioIndex();
 
 
-        if (ratio == ratios[0] || ratio == ratios[1] || ratio == ratios[2]) {
+        if (ratio == ratios[0]
+                || ratio == ratios[1]
+                || ratio == ratios[2]
+                ||ratio == ratios[6]
+                ||ratio == ratios[7]
+                ||ratio == ratios[8]) {
             isSegmented = false;
 //            moOverlayView.setCropGridColumnCount(0);
         } else {
@@ -423,12 +457,44 @@ public class EditImageActivity extends AppCompatActivity implements
 
 
             int finalIndex = index;
+            Log.e("finalIndexx",finalIndex+"");
+
+            int finalIndex1 = index;
             ratio_holder.getChildAt(index).setOnClickListener(view -> {
 
+                mainImageModel.setTypeOmarPattern(finalIndex+1);
+
+                Log.e("TypeOmarPattern",mainImageModel.getTypeOmarPattern()+"");
+//                if (finalIndex1 ==0){
+//                    typeOmar=1;
+//                }else if (finalIndex1 ==1){
+//                    typeOmar=2;
+//                }else if (finalIndex1 ==2){
+//                    typeOmar=3;
+//                }else if (finalIndex1 ==3){
+//                    typeOmar=4;
+//                }else if (finalIndex1 ==4){
+//                    typeOmar=5;
+//                }else if (finalIndex1 ==5){
+//                    typeOmar=6;
+//                }else if (finalIndex1 ==6){
+//                    typeOmar=7;
+//                }else if (finalIndex1 ==7){
+//                    typeOmar=8;
+//                }else if (finalIndex1 ==8){
+//                    typeOmar=9;
+//                }else if (finalIndex1 ==9){
+//                    typeOmar=10;
+//                }else if (finalIndex1 ==10){
+//                    typeOmar=11;
+//                }else if (finalIndex1 ==11){
+//                    typeOmar=12;
+//                }
 //                if (ratios[finalIndex] == ratio) {
                 if (finalIndex == currentRatioIndex) {
                     return;
                 }
+
                 //not 8*8 ratio
                 if (finalIndex != 0) {
                     if (mainImageModel.getMainImageWidth() >= 1000 && mainImageModel.getMainImageHeight() >= 1000) {
@@ -447,7 +513,8 @@ public class EditImageActivity extends AppCompatActivity implements
                                 ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
                         }
 
-                        if (finalIndex == 0 || finalIndex == 1 || finalIndex == 2) {
+                        if (finalIndex == 0 || finalIndex == 1 || finalIndex == 2
+                                || finalIndex == 6|| finalIndex == 7|| finalIndex == 8) {
 //                            moOverlayView.setCropGridColumnCount(0);
                             isSegmented = false;
                             mainImageModel.setSegmented(false);
@@ -1088,9 +1155,11 @@ public class EditImageActivity extends AppCompatActivity implements
 
 
     private boolean checkLowResolutionView() {
+
         boolean show;
         show = imageHeight < pairDimens[(int) currentRatioIndex].second ||
                 imageWidth < pairDimens[(int) currentRatioIndex].first;
+
 //        if (ratio == 1f) {
 //            if (imageHeight < 600 || imageWidth < 600)
 //                show = true;
@@ -1112,17 +1181,17 @@ public class EditImageActivity extends AppCompatActivity implements
 //            else
 //                show = false;
 //        }
-        /*else if(ratio == ratios[4]){
-            if (imageHeight < 1000 || imageWidth < 2400)
-                show = true;
-            else
-                show = false;
-        } else if(ratio == ratios[5]){
-            if (imageHeight < 1000 || imageWidth < 2400)
-                show = true;
-            else
-                show = false;
-        }*/
+//        /*else if(ratio == ratios[4]){
+//            if (imageHeight < 1000 || imageWidth < 2400)
+//                show = true;
+//            else
+//                show = false;
+//        } else if(ratio == ratios[5]){
+//            if (imageHeight < 1000 || imageWidth < 2400)
+//                show = true;
+//            else
+//                show = false;
+//        }
 
 
         isLowResolution = show;
@@ -1130,10 +1199,101 @@ public class EditImageActivity extends AppCompatActivity implements
         return show;
     }
 
+//    private boolean checkLowResolutionView() {
+//
+//        if (ratio==1f){ //1000*1000
+//
+//            if (imageHeight<600 || imageWidth<600){  //20*20
+//                isLowResolution=true;
+//            }else if (imageHeight<800 || imageWidth<800){ //30*30
+//                isLowResolution=true;
+//            }else if (imageHeight<1000 || imageWidth<1000){//40*40
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",1f+" "+isLowResolution);
+//        } else if (ratio == ratios[1] || ratio == ratios[2]){//20*30   //30*20
+//
+//            if (imageHeight < 600 || imageWidth < 800){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",ratio+" "+isLowResolution);
+//    }else if (ratio==ratios[3]){
+//
+//            if (imageHeight < 1200 || imageWidth < 600){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",3+" "+isLowResolution);
+//        }else if (ratio==ratios[4]){
+//
+//            if (imageHeight < 1200 || imageWidth < 800){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",4+" "+isLowResolution);
+//        }else if (ratio==ratios[5]){
+//
+//            if (imageHeight < 1400 || imageWidth < 600){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",5+" "+isLowResolution);
+//        }else if (ratio==ratios[7]){
+//
+//            if (imageHeight < 1000 || imageWidth < 800){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",7+" "+isLowResolution);
+//        }else if (ratio==ratios[8]){
+//
+//            if (imageHeight < 1200 || imageWidth < 800){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",8+" "+isLowResolution);
+//        }else if (ratio==ratios[9]){
+//
+//            if (imageHeight < 1000 || imageWidth < 1000){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",9+" "+isLowResolution);
+//        }else if (ratio==ratios[10]){
+//
+//            if (imageHeight < 1200 || imageWidth < 1200){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",10+" "+isLowResolution);
+//        }else if (ratio==ratios[11]){
+//
+//            if (imageHeight < 2000 || imageWidth < 2000){
+//                isLowResolution=true;
+//            }else {
+//                isLowResolution=false;
+//            }
+//            Log.e("REsolution",11+" "+isLowResolution);
+//        }
+//        return isLowResolution;
+//    }
+
+
     @Override
     public void showHidePixelsImage(boolean show) {
         show = checkLowResolutionView();
-        lowPixelsIv.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        lowPixelsIv.setVisibility(isLowResolution ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

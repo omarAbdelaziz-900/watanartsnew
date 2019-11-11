@@ -34,7 +34,49 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
     //    private List<ImageModel> ShippingActivity.imageModelList;
     private Context mContext;
     DisplayMetrics displayMetrics;
-//    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f};
+
+//    float[] ratios = new float[]{
+//            1f,
+//            8f / 12f,
+//            12f / 8f,
+//            24f / 8f,
+//            24f / 12f,
+//            36f / 8f
+//    };
+
+//        float[] ratios = new float[]{
+//            1f
+//            ,8f / 12f
+//            , 12f / 8f
+//            , 24f / 8f
+//            , 24f / 12f
+//            , 36f / 8f
+//
+//
+//            ,1f
+//            ,12f/16f
+//            ,12f/20f
+//            ,1f,
+//            1f ,
+//            1f
+//    };
+
+//    float[] ratios = new float[]{
+//            1f
+//            ,8f / 12f
+//            , 12f / 8f
+//            , 24f / 8f
+//            , 24f / 12f
+//            , 36f / 8f
+//
+//
+//            ,1f
+//            ,12f/16f
+//            ,12f/20f
+//            ,4f/4f,
+//            6f/6f ,
+//            8f/8f
+//    };
 
     float[] ratios = new float[]{
             20f / 20f,
@@ -45,12 +87,15 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
             90f / 20f,
 
             30f / 30f,
-            30f / 40f,
-            30f / 50f,
 
-            20f / 20f,
-            20f / 20f,
-            20f / 20f};
+            40f / 30f,
+            50f / 30f,
+
+            40f / 40f,
+            60f / 60f,
+            80f / 80f};
+
+
 
     Pair<Integer, Integer>[] pairDimens = new Pair[]{
             new Pair(600, 600),
@@ -60,8 +105,10 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
             new Pair(1200, 800),
             new Pair(1400, 600),
             new Pair(800, 800),
+
             new Pair(800, 1000),
             new Pair(800, 1200),
+
             new Pair(1000, 1000),
             new Pair(1200, 1200),
             new Pair(2000, 2000)};
@@ -75,6 +122,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
             new Pair(2, 0),
 
             new Pair(0, 0),
+
             new Pair(0, 0),
             new Pair(0, 0),
 
@@ -105,12 +153,36 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));
-        ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));
-        ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));
-        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));
-        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));
-        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));
+        ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));//20*20
+        ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));//30*20
+        ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));//20*30
+        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));//20*60
+        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));//30*60
+        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));//20*90
+
+        ratioDimensions.add(new RatioDimensions(ratios[6], 400, 400));//30*30
+
+        ratioDimensions.add(new RatioDimensions(ratios[7], 300, 400));//30*40
+        ratioDimensions.add(new RatioDimensions(ratios[8], 300, 450));//30*50
+
+        ratioDimensions.add(new RatioDimensions(ratios[9], 400, 400));//40*40
+        ratioDimensions.add(new RatioDimensions(ratios[10], 400, 400));//60*60
+        ratioDimensions.add(new RatioDimensions(ratios[11], 400, 400));//80*80
+
+//        ratioDimensions.add(new RatioDimensions(ratios[0], 600, 600));
+//        ratioDimensions.add(new RatioDimensions(ratios[1], 600, 800));
+//        ratioDimensions.add(new RatioDimensions(ratios[2], 800, 600));
+//        ratioDimensions.add(new RatioDimensions(ratios[3], 1200, 600));
+//        ratioDimensions.add(new RatioDimensions(ratios[4], 1200, 800));
+//        ratioDimensions.add(new RatioDimensions(ratios[5], 1400, 600));
+
+//        ratioDimensions.add(new RatioDimensions(ratios[6], 800, 800));
+//        ratioDimensions.add(new RatioDimensions(ratios[7], 800, 1000));
+//        ratioDimensions.add(new RatioDimensions(ratios[8], 800, 1200));
+//        ratioDimensions.add(new RatioDimensions(ratios[9], 1000, 1000));
+//        ratioDimensions.add(new RatioDimensions(ratios[10], 1200, 1200));
+//        ratioDimensions.add(new RatioDimensions(ratios[11], 2000, 2000));
+
     }
 
 
@@ -196,10 +268,12 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
                                         (((float) ShippingActivity.imageModelList.get(position).getMainImageHeight()) / 1.5f) >= 1000) {
                                     ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView, 8f / 12f);
                                     ShippingActivity.imageModelList.get(position).setCurrentRatio(8f / 12);
+
                                 } else {
                                     ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView, 1f);
                                     ShippingActivity.imageModelList.get(position).setCurrentRatio(1f);
                                 }
+
                             } else if (ShippingActivity.imageModelList.get(position).getMainImageHeight()
                                     < ShippingActivity.imageModelList.get(position).getMainImageWidth()) {
                                 if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >= 1000 &&
@@ -232,6 +306,8 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 //                            }
                             holder.gestureCropImageView.getOverlayView().drawCropGrid(new Canvas());
                             Log.e("dad", "" + ShippingActivity.imageModelList.get(position).getCurrentRatio());
+
+//                            sfesfs
                             ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView,
                                     ShippingActivity.imageModelList.get(position).getCurrentRatio());
                         }
@@ -369,6 +445,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 //                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x24")) {
 //                    price = patternTypeEntity.getPrice() * quantity;
 //                    break;
+
 //                }
 //            }
 //        } else if (ratio == ratios[5]) {
@@ -538,5 +615,6 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
             return width;
         }
     }
+
 
 }

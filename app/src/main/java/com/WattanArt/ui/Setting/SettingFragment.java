@@ -4,7 +4,9 @@ package com.WattanArt.ui.Setting;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -21,6 +23,7 @@ import com.WattanArt.Utils.Localization;
 import com.WattanArt.Utils.SharedPrefTool.PreferenceHelper;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.config.Constants;
+import com.WattanArt.Utils.widgets.CustomeButtonBold;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.ui.About.AboutActivity;
 import com.WattanArt.ui.ContactUs.ContactUsActivity;
@@ -49,6 +52,7 @@ public class SettingFragment extends BaseFragment implements SettingMvpView {
     View view;
     UserData userData;
     String userId;
+    Dialog dialog;
 
     @Inject
     SettingMvpPresenter<SettingMvpView> mPresenter;
@@ -205,19 +209,42 @@ public class SettingFragment extends BaseFragment implements SettingMvpView {
         });
 
 
+//        view.findViewById(R.id.logoutLinear).setOnClickListener(v -> {
+//            if (new UserData().getRemmemberMe(getActivity())) {
+//                if (isNetworkConnected()) {
+//                    JsonObject obj = new JsonObject();
+//                    obj.addProperty("UserID", userId);
+//                    mPresenter.onLogout(obj);
+//                } else {
+//                    showMessage(getString(R.string.error_no_internet_connection));
+//                }
+//            } else {
+//                startActivity(new Intent(getActivity(), LoginActivity.class));
+//            }
+////            openConfirmationDialog();
+//
+//        });
+
         view.findViewById(R.id.logoutLinear).setOnClickListener(v -> {
+
             if (new UserData().getRemmemberMe(getActivity())) {
-                if (isNetworkConnected()) {
-                    JsonObject obj = new JsonObject();
-                    obj.addProperty("UserID", userId);
-                    mPresenter.onLogout(obj);
-                } else {
-                    showMessage(getString(R.string.error_no_internet_connection));
-                }
-            } else {
+                openConfirmationDialog();
+            }else {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
 
+//            if (new UserData().getRemmemberMe(getActivity())) {
+//                if (isNetworkConnected()) {
+//                    JsonObject obj = new JsonObject();
+//                    obj.addProperty("UserID", userId);
+//                    mPresenter.onLogout(obj);
+//                } else {
+//                    showMessage(getString(R.string.error_no_internet_connection));
+//                }
+//            } else {
+//                startActivity(new Intent(getActivity(), LoginActivity.class));
+//            }
+//            openConfirmationDialog();
         });
 
         return view;
@@ -303,6 +330,47 @@ public class SettingFragment extends BaseFragment implements SettingMvpView {
         PreferenceHelper.clearShared(getActivity());
         userData.saveLocalization(getActivity(), lang);
         startActivity(new Intent(getActivity(), LoginActivity.class).setFlags((Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)));
+    }
 
+
+    private void openConfirmationDialog() {
+        dialog = new Dialog(getContext(), R.style.ThemeDialogCustom);
+        dialog.setContentView(R.layout.pop_up_for_logout);
+        final CustomeButtonBold txt_yes = dialog.findViewById(R.id.txt_yes);
+        final CustomeButtonBold txt_no = dialog.findViewById(R.id.txt_no);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        ColorDrawable back = new ColorDrawable(Color.TRANSPARENT);
+        InsetDrawable inset = new InsetDrawable(back, 40);
+        dialog.getWindow().setBackgroundDrawable(inset);
+
+
+        txt_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (new UserData().getRemmemberMe(getActivity())) {
+                    if (isNetworkConnected()) {
+                        JsonObject obj = new JsonObject();
+                        obj.addProperty("UserID", userId);
+                        mPresenter.onLogout(obj);
+                        dialog.dismiss();
+                    } else {
+                        showMessage(getString(R.string.error_no_internet_connection));
+                    }
+                } else {
+                    dialog.dismiss();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }
+            }
+        });
+
+        txt_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

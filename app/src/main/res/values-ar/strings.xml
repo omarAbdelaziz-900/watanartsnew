@@ -85,7 +85,7 @@
     <string name="invalid_email_forget_pass">من فضلك ادخل بريدك الإلكتروني المسجل</string>
     <string name="request_done">تم انهاء طلبك بنجاح  </string>
     <string name="code_not_valid">الكود الذي ادخلته غير صحيح</string>
-
+    <string name="code_is_valid">الكود الذي ادخلته صحيح</string>
     <string name="create">إنشاء</string>
     <string name="info">اتصل بنا</string>
     <string name="website">الموقع الألكترونى</string>
@@ -160,16 +160,28 @@
     <string name="old_pass">كلمة المرور القديمة</string>
     <string name="new_pass">كلمة المرور الجديدة</string>
     <string name="or">أو</string>
-    <string name="get_10_egp_free_Credit">Get your 10 EGP free credits!</string>
+
+    <string name="get_10_egp_free_Credit1">احصل علي</string>
+    <string name="get_10_egp_free_Credit2"> رصيد مجاني</string>
 
     <string name="qty">الكمية</string>
     <!--<string name="low_reselution">Low Resolution Images detected</string>-->
     <!--<string name="facebook_app_id" translatable="false">108822879979679</string>-->
     <!--<string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>-->
-    <!--<string name="get_10_egp_free_Credit">Get your 10 EGP free credits!</string>-->
-    <string name="shareyourcode">شارك الكوبون مع اصدقائك لتحصل على 15 </string>
+    <string name="shareyourcode1">شارك الكوبون مع اصدقائك لتحصل على </string>
+    <string name="shareyourcode2"> </string>
     <string name="copy">نسخ</string>
     <string name="promoCode">الكوبون</string>
     <string name="copied">تم النسخ</string>
 
+    <string name="exit_logout">هل انت متاكد من الخروج ؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+
+    <string name="have">لديك خصم بنسبة</string>
+    <string name="discount">لعدد</string>
+    <string name="order">من الطلبات</string>
+
+    <string name="not_have_count">ليس لديك أي خصم ! \n
+ من فضلك قم بمشاركة هذا الكود لتحصل علي رصيد أكثر . </string>
 </resources>
