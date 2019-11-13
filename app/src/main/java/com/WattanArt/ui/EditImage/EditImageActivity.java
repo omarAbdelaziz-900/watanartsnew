@@ -277,7 +277,9 @@ public class EditImageActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_image);
 
+        if (getIntent()!=null)
         uri = getIntent().getParcelableExtra("uri");
+        Log.e("uriiii",uri+"");
         currentPosition = getIntent().getIntExtra("index", 0);
 
         mainImageModel = ShippingActivity.imageModelList.get(currentPosition);
@@ -428,6 +430,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
         ratio = mainImageModel.getCurrentRatio();
         currentRatioIndex = mainImageModel.getCurrentRatioIndex();
+        Log.e("currentRatioIndex1",currentRatioIndex+"");
 
 
         if (ratio == ratios[0]
@@ -445,6 +448,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
         moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
         moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
+        Log.e("currentRatioIndex2",currentRatioIndex+"");
         moOverlayView.drawCropGrid(new Canvas());
 
 
@@ -457,61 +461,59 @@ public class EditImageActivity extends AppCompatActivity implements
 
 
             int finalIndex = index;
+
+
             Log.e("finalIndexx",finalIndex+"");
+            Log.e("ratio_holderChildCount",ratio_holder.getChildCount()+"");
 
             int finalIndex1 = index;
             ratio_holder.getChildAt(index).setOnClickListener(view -> {
 
+
+
                 mainImageModel.setTypeOmarPattern(finalIndex+1);
 
                 Log.e("TypeOmarPattern",mainImageModel.getTypeOmarPattern()+"");
-//                if (finalIndex1 ==0){
-//                    typeOmar=1;
-//                }else if (finalIndex1 ==1){
-//                    typeOmar=2;
-//                }else if (finalIndex1 ==2){
-//                    typeOmar=3;
-//                }else if (finalIndex1 ==3){
-//                    typeOmar=4;
-//                }else if (finalIndex1 ==4){
-//                    typeOmar=5;
-//                }else if (finalIndex1 ==5){
-//                    typeOmar=6;
-//                }else if (finalIndex1 ==6){
-//                    typeOmar=7;
-//                }else if (finalIndex1 ==7){
-//                    typeOmar=8;
-//                }else if (finalIndex1 ==8){
-//                    typeOmar=9;
-//                }else if (finalIndex1 ==9){
-//                    typeOmar=10;
-//                }else if (finalIndex1 ==10){
-//                    typeOmar=11;
-//                }else if (finalIndex1 ==11){
-//                    typeOmar=12;
-//                }
-//                if (ratios[finalIndex] == ratio) {
+                Log.e("finalIndexxInsideClick",finalIndex+"");
+
+                Log.e("currentRatioIndex4",currentRatioIndex+"");
+
+
+
+
                 if (finalIndex == currentRatioIndex) {
+                    Log.e("currentRatioIndex5",currentRatioIndex+"");
                     return;
                 }
 
+
+                currentRatioIndex = finalIndex;
+                Log.e("currentRatioIndex20", currentRatioIndex + "");
+
                 //not 8*8 ratio
+                Log.e("MainImageWidth",mainImageModel.getMainImageWidth()+"");
+                Log.e("MainImageHeight",mainImageModel.getMainImageHeight()+"");
                 if (finalIndex != 0) {
-                    if (mainImageModel.getMainImageWidth() >= 1000 && mainImageModel.getMainImageHeight() >= 1000) {
+//                    if (mainImageModel.getMainImageWidth() >= 1000 && mainImageModel.getMainImageHeight() >= 1000) {
+                    if (mainImageModel.getMainImageWidth() >= 600 && mainImageModel.getMainImageHeight() >= 600) {
                         ratio_holder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected_bordered));
 
                         mGestureCropImageView.setTargetAspectRatio(ratios[finalIndex]);
 
 
                         ratio = ratios[finalIndex];
+                        Log.e("ratioInside",ratio+"");
                         currentRatioIndex = finalIndex;
                         mainImageModel.setCurrentRatioIndex(currentRatioIndex);
 
+                        Log.e("currentRatioIndex6",currentRatioIndex+"");
+                        Log.e("currentRatioIndex7",mainImageModel.getCurrentRatioIndex()+"");
 
                         for (int i = 0; i < ratio_holder.getChildCount(); i++) {
                             if (i != finalIndex)
                                 ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
                         }
+
 
                         if (finalIndex == 0 || finalIndex == 1 || finalIndex == 2
                                 || finalIndex == 6|| finalIndex == 7|| finalIndex == 8) {
@@ -523,11 +525,14 @@ public class EditImageActivity extends AppCompatActivity implements
                             isSegmented = true;
                             mainImageModel.setSegmented(true);
                         }
+
+
                         moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
                         moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
+                        Log.e("currentRatioIndex8",currentRatioIndex+"");
                         moOverlayView.drawCropGrid(new Canvas());
-
                         mGestureCropImageView.setImageToWrapCropBounds(true);
+
                         //zoom out image to fit screen and no resolution issues occured
 //                        new Handler().postDelayed(() -> {
                         float currentScale = mGestureCropImageView.getCurrentScale();
@@ -538,7 +543,7 @@ public class EditImageActivity extends AppCompatActivity implements
 //                            mGestureCropImageView.click();
 //                        }
 
-                    } else {
+                    }else {
                         Toast toast = Toast.makeText(this, getString(R.string.can_not_change_ratio), Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
@@ -551,6 +556,7 @@ public class EditImageActivity extends AppCompatActivity implements
                     mGestureCropImageView.setTargetAspectRatio(ratios[finalIndex]);
                     ratio = ratios[finalIndex];
                     currentRatioIndex = finalIndex;
+                    Log.e("currentRatioIndex9",currentRatioIndex+"");
                     mainImageModel.setCurrentRatioIndex(currentRatioIndex);
 
                     for (int i = 0; i < ratio_holder.getChildCount(); i++) {
@@ -1156,10 +1162,32 @@ public class EditImageActivity extends AppCompatActivity implements
 
     private boolean checkLowResolutionView() {
 
-        boolean show;
+        boolean show=true;
+        Log.e("mnmmmaaa",imageWidth+"<<"+imageHeight);
+        Log.e("MainImageWidthhh",mainImageModel.getMainImageWidth()+"");
+        Log.e("MainImageHeightttt",mainImageModel.getMainImageHeight()+"");
+
+        Log.e("currentRatioIndex10",currentRatioIndex+"");
         show = imageHeight < pairDimens[(int) currentRatioIndex].second ||
                 imageWidth < pairDimens[(int) currentRatioIndex].first;
 
+        Log.e("currentRatioIndex11",currentRatioIndex+"");
+//        imageWidth=mainImageModel.getMainImageWidth();
+//        imageHeight=mainImageModel.getMainImageHeight();
+
+//        if (imageHeight == pairDimens[(int) currentRatioIndex].second
+//        && imageWidth == pairDimens[(int) currentRatioIndex].first){
+//            show=false;
+//        }else if (imageHeight == pairDimens[(int) currentRatioIndex].second
+//                && imageWidth >= pairDimens[(int) currentRatioIndex].first){
+//            show=false;
+//        }else if (imageHeight >= pairDimens[(int) currentRatioIndex].second
+//                && imageWidth == pairDimens[(int) currentRatioIndex].first){
+//            show=false;
+//        } else if (imageHeight >= pairDimens[(int) currentRatioIndex].second
+//                && imageWidth >= pairDimens[(int) currentRatioIndex].first){
+//            show=false;
+//        }
 //        if (ratio == 1f) {
 //            if (imageHeight < 600 || imageWidth < 600)
 //                show = true;
@@ -1300,8 +1328,10 @@ public class EditImageActivity extends AppCompatActivity implements
     public void TransmitNewPositions(float x, float y, int width, int height) {
         positionX = x;
         positionY = y;
-        imageHeight = (int) (height * mainImageModel.getFactorHeight());
-        imageWidth = (int) (width * mainImageModel.getFactorWidth());
+        Log.e("getFactorHeight",mainImageModel.getFactorHeight()+"");
+        Log.e("getFactorWidth",mainImageModel.getFactorWidth()+"");
+        imageHeight = (int) (height * mainImageModel.getFactorHeight())+20;
+        imageWidth = (int) (width * mainImageModel.getFactorWidth())+20;
 
 
         Log.e("FromActivityX_Y", "x is " + x + "     and Y= " + y + "    width is " + imageWidth + "    height is " + imageHeight);
@@ -1471,6 +1501,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
                                         File file = new File(photos.get(0));
                                         uri = Uri.fromFile(file);
+                                        Log.e("uriiii2",uri+"");
                                         mainImageModel = new ImageModel(uri, 1f);
                                         mainImageModel.setCurrentScale(1f);
                                         mainImageModel.setCurrentAngle(0f);
@@ -1525,29 +1556,36 @@ public class EditImageActivity extends AppCompatActivity implements
                                             chooseCurrentSelectedRationBackground(1f);
 
                                         } else if (mainImageModel.getMainImageHeight() > mainImageModel.getMainImageWidth()) {
-                                            if (mainImageModel.getMainImageHeight() >= 1000 && mainImageModel.getMainImageWidth() >= 1000 &&
-                                                    (((float) mainImageModel.getMainImageHeight()) / 1.5f) >= 1000) {
+
+                                            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
+                                                    (((float) mainImageModel.getMainImageHeight()) / 1.5f) >= 600) {
                                                 mainImageModel.setCurrentRatio(8f / 12);
                                                 chooseCurrentSelectedRationBackground(8f / 12);
                                             } else {
                                                 mainImageModel.setCurrentRatio(1f);
                                                 chooseCurrentSelectedRationBackground(1f);
                                             }
+
                                         } else if (mainImageModel.getMainImageHeight() < mainImageModel.getMainImageWidth()) {
-                                            if (mainImageModel.getMainImageHeight() >= 1000 && mainImageModel.getMainImageWidth() >= 1000 &&
-                                                    (((float) mainImageModel.getMainImageWidth()) / 1.5f) >= 1000) {
+
+                                            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
+                                                    (((float) mainImageModel.getMainImageWidth()) / 1.5f) >= 600) {
                                                 mainImageModel.setCurrentRatio(12f / 8f);
                                                 chooseCurrentSelectedRationBackground(12f / 8f);
                                             } else {
                                                 mainImageModel.setCurrentRatio(1f);
                                                 chooseCurrentSelectedRationBackground(1f);
                                             }
+
                                         } else {
                                             mainImageModel.setCurrentRatio(1f);
                                             chooseCurrentSelectedRationBackground(1f);
                                         }
                                         ratio = mainImageModel.getCurrentRatio();
+
+                                        Log.e("currentRatioIndex12",mainImageModel.getCurrentRatioIndex()+"");
                                         currentRatioIndex = mainImageModel.getCurrentRatioIndex();
+
 
 
                                         moOverlayView.setCropGridColumnCount(0);
@@ -1562,6 +1600,8 @@ public class EditImageActivity extends AppCompatActivity implements
                 }
             }
         }
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -1671,6 +1711,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
     private void prepareImageFromShippingActivity(boolean addAdjsutMethods) {
 
+        Log.e("HeightandWidthaaaaa",mainImageModel.getMainImageWidth()+">>"+mainImageModel.getMainImageHeight());
         try {
             String downloadsDirectoryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             mGestureCropImageView.setImageUriSecond(uri, Uri.fromFile(new File(downloadsDirectoryPath, uri.getLastPathSegment())),

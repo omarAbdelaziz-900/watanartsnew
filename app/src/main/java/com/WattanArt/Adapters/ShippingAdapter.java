@@ -263,9 +263,9 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
                             } else if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >
                                     ShippingActivity.imageModelList.get(position).getMainImageWidth()) {
 
-                                if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >= 1000 &&
-                                        ShippingActivity.imageModelList.get(position).getMainImageWidth() >= 1000 &&
-                                        (((float) ShippingActivity.imageModelList.get(position).getMainImageHeight()) / 1.5f) >= 1000) {
+                                if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >= 600 &&
+                                        ShippingActivity.imageModelList.get(position).getMainImageWidth() >= 600 &&
+                                        (((float) ShippingActivity.imageModelList.get(position).getMainImageHeight()) / 1.5f) >= 600) {
                                     ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView, 8f / 12f);
                                     ShippingActivity.imageModelList.get(position).setCurrentRatio(8f / 12);
 
@@ -276,9 +276,9 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 
                             } else if (ShippingActivity.imageModelList.get(position).getMainImageHeight()
                                     < ShippingActivity.imageModelList.get(position).getMainImageWidth()) {
-                                if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >= 1000 &&
-                                        ShippingActivity.imageModelList.get(position).getMainImageWidth() >= 1000 &&
-                                        (((float) ShippingActivity.imageModelList.get(position).getMainImageWidth()) / 1.5f) >= 1000
+                                if (ShippingActivity.imageModelList.get(position).getMainImageHeight() >= 600 &&
+                                        ShippingActivity.imageModelList.get(position).getMainImageWidth() >= 600 &&
+                                        (((float) ShippingActivity.imageModelList.get(position).getMainImageWidth()) / 1.5f) >= 600
                                 ) {
                                     ShippingAdapter.this.setImageDimensions(holder.gestureCropImageView, 12f / 8f);
                                     ShippingActivity.imageModelList.get(position).setCurrentRatio(12f / 8f);

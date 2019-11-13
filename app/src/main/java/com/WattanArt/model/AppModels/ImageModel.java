@@ -39,6 +39,7 @@ public class ImageModel implements Parcelable {
     int quantity;
 
     int viewWidth , viewHeight ;
+
     private float currentRatioIndex;
 
     public int getViewWidth() {
