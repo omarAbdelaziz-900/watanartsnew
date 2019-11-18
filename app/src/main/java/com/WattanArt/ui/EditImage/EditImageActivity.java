@@ -206,7 +206,7 @@ public class EditImageActivity extends AppCompatActivity implements
             new Pair(0, 0),
             new Pair(0, 0),
 
-            new Pair(3, 0),
+            new Pair(1, 1),
             new Pair(2, 2),
             new Pair(3, 3)
     };
@@ -385,7 +385,7 @@ public class EditImageActivity extends AppCompatActivity implements
                 }
 
 
-                //rotate action
+//                rotate action
                 if (finalIndex == 1) {
 
                     rotateDegree += 90F;
@@ -460,6 +460,7 @@ public class EditImageActivity extends AppCompatActivity implements
 //            }
 
 
+
             int finalIndex = index;
 
 
@@ -467,6 +468,7 @@ public class EditImageActivity extends AppCompatActivity implements
             Log.e("ratio_holderChildCount",ratio_holder.getChildCount()+"");
 
             int finalIndex1 = index;
+
             ratio_holder.getChildAt(index).setOnClickListener(view -> {
 
 
@@ -535,9 +537,11 @@ public class EditImageActivity extends AppCompatActivity implements
 
                         //zoom out image to fit screen and no resolution issues occured
 //                        new Handler().postDelayed(() -> {
+
                         float currentScale = mGestureCropImageView.getCurrentScale();
                         mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
                         mGestureCropImageView.zoomOutImage(currentScale);
+
 //                        },300);
 //                        if (ratios[finalIndex] != ratio) {
 //                            mGestureCropImageView.click();
@@ -732,7 +736,6 @@ public class EditImageActivity extends AppCompatActivity implements
 //                        bitmap[0] = mGestureCropImageView.getViewBitmap();
                         bitmap[0] = mainImageModel.getBitmap();
                     }
-
                 }
             }
 
@@ -1330,9 +1333,12 @@ public class EditImageActivity extends AppCompatActivity implements
         positionY = y;
         Log.e("getFactorHeight",mainImageModel.getFactorHeight()+"");
         Log.e("getFactorWidth",mainImageModel.getFactorWidth()+"");
-        imageHeight = (int) (height * mainImageModel.getFactorHeight())+20;
-        imageWidth = (int) (width * mainImageModel.getFactorWidth())+20;
 
+        imageHeight = (int) (height * mainImageModel.getFactorHeight());
+        imageWidth = (int) (width * mainImageModel.getFactorWidth());
+
+        imageHeight = (int) (height * mainImageModel.getFactorHeight())+50;
+        imageWidth = (int) (width * mainImageModel.getFactorWidth())+50;
 
         Log.e("FromActivityX_Y", "x is " + x + "     and Y= " + y + "    width is " + imageWidth + "    height is " + imageHeight);
         Log.e("FromActivityX_YBefore", "x is " + x + "     and Y= " + y + "    width is " + width + "    height is " + height);
@@ -1718,8 +1724,10 @@ public class EditImageActivity extends AppCompatActivity implements
                     mainImageModel.getMainImageWidth(),
                     mainImageModel.getMainImageHeight(),
                     (bitmap, factorW, factorH) -> {
+
                         mainImageModel.setFactorWidth(factorW);
                         mainImageModel.setFactorHeight(factorH);
+
                         prepareThumbnail(bitmap);
 
                         if (addAdjsutMethods) {

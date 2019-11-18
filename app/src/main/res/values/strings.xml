@@ -240,8 +240,11 @@
 
     <string name="qty">Qty</string>
     <string name="low_reselution">Low Resolution Images detected</string>
-    <string name="facebook_app_id" translatable="false">108822879979679</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>
+
+    <!--<string name="facebook_app_id" translatable="false">108822879979679</string>-->
+    <string name="facebook_app_id" translatable="false">427047514523802</string>
+    <!--<string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>-->
+    <string name="fb_login_protocol_scheme" translatable="false">fb427047514523802</string>
 
     <string name="get_10_egp_free_Credit1">Get your</string>
     <string name="get_10_egp_free_Credit2"> free credits!</string>

@@ -191,6 +191,7 @@ public class CropImageView extends TransformImageView {
      *
      * @param targetAspectRatio - aspect ratio for image crop (e.g. 1.77(7) for 16:9)
      */
+
     public void setTargetAspectRatio(float targetAspectRatio) {
         final Drawable drawable = getDrawable();
         if (drawable == null) {

@@ -16,6 +16,7 @@ import com.WattanArt.Services.firebase.FirebaseIDService;
 import com.WattanArt.TestActivity;
 import com.WattanArt.Utils.Localization;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
+import com.WattanArt.artcomponent.ComponentActivity;
 import com.WattanArt.ui.Home.HomeActivity;
 import com.WattanArt.ui.Login.LoginActivity;
 import com.facebook.appevents.AppEventsConstants;
@@ -73,7 +74,8 @@ public class SplashActivity extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    Intent intent = new Intent(SplashActivity.this, getNextActivity());
+//                    Intent intent = new Intent(SplashActivity.this, getNextActivity());
+                    Intent intent = new Intent(SplashActivity.this, ComponentActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     startActivity(intent);

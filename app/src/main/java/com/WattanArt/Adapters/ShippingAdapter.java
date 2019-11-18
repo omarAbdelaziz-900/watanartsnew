@@ -126,7 +126,8 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
             new Pair(0, 0),
             new Pair(0, 0),
 
-            new Pair(3, 0),
+//            new Pair(3, 0),
+            new Pair(1, 1),
             new Pair(2, 2),
             new Pair(3, 3)};
 
