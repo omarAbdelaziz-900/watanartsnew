@@ -2,6 +2,7 @@ package com.WattanArt.artcomponent;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 
 public class CoverView extends ViewTemplate<Integer> {
@@ -51,5 +52,6 @@ public class CoverView extends ViewTemplate<Integer> {
     public int getDimenTop() {
         return (int) dimensionData.getStartY();
     }
+
 
 }

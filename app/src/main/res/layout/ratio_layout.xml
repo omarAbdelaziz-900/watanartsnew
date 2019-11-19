@@ -196,8 +196,8 @@
                 android:id="@+id/image7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_8_8" />
+                android:layout_marginTop="11dp"
+                android:src="@drawable/ic_30x30" />
 
 
             <TextView
@@ -224,8 +224,8 @@
                 android:id="@+id/image8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_8_8" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_40x30" />
 
 
             <TextView
@@ -252,8 +252,8 @@
                 android:id="@+id/image9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_8_8" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_50x30" />
 
 
             <TextView
@@ -280,8 +280,8 @@
                 android:id="@+id/image10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_8_8" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_40x40" />
 
 
             <TextView
@@ -307,8 +307,8 @@
                 android:id="@+id/image11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_8_8" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_60x60" />
 
 
             <TextView
@@ -334,8 +334,8 @@
                 android:id="@+id/image12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_8_8" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_80x80" />
 
 
             <TextView
