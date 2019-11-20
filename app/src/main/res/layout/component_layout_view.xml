@@ -5,16 +5,108 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".artcomponent.ComponentActivity">
+        >
+
+    <RelativeLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/yellow"
+        android:id="@+id/toolbar_holder"
+        android:clickable="true"
+        >
+
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:id="@+id/toolbar_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_xxxlarge" />
+
+        <ImageView
+            android:id="@+id/toolbar_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            android:padding="16dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back" />
+
+        <com.WattanArt.Utils.widgets.CustomeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/view_submit"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:id="@+id/submit"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <com.WattanArt.Utils.widgets.CustomeTextViewBold
+        app:layout_constraintTop_toBottomOf="@id/toolbar_holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_from_gallery"
+        android:textSize="14sp"
+        android:padding="@dimen/_10sdp"
+        android:textColor="@color/white"
+        android:layout_gravity="end"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:background="@color/yellow"
+        android:id="@+id/pick_from_gallery_tv"/>
+
 
     <com.WattanArt.artcomponent.ImageCaseComponent
             android:id="@+id/componentView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pick_from_gallery_tv"
+            app:layout_constraintBottom_toTopOf="@id/order_design_tv"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+
+       />
+
+
+
+    <com.WattanArt.Utils.widgets.CustomeTextViewBold
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/order_design"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:textSize="14sp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:textColor="@color/white"
+        android:layout_gravity="end"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/yellow"
+        android:id="@+id/order_design_tv"/>
+
+
 
 </android.support.constraint.ConstraintLayout>

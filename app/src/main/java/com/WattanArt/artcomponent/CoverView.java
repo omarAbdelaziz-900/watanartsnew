@@ -1,6 +1,7 @@
 package com.WattanArt.artcomponent;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -26,6 +27,7 @@ public class CoverView extends ViewTemplate<Integer> {
         setImageResource(data);
         if (dimensionData == null)return;
         setCornerRadius(dimensionData.getRadius());
+
     }
 
     @Override
@@ -54,4 +56,9 @@ public class CoverView extends ViewTemplate<Integer> {
     }
 
 
+    public void setBitmapData(Bitmap bitmap){
+        setImageBitmap(bitmap);
+        if (dimensionData == null)return;
+        setCornerRadius(dimensionData.getRadius());
+    }
 }

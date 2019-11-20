@@ -12,15 +12,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.WattanArt.R;
-import com.WattanArt.Services.firebase.FirebaseIDService;
-import com.WattanArt.TestActivity;
 import com.WattanArt.Utils.Localization;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
-import com.WattanArt.artcomponent.ComponentActivity;
 import com.WattanArt.ui.Home.HomeActivity;
 import com.WattanArt.ui.Login.LoginActivity;
-import com.facebook.appevents.AppEventsConstants;
-import com.facebook.appevents.AppEventsLogger;
+import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;

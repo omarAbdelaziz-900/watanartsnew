@@ -1655,9 +1655,6 @@ public class EditImageActivity extends AppCompatActivity implements
                 mainImageModel.setCurrentRatio(ratio);
                 mainImageModel.setCurrentRatioIndex(currentRatioIndex);
 
-
-//                triggerSwipeEvent();
-
                 setResultUri(Uri.fromFile(new File(mainImageModel.getPath())));
             }
         }

@@ -21,11 +21,11 @@ import com.WattanArt.Dagger.module.ActivityModule;
 //import com.WattanArt.ui.OldPackages.NewsDetails.NewsDetailsActivity;
 //import com.WattanArt.ui.OldPackages.NewsTicker.NewsTickerFragment;
 //import com.WattanArt.ui.OldPackages.Slides.SlidesFragment;
+import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.WattanArt.ui.About.AboutActivity;
 import com.WattanArt.ui.ContactUs.ContactInnerFragment;
 import com.WattanArt.ui.ContactUs.ContactUsActivity;
 import com.WattanArt.ui.ContactUs.InfoFragment;
-import com.WattanArt.ui.EditImage.EditImageActivity;
 import com.WattanArt.ui.FAQ.FaqActivity;
 import com.WattanArt.ui.Order.OrderDetails.OrderDetailsActivity;
 import com.WattanArt.ui.Order.OrderHistory.OrderHistoryFragment;
@@ -60,4 +60,6 @@ public interface ActivityComponent {
 
     void inject(FaqActivity faqActivity);
     void inject(TermsActivity termsActivity);
+
+    void inject(ComponentActivity componentActivity);
 }

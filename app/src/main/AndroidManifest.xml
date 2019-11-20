@@ -55,9 +55,9 @@
             android:theme="@style/Login"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".artcomponent.ComponentActivity"
+            android:name=".ui.mobileCase.ComponentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Login"
+            android:theme="@style/AppTheme_NoTitlebar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.Home.HomeActivity"

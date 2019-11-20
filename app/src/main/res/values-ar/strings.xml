@@ -181,7 +181,9 @@
     <string name="have">لديك خصم بنسبة</string>
     <string name="discount">لعدد</string>
     <string name="order">من الطلبات</string>
-
+    <string name="order_design">order design</string>
     <string name="not_have_count">ليس لديك أي خصم ! \n
  من فضلك قم بمشاركة هذا الكود لتحصل علي رصيد أكثر . </string>
+
+    <string name="pick_from_gallery">Select image</string>
 </resources>

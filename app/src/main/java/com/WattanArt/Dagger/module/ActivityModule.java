@@ -47,6 +47,9 @@ import com.WattanArt.ui.Shipping.ShippingPresenterMvp;
 import com.WattanArt.ui.getFreeCredit.GetFreeCreditPresenter;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCredit;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCreditPresenter;
+import com.WattanArt.ui.mobileCase.MobileMvpView;
+import com.WattanArt.ui.mobileCase.MobilePresenter;
+import com.WattanArt.ui.mobileCase.MobilePresenterMvp;
 
 import dagger.Module;
 import dagger.Provides;
@@ -315,11 +318,11 @@ public class ActivityModule {
         return presenter;
     }
 
-//    @Provides
-//    @PerActivity
-//    EditImagePresenterMvp<EditImageMvpView> EditImagePresenterImp(
-//            EditImagePresenterImp<EditImageMvpView> presenter) {
-//        return presenter;
-//    }
+    @Provides
+    @PerActivity
+    MobilePresenterMvp<MobileMvpView> mobileMvpViewMobilePresenterMvp(
+            MobilePresenter<MobileMvpView> presenter) {
+        return presenter;
+    }
 
 }

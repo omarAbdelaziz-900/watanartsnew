@@ -269,4 +269,7 @@
 
     <!-- Twitter Data-->
 
+    <string name="pick_from_gallery">Select image</string>
+
+    <string name="order_design">order design</string>
 </resources>
