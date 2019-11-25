@@ -54,59 +54,127 @@
 
     </RelativeLayout>
 
-    <com.WattanArt.Utils.widgets.CustomeTextViewBold
+    <android.support.v7.widget.CardView
         app:layout_constraintTop_toBottomOf="@id/toolbar_holder"
         app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/card_view_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_6sdp"
+        android:backgroundTint="@color/yellow"
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginEnd="@dimen/_30sdp"
+        >
+    <com.WattanArt.Utils.widgets.CustomeTextViewBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pick_from_gallery"
         android:textSize="14sp"
-        android:padding="@dimen/_10sdp"
+        android:paddingStart="@dimen/_14sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_6sdp"
+        android:paddingTop="@dimen/_6sdp"
         android:textColor="@color/white"
         android:layout_gravity="end"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:background="@color/yellow"
         android:id="@+id/pick_from_gallery_tv"/>
 
 
+    </android.support.v7.widget.CardView>
+
     <com.WattanArt.artcomponent.ImageCaseComponent
+        android:layout_marginTop="@dimen/_12sdp"
             android:id="@+id/componentView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="Hello World!"
-            app:layout_constraintTop_toBottomOf="@id/pick_from_gallery_tv"
-            app:layout_constraintBottom_toTopOf="@id/order_design_tv"
+            app:layout_constraintTop_toBottomOf="@id/card_view_parent"
+            app:layout_constraintBottom_toTopOf="@id/card_view_rotate"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
 
        />
 
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/view_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Hello World!"
+        app:layout_constraintTop_toBottomOf="@id/card_view_parent"
+        app:layout_constraintBottom_toTopOf="@id/card_view_order_design"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        />
+
+    <android.support.v7.widget.CardView
+        app:layout_constraintTop_toBottomOf="@id/componentView"
+        app:layout_constraintBottom_toTopOf="@id/card_view_order_design"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/card_view_rotate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_6sdp"
+        android:backgroundTint="@color/yellow"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_centerVertical="true"
+        >
 
 
     <com.WattanArt.Utils.widgets.CustomeTextViewBold
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/order_design"
-        android:layout_marginStart="@dimen/_30sdp"
-        android:layout_marginEnd="@dimen/_30sdp"
+        android:text="Rotate"
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingEnd="@dimen/_20sdp"
         android:textSize="14sp"
-        android:paddingTop="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_10sdp"
+        android:padding="@dimen/_6sdp"
         android:textColor="@color/white"
         android:layout_gravity="end"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:gravity="center"
+        android:id="@+id/rotate_tv"/>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_order_design"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_6sdp"
+        android:backgroundTint="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_30sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/yellow"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        >
+
+
+    <com.WattanArt.Utils.widgets.CustomeTextViewBold
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/order_design"
+        android:textSize="14sp"
+        android:paddingTop="@dimen/_6sdp"
+        android:paddingBottom="@dimen/_6sdp"
+        android:textColor="@color/white"
+        android:layout_gravity="end"
+        android:gravity="center"
         android:id="@+id/order_design_tv"/>
 
 
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

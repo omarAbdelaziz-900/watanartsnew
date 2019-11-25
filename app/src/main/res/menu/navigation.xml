@@ -26,4 +26,10 @@
         android:title="@string/title_setting"
         app:showAsAction="always|withText" />
 
+    <!--<item-->
+        <!--android:id="@+id/navigation_account"-->
+        <!--android:icon="@drawable/ic_setting_unactive"-->
+        <!--android:title="@string/title_account"-->
+        <!--app:showAsAction="always|withText" />-->
+
 </menu>

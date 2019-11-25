@@ -23,6 +23,7 @@
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <fragment
+
             android:id="@+id/youtube_view"
             android:name="com.google.android.youtube.player.YouTubePlayerFragment"
             android:layout_width="match_parent"
@@ -150,7 +151,84 @@
             android:layout_marginBottom="20dp"
             android:textSize="12sp" />
 
+        <!--<com.WattanArt.Utils.widgets.CustomeTextViewBold-->
+            <!--android:id="@+id/choose_what"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:layout_gravity="start"-->
+            <!--android:layout_marginStart="@dimen/_24sdp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:text="@string/choose_what"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:textSize="@dimen/_12sdp" />-->
+
+
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:layout_marginStart="@dimen/_16sdp"-->
+            <!--android:layout_marginEnd="@dimen/_16sdp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:weightSum="1">-->
+
+
+            <!--<RelativeLayout-->
+                <!--android:layout_marginTop="@dimen/_10sdp"-->
+                <!--android:layout_marginBottom="@dimen/_10sdp"-->
+                <!--app:layout_constraintTop_toTopOf="@id/recyclerView2"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintEnd_toStartOf="@id/recyclerView2"-->
+                <!--android:id="@+id/relativelayout"-->
+                <!--android:layout_width="@dimen/_190sdp"-->
+                <!--android:layout_height="match_parent" >-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/myImageView"-->
+                    <!--android:layout_width="@dimen/_190sdp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:src="@color/yellow" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/myImageViewText"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignLeft="@id/myImageView"-->
+                    <!--android:layout_alignTop="@id/myImageView"-->
+                    <!--android:layout_alignRight="@id/myImageView"-->
+                    <!--android:layout_alignBottom="@id/myImageView"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="Hello"-->
+                    <!--android:textColor="#000000" />-->
+
+            <!--</RelativeLayout>-->
+
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--android:layout_weight="0.4"-->
+                <!--android:id="@+id/recyclerView2"-->
+                <!--android:layout_width="@dimen/_110sdp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:scrollbars="vertical"-->
+                <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+        <!--</android.support.constraint.ConstraintLayout>-->
+        <!---->
+
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:paddingStart="@dimen/_10sdp"-->
+            <!--android:paddingEnd="@dimen/_16sdp"-->
+            <!--android:id="@+id/recyclerView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scrollbars="vertical"-->
+            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
     </LinearLayout>
+
 
 </ScrollView>
 

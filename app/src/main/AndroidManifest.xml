@@ -19,9 +19,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!-- Watan Art Activities -->
-
+        <activity android:name=".ui.EditDesign.EditDesignActivity"></activity>
+        <activity android:name=".ui.Category.CategoryActivity" /> <!-- Watan Art Activities -->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="75d46093d7e8cd599947e96a56423644ee05dad7" />
@@ -68,18 +67,15 @@
             android:name=".ui.Shipping.ShippingActivity"
             android:label="@string/title_shipping_order"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme_NoTitlebar" />
-
-        <!-- End Watan Art Activities -->
-
+            android:theme="@style/AppTheme_NoTitlebar" /> <!-- End Watan Art Activities -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".ui.Terms.TermsActivity"
+        <activity
+            android:name=".ui.Terms.TermsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -95,33 +91,24 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity>
-
-        <!--<meta-data-->
-            <!--android:name="io.futurestud.tutorials.glide.glidemodule.SimpleGlideModule"-->
-            <!--android:value="GlideModule" />-->
-
-        <!--<meta-data-->
-            <!--android:name="io.futurestud.tutorials.glide.glidemodule.CustomImageSizeGlideModule"-->
-            <!--android:value="GlideModule" />-->
-
+        </activity> <!-- <meta-data -->
+        <!-- android:name="io.futurestud.tutorials.glide.glidemodule.SimpleGlideModule" -->
+        <!-- android:value="GlideModule" /> -->
+        <!-- <meta-data -->
+        <!-- android:name="io.futurestud.tutorials.glide.glidemodule.CustomImageSizeGlideModule" -->
+        <!-- android:value="GlideModule" /> -->
         <!-- for images behind an unsafe https url -->
         <!--
         <meta-data
             android:name="io.futurestud.tutorials.glide.glidemodule.UnsafeOkHttpGlideModule"
             android:value="GlideModule" />
         -->
-
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
-
-
         <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
-
-
         <!-- <activity android:name="com.facebook.FacebookActivity" -->
         <!-- android:configChanges= -->
         <!-- "keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
@@ -136,8 +123,6 @@
         <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-
-
         <!-- FireBase Push Notification Services -->
         <!-- <service -->
         <!-- android:name=".Services.firebase.FirebaseIDService" -->
@@ -152,9 +137,8 @@
         <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
         <!-- </intent-filter> -->
         <!-- </service> -->
-
-
-        <!--<service android:name=".Services.firebase.MyFirebaseMessagingService">
+        <!--
+<service android:name=".Services.firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -168,8 +152,8 @@
              notification message. See README(https://goo.gl/6BKBk7) for more. &ndash;&gt;
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />-->
-
+            android:value="@string/default_notification_channel_id" />
+        -->
         <service
             android:name=".Services.firebase.FirebaseIDService"
             android:stopWithTask="false">
@@ -178,11 +162,9 @@
             </intent-filter>
         </service>
 
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
 
         <activity
             android:name=".ui.EditProfile.EditProfileActivity"
@@ -219,19 +201,14 @@
             android:theme="@style/AppTheme_NoTitlebar" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".TestActivity" />
-
         <activity
             android:name=".ui.Payment.WebviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme_NoTitlebar">
-
-        </activity>
-
-        <activity android:name=".ui.getFreeCredit.GetFreeCreditActivity"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity
+            android:name=".ui.getFreeCredit.GetFreeCreditActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme_NoTitlebar"
-            />
-
+            android:theme="@style/AppTheme_NoTitlebar" />
     </application>
 
 </manifest>

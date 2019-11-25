@@ -94,6 +94,7 @@
     <string name="email_edit">البريد الإلكترونى</string>
     <string name="full_name_edit">الإسم بالكامل</string>
     <string name="title_setting">الإعدادات</string>
+    <string name="title_account">حسابي</string>
     <string name="title_home">الرئيسية</string>
     <string name="address">العنوان</string>
     <string name="send">ارسال</string>
@@ -186,4 +187,13 @@
  من فضلك قم بمشاركة هذا الكود لتحصل علي رصيد أكثر . </string>
 
     <string name="pick_from_gallery">Select image</string>
+    <string name="choose_what">Choose What you want to create</string>
+
+    <string name="my_account">My Account</string>
+
+    <string name="my_order">My Order</string>
+    <string name="favourite_list">Favourite List</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="free_credits">Free Credits</string>
+
 </resources>

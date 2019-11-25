@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import com.WattanArt.R;
 import com.WattanArt.Utils.Localization;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
+import com.WattanArt.ui.Category.CategoryActivity;
+import com.WattanArt.ui.EditDesign.EditDesignActivity;
 import com.WattanArt.ui.Home.HomeActivity;
 import com.WattanArt.ui.Login.LoginActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
@@ -70,8 +72,10 @@ public class SplashActivity extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    Intent intent = new Intent(SplashActivity.this, getNextActivity());
-//                    Intent intent = new Intent(SplashActivity.this, ComponentActivity.class);
+//                    Intent intent = new Intent(SplashActivity.this, getNextActivity());
+//                    Intent intent = new Intent(SplashActivity.this, EditDesignActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, ComponentActivity.class);
+//                    Intent intent = new Intent(SplashActivity.this, CategoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     startActivity(intent);

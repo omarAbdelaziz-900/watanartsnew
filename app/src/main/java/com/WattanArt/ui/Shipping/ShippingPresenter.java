@@ -575,7 +575,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                                         @Override
                                         public void onBitmapCropped(@NonNull Uri resultUri, int offsetX, int offsetY, int imageWidth, int imageHeight) {
 
-
+                                            Log.e("jdjdjdj",imageModels.get(cropIndex).getmCurrentImageCorners()+"");
                                             if (imageModels.size() - 1 > cropIndex) {
                                                 Log.e("Cropped", "image cropped  " + cropIndex);
                                                 cropIndex++;

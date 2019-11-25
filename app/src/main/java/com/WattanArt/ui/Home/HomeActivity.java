@@ -23,11 +23,14 @@ import com.WattanArt.Utils.BottomNavigationViewHelper;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.UtilitiesManager;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
+import com.WattanArt.ui.ActivityFeed.ActivityFeedFragment;
+import com.WattanArt.ui.Category.CategoryActivity;
 import com.WattanArt.ui.HomeFragment.HomeFragment;
 import com.WattanArt.ui.Order.OrderHistory.OrderHistoryFragment;
 import com.WattanArt.ui.Setting.SettingFragment;
 import com.WattanArt.ui.Shipping.ShippingActivity;
 import com.WattanArt.ui.base.BaseActivity;
+import com.WattanArt.ui.myAccount.MyAccountFragment;
 
 import java.util.ArrayList;
 
@@ -105,6 +108,12 @@ public class HomeActivity extends BaseActivity {
 //                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder , new SettingFragment()).commit();
 
                     return true;
+
+//                    case R.id.navigation_account:
+//                    openFragment(MyAccountFragment.class, null);
+////                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder , new SettingFragment()).commit();
+//
+//                    return true;
             }
             return false;
         }
@@ -183,6 +192,8 @@ public class HomeActivity extends BaseActivity {
             navigation.setSelectedItemId(R.id.navigation_history);
         } else
             openFragment(HomeFragment.class, null);
+//            openFragment(ActivityFeedFragment.class, null);
+
 
     }
 
@@ -225,7 +236,7 @@ public class HomeActivity extends BaseActivity {
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_holder);
 
-        if (fragment instanceof SettingFragment || fragment instanceof OrderHistoryFragment) {
+        if (fragment instanceof SettingFragment || fragment instanceof OrderHistoryFragment | fragment instanceof MyAccountFragment) {
             startActivity(new Intent(HomeActivity.this, HomeActivity.class));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
