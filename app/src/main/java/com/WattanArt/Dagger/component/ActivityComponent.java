@@ -33,6 +33,7 @@ import com.WattanArt.ui.Setting.SettingFragment;
 import com.WattanArt.ui.Shipping.ShippingActivity;
 import com.WattanArt.ui.Terms.TermsActivity;
 import com.WattanArt.ui.getFreeCredit.GetFreeCreditActivity;
+import com.WattanArt.ui.myAccount.MyAccountFragment;
 
 import dagger.Component;
 
@@ -57,6 +58,7 @@ public interface ActivityComponent {
     void inject(InfoFragment infoFragment);
     void inject(ContactInnerFragment contactInnerFragment);
     void inject(SettingFragment settingFragment);
+    void inject(MyAccountFragment myAccountFragment);
 
     void inject(FaqActivity faqActivity);
     void inject(TermsActivity termsActivity);

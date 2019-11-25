@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rellay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_selected"
+            android:paddingBottom="20dp">
+
+            <RelativeLayout
+                android:id="@+id/imgUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                >
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="9dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/ic_edit_profile"
+                    android:padding="3dp"
+                    android:scaleType="centerInside"
+                    />
+
+            </RelativeLayout>
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgUser"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="Omar"
+                android:textColor="@color/white"
+                android:textSize="32sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linlay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rellay1"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/yellow"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="873"
+                        android:textColor="@color/white"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="following"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/yellow"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <com.WattanArt.Utils.widgets.CustomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="453K"
+                        android:textColor="@color/white"
+                        android:textSize="25sp" />
+
+                    <com.WattanArt.Utils.widgets.CustomeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="followers"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/editProfileLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="6dp"
+        >
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_edit_profile" />
+
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:drawablePadding="10dp"
+            android:text="@string/edit_Profile"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/gray_line_profile"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+        android:src="@color/colorPrimaryDark" />
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/my_orders_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="6dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_edit_profile" />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_weight=".3"
+                android:drawablePadding="10dp"
+                android:text="@string/my_order"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_arrow" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/gray_line_order"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginTop="6dp"
+            android:src="@color/colorPrimaryDark" />
+
+
+        <LinearLayout
+            android:id="@+id/favourite_list_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="6dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_edit_profile" />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_weight=".3"
+                android:drawablePadding="10dp"
+                android:text="@string/favourite_list"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_arrow" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/gray_line_favourite"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginTop="6dp"
+            android:src="@color/colorPrimaryDark" />
+
+
+        <LinearLayout
+            android:id="@+id/my_waller_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="6dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_edit_profile" />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_weight=".3"
+                android:drawablePadding="10dp"
+                android:text="@string/my_wallet"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_arrow" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/gray_line_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginTop="6dp"
+            android:src="@color/colorPrimaryDark" />
+
+        <LinearLayout
+            android:id="@+id/free_credit_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="6dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_edit_profile" />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_weight=".3"
+                android:drawablePadding="10dp"
+                android:text="@string/free_credits"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_arrow" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/gray_line_free_credits"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginTop="6dp"
+            android:src="@color/colorPrimaryDark" />
+
+
+
+
+    <LinearLayout
+        android:id="@+id/languageLinear"
+        android:layout_width="match_parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_langauge" />
+
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/language"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+        android:src="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:id="@+id/aboutusLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        >
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center|end"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_aboutus" />
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/title_about"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+        android:src="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:id="@+id/contactusLinear"
+        android:layout_width="match_parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_contactus" />
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/contact_us"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+        android:src="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:id="@+id/faqLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        >
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center|end"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_faq" />
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/faq"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+
+        android:src="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:id="@+id/shareappLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp">
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_share" />
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/share"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+
+        android:src="@color/colorPrimaryDark" />
+    <LinearLayout
+        android:id="@+id/promoCodeLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp">
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_share" />
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/promoCode"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+        android:src="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:id="@+id/logoutLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        >
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="18dp"
+            android:src="@drawable/ic_login" />
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:id="@+id/log_out_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight=".3"
+            android:text="@string/login"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_arrow" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginTop="6dp"
+
+        android:src="@color/colorPrimaryDark" />
+
+
+    </LinearLayout>
+
+</ScrollView>

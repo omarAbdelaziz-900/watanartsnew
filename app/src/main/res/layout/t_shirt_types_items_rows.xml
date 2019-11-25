@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_160sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_6sdp"
+    android:background="@drawable/custom_background_cardview"
+    android:id="@+id/card_view_parent"
+    android:layout_margin="@dimen/_12sdp"
+    android:elevation="@dimen/_6sdp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/t_shirt_img"
+            android:layout_alignParentStart="true"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/test"/>
+
+        <View
+            android:id="@+id/view"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_toRightOf="@id/t_shirt_img"
+            android:layout_width="@dimen/_3sdp"
+            android:layout_height="match_parent"
+            android:background="@color/yellow"/>
+
+
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:id="@+id/t_shirt_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/view"
+            android:text="T_Shirt"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

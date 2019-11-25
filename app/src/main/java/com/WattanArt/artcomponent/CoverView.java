@@ -2,7 +2,10 @@ package com.WattanArt.artcomponent;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 
@@ -60,5 +63,10 @@ public class CoverView extends ViewTemplate<Integer> {
         setImageBitmap(bitmap);
         if (dimensionData == null)return;
         setCornerRadius(dimensionData.getRadius());
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 }

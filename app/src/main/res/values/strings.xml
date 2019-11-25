@@ -7,7 +7,6 @@
     <string name="default_notification_channel_id">2222 </string>
 
 
-
     <!-- Twitter Data-->
     <string name="twitter_app_id" translatable="false">EMhj0YfWvXF8ymDwMGSG1pV7Q</string>
     <string name="twitter_app_secret" translatable="false">oisN1BQmavvs2exFOVHXJPNgE90ib7R1e1atN5ilIDDUXqKN99</string>
@@ -109,6 +108,7 @@
     <string name="title_meshCanvas">Watan Art</string>
     <string name="title_history">My Orders</string>
     <string name="title_setting">Settings</string>
+    <string name="title_account">Account</string>
     <string name="title_canvas_print">Board Print</string>
     <string name="title_shipping_order">Shipping Order</string>
 
@@ -234,8 +234,7 @@
     <string name="img_resoluyion">Image resolution is Low, it may be pixeled on printing</string>
     <string name="days">Days</string>
     <string name="or">OR</string>
-<!--======================================-->
-
+    <!--======================================-->
 
 
     <string name="qty">Qty</string>
@@ -272,4 +271,13 @@
     <string name="pick_from_gallery">Select image</string>
 
     <string name="order_design">order design</string>
+    <string name="choose_what">Choose What you want to create</string>
+
+    <string name="my_account">My Account</string>
+
+    <string name="my_order">My Order</string>
+    <string name="favourite_list">Favourite List</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="free_credits">Free Credits</string>
+
 </resources>

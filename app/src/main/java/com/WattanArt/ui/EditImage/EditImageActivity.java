@@ -529,6 +529,7 @@ public class EditImageActivity extends AppCompatActivity implements
                         moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
                         moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
                         Log.e("currentRatioIndex8", currentRatioIndex + "");
+
                         moOverlayView.drawCropGrid(new Canvas());
                         mGestureCropImageView.setImageToWrapCropBounds(false);
                         new Handler().postDelayed(() ->{

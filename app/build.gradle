@@ -28,7 +28,7 @@ android {
     }
 
 
-        packagingOptions {
+    packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
 
@@ -95,6 +95,8 @@ dependencies {
 
     //implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.facebook.android:facebook-android-sdk:4.17.0'
+//    implementation 'com.facebook.android:facebook-marketing:4.42.0'
+
 //    implementation 'com.facebook.android:facebook-android-sdk:4.14.0'
 
     //twitter integeration
@@ -186,7 +188,7 @@ dependencies {
 
     //    implementation 'com.github.zomato:androidphotofilters:1.0.1'
 //    implementation files('libs/opencv-android.jar')
-    implementation 'com.github.hoanganhtuan95ptit:TwoLineSeekBar:1.0'
+//    implementation 'com.github.hoanganhtuan95ptit:TwoLineSeekBar:1.0'
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;

@@ -266,6 +266,7 @@ MobilePresenter<V extends MobileMvpView> extends BasePresenter<V>
 
         getMvpView().showLoading();
 
+        Log.e("bitmapp",imageModels.get(cropIndex).getFilteredBitmap()+"");
         try {
 
             Log.e("CroppingParams", "Positions x is-> " + imageModels.get(cropIndex).getPositionX() + "     " +
@@ -295,7 +296,7 @@ MobilePresenter<V extends MobileMvpView> extends BasePresenter<V>
 
                             cropImage(
                                     imageModels.get(cropIndex).getFilteredBitmap(),
-                                    imageModels.get(cropIndex).getMatrix(),
+                                    imageModels.get(cropIndex).getMatrix(),//null
                                     (int) (imageModels.get(cropIndex).getPositionX() *
                                             imageModels.get(cropIndex).getFactorWidth()),
                                     (int) (imageModels.get(cropIndex).getPositionY() *
@@ -308,7 +309,7 @@ MobilePresenter<V extends MobileMvpView> extends BasePresenter<V>
                                     new File(path.replace("/.Cache", "")).getParent() + "/" + new File(imageModels.get(cropIndex).getPath())
                                             .getName(),
                                     imageModels.get(cropIndex).getmCropRect(),
-                                    imageModels.get(cropIndex).getmCurrentImageCorners(),
+                                    imageModels.get(cropIndex).getmCurrentImageCorners(),//null
                                     imageModels.get(cropIndex).getCurrentScale(),
                                     imageModels.get(cropIndex).getCurrentAngle(),
                                     new BitmapCropCallback() {
@@ -884,7 +885,7 @@ MobilePresenter<V extends MobileMvpView> extends BasePresenter<V>
                         try {
                             OrderDetailsItem orderDetailsItems = new OrderDetailsItem();
                             orderDetailsItems.setMainImage(response.body().getFileName());
-                            orderDetailsItems.setPatternID(2);
+                            orderDetailsItems.setPatternID(10);
                             orderDetailsItems.setQuantiy(imageModels.get(orderDetailsItemsIndex).getQuantity());
                             orderDetailsItemsList.add(orderDetailsItems);
                         } catch (Exception e) {

@@ -12,11 +12,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.WattanArt.Dagger.component.ActivityComponent;
@@ -29,6 +34,8 @@ import com.WattanArt.model.Response.HomeIntroResponseModel;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintActivity;
 import com.WattanArt.ui.EditImage.EditImageActivity;
 import com.WattanArt.ui.base.BaseFragment;
+import com.WattanArt.ui.creationFields.DataModel;
+import com.WattanArt.ui.creationFields.ItemFieldsAdpater;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -49,7 +56,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends BaseFragment implements HomeMvpView {
+public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemFieldsAdpater.ItemListener{
 //public class HomeFragment extends BaseFragment implements HomeMvpView {
 
     private final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 103;
@@ -77,6 +84,15 @@ public class HomeFragment extends BaseFragment implements HomeMvpView {
     ImageView mThirdPreviewImageView;
     @BindView(R.id.aboutCanvas_imv)
     ImageView mAboutCanvasImageView;
+
+//    @BindView(R.id.recyclerView)
+//    RecyclerView recyclerView;
+//
+//    @BindView(R.id.recyclerView2)
+//    RecyclerView recyclerView2;
+
+    ArrayList arrayList;
+    ArrayList arrayList2;
 
     private String youtubeID = "";
     String link;
@@ -109,6 +125,11 @@ public class HomeFragment extends BaseFragment implements HomeMvpView {
         if (youTubePlayerFragment == null) {
             youTubePlayerFragment = (YouTubePlayerFragment) Objects.requireNonNull(getActivity()).getFragmentManager().findFragmentById(R.id.youtube_view);
         }
+
+
+//        itemFielsdsList();
+//        itemFielsdsList2();
+
         mAboutCanvasImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -293,4 +314,50 @@ public class HomeFragment extends BaseFragment implements HomeMvpView {
     }
 
 
+
+//    public void itemFielsdsList(){
+//        arrayList = new ArrayList();
+//        arrayList.add(new DataModel("Item 1", R.drawable.ic_add, "#09A9FF"));
+//        arrayList.add(new DataModel("Item 2", R.drawable.ic_delet_all, "#3E51B1"));
+//        arrayList.add(new DataModel("Item 3", R.drawable.ic_approved, "#673BB7"));
+//        arrayList.add(new DataModel("Item 4", R.drawable.ic_plied, "#4BAA50"));
+//        arrayList.add(new DataModel("Item 5", R.drawable.__picker_ic_photo_black_48dp, "#F94336"));
+//        arrayList.add(new DataModel("Item 6", R.drawable.__picker_ic_delete_black_24dp, "#0A9B88"));
+//        initRecyclerView();
+//    }
+//
+//    public void itemFielsdsList2(){
+//        arrayList2 = new ArrayList();
+//        arrayList2.add(new DataModel("Item 1", R.drawable.ic_add, "#09A9FF"));
+//        initRecyclerView2();
+//    }
+
+
+    @Override
+    public void onItemClick(DataModel item,int position) {
+
+        Toast.makeText(getActivity(), position+"", Toast.LENGTH_SHORT).show();
+    }
+
+//    private void initRecyclerView() {
+//        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(manager);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setNestedScrollingEnabled(false);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.scrollToPosition(0);
+//        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), arrayList, this );
+//        recyclerView.setAdapter(adapter);
+//    }
+//
+//    private void initRecyclerView2() {
+//        GridLayoutManager manager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
+//        recyclerView2.setLayoutManager(manager);
+//        recyclerView2.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView2.setNestedScrollingEnabled(false);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView2.scrollToPosition(0);
+//        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), arrayList2, this );
+//        recyclerView2.setAdapter(adapter);
+//    }
 }
