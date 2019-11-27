@@ -30,7 +30,7 @@ import java.util.Arrays;
  * This class adds crop feature, methods to draw crop guidelines, and keep image in correct state.
  * Also it extends parent class methods to add checks for scale; animating zoom in/out.
  */
-public class CropImageView extends TransformImageView {
+public class CropImageView extends TouchImageView {
 
     public static final int DEFAULT_MAX_BITMAP_SIZE = 0;
     public static final int DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION = 100;

@@ -42,6 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity
                 .applicationComponent(((MyApplication) getApplication()).getComponent())
                 .build();
 
+
 //        setUpActivityOrFragmentRequirment();
 
     }

@@ -27,6 +27,27 @@ public class DimensionData {
         this.startCoverX = startCoverX;
         this.startCoverY = startCoverY;
     }
+    public DimensionData(
+            int width,
+            int height,
+            int coverWidth,
+            int coverHeight,
+            int radius,
+            int accessoriesWidth,
+            int accessoriesHeight,
+            int accessoriesX,
+            int accessoriesY
+    ) {
+        this.imageWidth = width;
+        this.imageHeight = height;
+        this.coverWidth = coverWidth;
+        this.coverHeight = coverHeight;
+        this.radius = radius;
+        this.accessoriesWidth = accessoriesWidth;
+        this.accessoriesHeight = accessoriesHeight;
+        this.accessoriesX = accessoriesX;
+        this.accessoriesY = accessoriesY;
+    }
 
 
 

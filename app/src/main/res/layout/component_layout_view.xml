@@ -172,6 +172,7 @@
         android:textColor="@color/white"
         android:layout_gravity="end"
         android:gravity="center"
+        android:onClick="makeOrder"
         android:id="@+id/order_design_tv"/>
 
 

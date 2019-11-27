@@ -2,13 +2,21 @@ package com.WattanArt.artcomponent;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.yalantis.ucrop.view.CropImageView;
+import com.yalantis.ucrop.view.GestureCropImageView;
 import com.yalantis.ucrop.view.TouchImageView;
+import com.yalantis.ucrop.view.TransformImageView;
+import com.yalantis.ucrop.view.TransformativeImageView;
+
+import carbon.widget.ImageView;
 
 
-public abstract class ViewTemplate<T> extends TouchImageView implements ComponentView<T> {
+public abstract class ViewTemplate<T> extends ImageView implements ComponentView<T> {
 
     DimensionData dimensionData = null;
     T info = null;
@@ -62,15 +70,18 @@ public abstract class ViewTemplate<T> extends TouchImageView implements Componen
         setPosition();
 
     }
+    public float convertPixelsToDp(float px){
+        return px ;
+    }
 
     private void setPosition() {
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) this.getLayoutParams();
-        params.width = getDimenWidth();
-        params.height = getDimenHeight();
+        params.width = (int) convertPixelsToDp(getDimenWidth());
+        params.height = (int) convertPixelsToDp(getDimenHeight());
         if (getDimenStart() > 0)
-            params.setMarginStart(getDimenStart());
+            params.setMarginStart((int) convertPixelsToDp(getDimenStart()));
         if (getDimenTop() > 0)
-            params.topMargin = getDimenTop();
+            params.topMargin = (int) convertPixelsToDp(getDimenTop());
         this.setLayoutParams(params);
     }
 

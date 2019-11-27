@@ -8,8 +8,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.bumptech.glide.Glide;
 
-public class CoverView extends ViewTemplate<Integer> {
+
+public class CoverView extends CoverTemplate<String> {
 
     public CoverView(Context context) {
         super(context);
@@ -26,8 +28,10 @@ public class CoverView extends ViewTemplate<Integer> {
     }
 
     @Override
-    public void setData(Integer data) {
-        setImageResource(data);
+    public void setData(String data) {
+        Glide.with(this)
+                .load(data)
+                .into(this);
         if (dimensionData == null)return;
         setCornerRadius(dimensionData.getRadius());
 
