@@ -3,10 +3,12 @@ apply plugin: 'io.fabric'
 
 buildscript {
     repositories {
+        maven { url 'https://maven.google.com' }
+//        google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'https://maven.google.com' }
-        google()
+        jcenter()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
@@ -53,17 +55,7 @@ android {
     }
 }
 
-repositories {
-    jcenter()
-    maven { url 'https://maven.google.com' }
-}
-repositories {
-    maven {
-        url "https://jitpack.io"
-    }
 
-    google()
-}
 
 
 dependencies {
