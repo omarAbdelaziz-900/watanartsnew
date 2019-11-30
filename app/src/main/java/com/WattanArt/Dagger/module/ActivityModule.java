@@ -12,12 +12,12 @@ import com.WattanArt.ui.About.AboutPresenterMvp;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintMvpPresnter;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintMvpView;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintPresenterImp;
+import com.WattanArt.ui.Category.CategoryMvpPresenter;
+import com.WattanArt.ui.Category.CategoryMvpView;
+import com.WattanArt.ui.Category.CategoryPresenterImp;
 import com.WattanArt.ui.ContactUs.ContactUsMvpView;
 import com.WattanArt.ui.ContactUs.ContactUsPresenterImp;
 import com.WattanArt.ui.ContactUs.ContactUsPresenterMvp;
-import com.WattanArt.ui.EditImage.EditImageMvpView;
-import com.WattanArt.ui.EditImage.EditImagePresenterImp;
-import com.WattanArt.ui.EditImage.EditImagePresenterMvp;
 import com.WattanArt.ui.EditProfile.EditProfileMvpPresenter;
 import com.WattanArt.ui.EditProfile.EditProfileMvpView;
 import com.WattanArt.ui.EditProfile.EditProfilePresenterImp;
@@ -48,8 +48,8 @@ import com.WattanArt.ui.getFreeCredit.GetFreeCreditPresenter;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCredit;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCreditPresenter;
 import com.WattanArt.ui.mobileCase.MobileMvpView;
-import com.WattanArt.ui.mobileCase.MobilePresenter;
-import com.WattanArt.ui.mobileCase.MobilePresenterMvp;
+import com.WattanArt.ui.mobileCase.MobilePresenterImp;
+import com.WattanArt.ui.mobileCase.MobileMvpPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -215,6 +215,14 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
+    CategoryMvpPresenter<CategoryMvpView> provideCategooryPresenter
+            (CategoryPresenterImp<CategoryMvpView> presenterImp){
+
+        return presenterImp;
+    }
+
+    @Provides
+    @PerActivity
     EditProfileMvpPresenter<EditProfileMvpView> provideEditProfilePresenter
             (EditProfilePresenterImp<EditProfileMvpView> presenterImp) {
 
@@ -320,8 +328,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    MobilePresenterMvp<MobileMvpView> mobileMvpViewMobilePresenterMvp(
-            MobilePresenter<MobileMvpView> presenter) {
+    MobileMvpPresenter<MobileMvpView> mobileMvpViewMobilePresenterMvp(
+            MobilePresenterImp<MobileMvpView> presenter) {
         return presenter;
     }
 

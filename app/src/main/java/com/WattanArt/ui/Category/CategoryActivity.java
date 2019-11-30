@@ -1,24 +1,35 @@
 package com.WattanArt.ui.Category;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
+import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.widgets.CustomeTextView;
+import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.ui.base.BaseActivity;
+import com.WattanArt.ui.mobileCase.ComponentActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryActivity extends BaseActivity implements CategoryMobileTypesAdapter.ItemListenerOfItems
+public class CategoryActivity extends BaseActivity implements CategoryMvpView,CategoryMobileTypesAdapter.ItemListenerOfItems
 ,CategoryT_ShirtTypesAdapter.ItemListenerOfItems{
 
     @BindView(R.id.recycler_mobile_types)
@@ -42,20 +53,59 @@ public class CategoryActivity extends BaseActivity implements CategoryMobileType
     @BindView(R.id.view_android)
     View view_android;
 
-    ArrayList<CategoryItemModel> categoryItemModels;
+    @BindView(R.id.nodata_txt)
+    CustomeTextViewBold nodata_txt;
+
+    @BindView(R.id.toolbar_tv_title)
+    public CustomeTextViewBold mToolbarTitleTextView;
+    CategoryMobileRsponseModel responseModelObj;
+//    ArrayList<CategoryItemModel> categoryItemModels;
+    List<CategoryMobileRsponseModel.ResultBean.ItemsBean> categoryItemModels;
     CategoryMobileTypesAdapter categoryTypesAdapter;
 
     CategoryT_ShirtTypesAdapter categoryT_shirtTypesAdapter;
     private int[] imgs;
+    UserData userData;
+    int cateId=0;
+    String mobileImage;
+    int mobileType=0;//Android
+//    1 Iphone
+
+    @Inject
+    CategoryMvpPresenter<CategoryMvpView> mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         ButterKnife.bind(this);
+
+        setSupportActionBar(findViewById(R.id.toolbar));
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mToolbarBackImageView.setVisibility(View.VISIBLE);
+        mToolbarTitleTextView.setText(getString(R.string.category));
+
+        ActivityComponent component = getActivityComponent();
+        if (component != null) {
+            component.inject(this);
+            mPresenter.onAttach(this);
+        }
+
+        Intent intent=getIntent();
+        if (intent.hasExtra("catId")){
+            cateId=intent.getIntExtra("catId",0);
+            Log.e("cateId",cateId+"");
+        }
+        userData = new UserData();
+        if (isNetworkConnected()) {
+            mPresenter.getSubCategory(userData.getLocalization(this),cateId);
+        } else {
+            showMessage(getString(R.string.error_no_internet_connection));
+        }
+
         initialData();
-//        initItemsRecyclerView();
-        initT_ShirtItemsRecyclerView();
+
         clickMobileType();
     }
 
@@ -65,37 +115,44 @@ public class CategoryActivity extends BaseActivity implements CategoryMobileType
     }
 
     private void initItemsRecyclerView() {
-        categoryItemModels=new ArrayList<>();
-
-
-
-        categoryItemModels.add(new CategoryItemModel("image0"));
-        categoryItemModels.add(new CategoryItemModel("image1k"));
-        categoryItemModels.add(new CategoryItemModel("image2image1"));
-        categoryItemModels.add(new CategoryItemModel("image3"));
-        categoryItemModels.add(new CategoryItemModel("image4"));
-        categoryItemModels.add(new CategoryItemModel("image5nnnn"));
-        categoryItemModels.add(new CategoryItemModel("image6"));
-        categoryItemModels.add(new CategoryItemModel("image7cc"));
         GridLayoutManager manager = new GridLayoutManager(CategoryActivity.this, 2, GridLayoutManager.VERTICAL, false);
         recycler_mobile_types.setLayoutManager(manager);
         recycler_mobile_types.setItemAnimator(new DefaultItemAnimator());
         recycler_mobile_types.setNestedScrollingEnabled(false);
         recycler_mobile_types.setHasFixedSize(true);
         recycler_mobile_types.scrollToPosition(0);
-        categoryTypesAdapter = new CategoryMobileTypesAdapter(CategoryActivity.this, categoryItemModels ,this);
+        categoryTypesAdapter = new CategoryMobileTypesAdapter(mobileType,CategoryActivity.this, categoryItemModels ,this);
         recycler_mobile_types.setAdapter(categoryTypesAdapter);
     }
 
     @Override
     public void onItemsClickFromAdapter(int position) {
-        Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
+        Intent intent=new Intent(CategoryActivity.this, ComponentActivity.class);
+        intent.putExtra("mobileImage",mobileImage=responseModelObj.getResult()
+                .get(mobileType).getItems().get(position).getProd_image());
+
+        Bundle args = new Bundle();
+        args.putSerializable("General_Style",(Serializable)responseModelObj.getResult()
+                .get(mobileType).getGeneral_Style());
+
+        args.putSerializable("General_Color", (Serializable) responseModelObj.getResult()
+                .get(mobileType).getGeneral_Color());
+
+
+        intent.putExtra("BUNDLE",args);
+
+
+        startActivity(intent);
     }
 
     public void clickMobileType(){
         relative_iphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (categoryTypesAdapter!=null)
+                categoryTypesAdapter.notifyDataSetChanged();
+                mobileType=1;
                 iphone_txt.setTextColor(Color.parseColor("#f5a43b"));
                 view_iphone.setBackgroundColor(Color.parseColor("#f5a43b"));
 
@@ -105,6 +162,12 @@ public class CategoryActivity extends BaseActivity implements CategoryMobileType
                 view_android.getLayoutParams().height = 1;
                 view_iphone.getLayoutParams().height = 4;
 
+                if (isNetworkConnected()) {
+                    mPresenter.getSubCategory(userData.getLocalization(CategoryActivity.this),cateId);
+                } else {
+                    showMessage(getString(R.string.error_no_internet_connection));
+                }
+
             }
         });
 
@@ -112,6 +175,9 @@ public class CategoryActivity extends BaseActivity implements CategoryMobileType
         relative_android.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (categoryTypesAdapter!=null)
+                categoryTypesAdapter.notifyDataSetChanged();
+                mobileType=0;
                 android_txt.setTextColor(Color.parseColor("#f5a43b"));
                 view_android.setBackgroundColor(Color.parseColor("#f5a43b"));
 
@@ -120,6 +186,12 @@ public class CategoryActivity extends BaseActivity implements CategoryMobileType
 
                 view_android.getLayoutParams().height = 4;
                 view_iphone.getLayoutParams().height = 1;
+
+                if (isNetworkConnected()) {
+                    mPresenter.getSubCategory(userData.getLocalization(CategoryActivity.this),cateId);
+                } else {
+                    showMessage(getString(R.string.error_no_internet_connection));
+                }
             }
         });
     }
@@ -130,39 +202,57 @@ public class CategoryActivity extends BaseActivity implements CategoryMobileType
         view_android.getLayoutParams().height = 4;
     }
 
-
-    private void initT_ShirtItemsRecyclerView() {
-        categoryItemModels=new ArrayList<>();
-        imgs = new int[]{R.drawable.phonecovertest,
-                R.drawable.tshirt_test,
-                R.drawable.test,
-                R.drawable.tshirt_test,
-                R.drawable.tshirt_test,
-                R.drawable.tshirt_test,
-                R.drawable.tshirt_test,
-                R.drawable.tshirt_test};
-
-
-        categoryItemModels.add(new CategoryItemModel("image0",imgs[0]));
-        categoryItemModels.add(new CategoryItemModel("image1k",imgs[1]));
-        categoryItemModels.add(new CategoryItemModel("image2image1",imgs[2]));
-        categoryItemModels.add(new CategoryItemModel("image3",imgs[3]));
-        categoryItemModels.add(new CategoryItemModel("image4",imgs[4]));
-        categoryItemModels.add(new CategoryItemModel("image5nnnn",imgs[5]));
-        categoryItemModels.add(new CategoryItemModel("image6",imgs[6]));
-        categoryItemModels.add(new CategoryItemModel("image7cc",imgs[7]));
-        GridLayoutManager manager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
-        recycler_mobile_types.setLayoutManager(manager);
-        recycler_mobile_types.setItemAnimator(new DefaultItemAnimator());
-        recycler_mobile_types.setNestedScrollingEnabled(false);
-        recycler_mobile_types.setHasFixedSize(true);
-        recycler_mobile_types.scrollToPosition(0);
-        categoryT_shirtTypesAdapter = new CategoryT_ShirtTypesAdapter(this, categoryItemModels ,this);
-        recycler_mobile_types.setAdapter(categoryT_shirtTypesAdapter);
-    }
-
     @Override
     public void onT_ShirtItemsClickFromAdapter(int position) {
         Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void returnSubCategory(CategoryMobileRsponseModel responseModel) {
+
+        if (responseModel.getResult()!=null) {
+            if (responseModel.getResult().isEmpty()){
+                recycler_mobile_types.setVisibility(View.GONE);
+                nodata_txt.setText("no data");
+                nodata_txt.setVisibility(View.VISIBLE);
+            }else {
+                recycler_mobile_types.setVisibility(View.VISIBLE);
+                nodata_txt.setVisibility(View.GONE);
+                categoryItemModels = responseModel.getResult().get(mobileType).getItems();
+                responseModelObj=responseModel;
+                if (categoryItemModels.isEmpty()){
+                    recycler_mobile_types.setVisibility(View.GONE);
+                    nodata_txt.setVisibility(View.VISIBLE);
+                    nodata_txt.setText("no data");
+                }
+                Log.e("categmoddd", categoryItemModels + "\n" + categoryItemModels.size());
+                initItemsRecyclerView();
+            }
+        }else {
+            recycler_mobile_types.setVisibility(View.GONE);
+            nodata_txt.setText("no data");
+            nodata_txt.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (categoryItemModels!=null) {
+            if (!categoryItemModels.isEmpty())
+                categoryItemModels.clear();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

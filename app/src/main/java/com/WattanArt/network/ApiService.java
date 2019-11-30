@@ -45,6 +45,7 @@ import com.WattanArt.model.Response.SettingResponseModel;
 import com.WattanArt.model.Response.SliderModel;
 import com.WattanArt.model.Response.TermsResposeModel;
 import com.WattanArt.model.Response.requestModel;
+import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -59,6 +60,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  *  If you like to go in details about the retrofit , please visit this link
@@ -146,6 +148,12 @@ public interface ApiService {
     @POST("api/SettingApi/GetIntro")
     Observable<HomeIntroResponseModel> getHomeIntro(@Field("Language") int Language);
 
+
+    @FormUrlEncoded
+    @POST("api/SettingApi/GetSubs")
+    Observable<CategoryMobileRsponseModel> getSubCategory(@Field("Language") int Language
+            , @Query("CatID") Integer CatID);
+
     @FormUrlEncoded
     @POST("/api/Users/UserData")
     Observable<RegisterResponseModel> getProfileData(@Field("UserIdValue") String UserIdValue);
@@ -160,11 +168,11 @@ public interface ApiService {
     @POST("/api/SettingApi/GetGetIntroList")
     Observable<CanvasPrintResponseModel> getConvasPrintData(@Field("Language") int Language);
 
- @FormUrlEncoded
+    @FormUrlEncoded
     @POST("/api/OrderAPI/GetOrderById")
     Observable<OrderDetailsResponseModel> getOrderDetailsData(@Field("Language") int Language ,@Field("ID") String ID);
 
- @FormUrlEncoded
+    @FormUrlEncoded
     @POST("/api/Content/GetAboutUsData")
     Observable<AboutUsResponseModel> getAboutUsData(@Field("Language") int Language);
 

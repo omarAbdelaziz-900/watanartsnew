@@ -12,19 +12,21 @@ import com.WattanArt.R;
 import com.WattanArt.Utils.widgets.CustomeTextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CategoryMobileTypesAdapter extends RecyclerView.Adapter<CategoryMobileTypesAdapter.MyViewHolder> {
 
     protected  ItemListenerOfItems itemListener;
     Context mContext;
-    private ArrayList<CategoryItemModel> categoryItemModels;
+    private List<CategoryMobileRsponseModel.ResultBean.ItemsBean> categoryItemModels;
+    int mobileType;
 
-
-    public CategoryMobileTypesAdapter(Context context, ArrayList<CategoryItemModel> categoryItemModels, ItemListenerOfItems itemListener){
+    public CategoryMobileTypesAdapter(int mobileType ,Context context, List<CategoryMobileRsponseModel.ResultBean.ItemsBean> categoryItemModels, ItemListenerOfItems itemListener){
 
         mContext=context;
         this.categoryItemModels = categoryItemModels;
+        this.mobileType = mobileType;
         this.itemListener = itemListener;
     }
 
@@ -41,19 +43,27 @@ public class CategoryMobileTypesAdapter extends RecyclerView.Adapter<CategoryMob
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+//        if (mobileType==1){
+            final  CategoryMobileRsponseModel.ResultBean.ItemsBean result=categoryItemModels.get(position);
 
-        holder.item_txt.setText(categoryItemModels.get(position).getName());
 
-        Log.e("ssss",categoryItemModels.get(position).getName());
-        holder.card_view_parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.item_txt.setText(result.getProd_Name());
 
-                if (itemListener!=null){
-                    itemListener.onItemsClickFromAdapter(position);
+            Log.e("categoryItemModelsSize",position+"");
+            Log.e("categoryItemModelsList",result.getProd_Name()+"");
+            holder.card_view_parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (itemListener!=null){
+                        itemListener.onItemsClickFromAdapter(position);
+                    }
                 }
-            }
-        });
+            });
+//        }
+
+
+
     }
 
     @Override

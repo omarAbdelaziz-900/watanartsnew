@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.WattanArt.R;
 
@@ -18,7 +19,7 @@ import com.WattanArt.R;
 public class ImageCaseComponent extends FrameLayout {
 
     /*views*/
-    public ConstraintLayout container;
+    public RelativeLayout container;
     public ImageView errorView;
 
     /*Dimension*/
@@ -62,7 +63,7 @@ public class ImageCaseComponent extends FrameLayout {
 
 
     private void setLayoutToView() {
-        container = (ConstraintLayout) LayoutInflater.from(getContext()).inflate(R.layout.componentview, this, false);
+        container = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.componentview, this, false);
         this.addView(container);
         setViews();
     }
@@ -110,7 +111,7 @@ public class ImageCaseComponent extends FrameLayout {
     public <T> void initData(DimensionData dimensionData, Pair<T, T> t) {
         setDimensions(dimensionData);
         getObjectComponent().setData(t.first);
-        getAccessoriesComponent().setData(t.second);
+//        getAccessoriesComponent().setData(t.second);
     }
 
     public <T> void setCoverData(T t) {

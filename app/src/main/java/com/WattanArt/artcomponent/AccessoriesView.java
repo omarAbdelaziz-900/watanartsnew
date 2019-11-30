@@ -3,7 +3,9 @@ package com.WattanArt.artcomponent;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class AccessoriesView extends ViewTemplate<Integer> {
+import com.bumptech.glide.Glide;
+
+public class AccessoriesView extends ViewTemplate<String> {
 
 
     public AccessoriesView(Context context) {
@@ -41,9 +43,19 @@ public class AccessoriesView extends ViewTemplate<Integer> {
     }
 
 
+//    @Override
+//    public void setData(Integer data) {
+//        if (data > 0)
+//            setImageResource(data);
+//    }
+
     @Override
-    public void setData(Integer data) {
-        if (data > 0)
-            setImageResource(data);
+    public void setData(String data) {
+        Glide.with(this)
+                .load(data)
+                .into(this);
+        if (dimensionData == null)return;
+        setCornerRadius(dimensionData.getRadius());
+
     }
 }

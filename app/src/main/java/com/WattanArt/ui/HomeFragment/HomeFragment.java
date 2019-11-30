@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,12 +15,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -32,6 +39,7 @@ import com.WattanArt.Utils.widgets.CustomeTextView;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.model.Response.HomeIntroResponseModel;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintActivity;
+import com.WattanArt.ui.Category.CategoryActivity;
 import com.WattanArt.ui.EditImage.EditImageActivity;
 import com.WattanArt.ui.base.BaseFragment;
 import com.WattanArt.ui.creationFields.DataModel;
@@ -49,6 +57,7 @@ import me.iwf.photopicker.PhotoPicker;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -64,6 +73,8 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
     YouTubePlayerFragment youTubePlayerFragment;
 
     View view;
+    int catID;
+
     @Inject
     HomeMvpPresenter<HomeMvpView> mPresenter;
 
@@ -85,18 +96,33 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
     @BindView(R.id.aboutCanvas_imv)
     ImageView mAboutCanvasImageView;
 
-//    @BindView(R.id.recyclerView)
-//    RecyclerView recyclerView;
-//
-//    @BindView(R.id.recyclerView2)
-//    RecyclerView recyclerView2;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
-    ArrayList arrayList;
-    ArrayList arrayList2;
+    @BindView(R.id.myImageView_firstItem)
+    ImageView myImageView_firstItem;
+
+    @BindView(R.id.myImageView)
+    ImageView myImageView;
+
+    @BindView(R.id.myImageViewText_firstItem)
+    CustomeTextViewBold myImageViewText_firstItem;
+
+    @BindView(R.id.relative__firstItem)
+    RelativeLayout relative__firstItem;
+
+    @BindView(R.id.tablou_relativelayout)
+    RelativeLayout tablou_relativelayout;
+
+    List< HomeIntroResponseModel.ResultBean.CategoryBean> arrayList;
+    List< HomeIntroResponseModel.ResultBean.CategoryBean> finalArrayList;
 
     private String youtubeID = "";
     String link;
     UserData userData;
+
+    int height,width;
+    int imgWidthSmall , imgWidthBig;
 
     public HomeFragment() {
     }
@@ -126,9 +152,9 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             youTubePlayerFragment = (YouTubePlayerFragment) Objects.requireNonNull(getActivity()).getFragmentManager().findFragmentById(R.id.youtube_view);
         }
 
+//        getScreenDimwnsions();
 
-//        itemFielsdsList();
-//        itemFielsdsList2();
+        clickFirstCategory();
 
         mAboutCanvasImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +175,13 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             public void onClick(View v) {
                 pickFromGallery();
 
+            }
+        });
+
+        tablou_relativelayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickFromGallery();
             }
         });
         return view;
@@ -223,6 +256,25 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
         }
 
         initYouTube();
+
+        Log.e("nameee",responseModel.getResult().getCategory().get(0).getName());
+        if (responseModel.getResult().getCategory() != null && !responseModel.getResult().getCategory().isEmpty()) {
+            arrayList=responseModel.getResult().getCategory();
+            loadImage(arrayList.get(0).getImage(), myImageView_firstItem);
+            myImageViewText_firstItem.setText(arrayList.get(0).getName());
+//            for (int i=0;i<arrayList.size();i++){
+//                if (i!=0){
+            catID=arrayList.get(0).getCat_ID();
+            arrayList.remove(0);
+            finalArrayList=arrayList;
+//                }
+
+            itemFielsdsList2();
+        }else {
+            Log.e("errrrr","gggggggggggggg");
+        }
+
+
     }
 
     private void loadImage(HomeIntroResponseModel responseModel, int indexOfList, ImageView imageView) {
@@ -314,50 +366,90 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
     }
 
 
-
-//    public void itemFielsdsList(){
-//        arrayList = new ArrayList();
-//        arrayList.add(new DataModel("Item 1", R.drawable.ic_add, "#09A9FF"));
-//        arrayList.add(new DataModel("Item 2", R.drawable.ic_delet_all, "#3E51B1"));
-//        arrayList.add(new DataModel("Item 3", R.drawable.ic_approved, "#673BB7"));
-//        arrayList.add(new DataModel("Item 4", R.drawable.ic_plied, "#4BAA50"));
-//        arrayList.add(new DataModel("Item 5", R.drawable.__picker_ic_photo_black_48dp, "#F94336"));
-//        arrayList.add(new DataModel("Item 6", R.drawable.__picker_ic_delete_black_24dp, "#0A9B88"));
-//        initRecyclerView();
-//    }
-//
-//    public void itemFielsdsList2(){
+    public void itemFielsdsList2(){
 //        arrayList2 = new ArrayList();
 //        arrayList2.add(new DataModel("Item 1", R.drawable.ic_add, "#09A9FF"));
-//        initRecyclerView2();
-//    }
+        initRecyclerView2();
+    }
 
 
     @Override
-    public void onItemClick(DataModel item,int position) {
+    public void onItemClick(HomeIntroResponseModel.ResultBean.CategoryBean item,int position) {
 
-        Toast.makeText(getActivity(), position+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), position+"", Toast.LENGTH_SHORT).show();
     }
 
-//    private void initRecyclerView() {
-//        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
-//        recyclerView.setLayoutManager(manager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setNestedScrollingEnabled(false);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.scrollToPosition(0);
-//        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), arrayList, this );
-//        recyclerView.setAdapter(adapter);
-//    }
-//
-//    private void initRecyclerView2() {
-//        GridLayoutManager manager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
-//        recyclerView2.setLayoutManager(manager);
-//        recyclerView2.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView2.setNestedScrollingEnabled(false);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView2.scrollToPosition(0);
-//        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), arrayList2, this );
-//        recyclerView2.setAdapter(adapter);
-//    }
+
+    private void initRecyclerView2() {
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.scrollToPosition(0);
+        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), finalArrayList, this );
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void loadImage(String image, ImageView imageView) {
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.drawable.img_not_available);
+        options.error(R.drawable.img_not_available);
+
+        String path = Constants.BASE_URL + Constants.UPLOAD +image;
+        Log.e("path", path);
+
+        Glide.with(getActivity())
+                .asBitmap()
+                .load(path.trim())
+                .apply(options).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                e.printStackTrace();
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                imageView.setImageBitmap(resource);
+                return true;
+            }
+        }).into(imageView);
+    }
+
+    public void clickFirstCategory(){
+        relative__firstItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), CategoryActivity.class);
+                intent.putExtra("catId",catID);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void getScreenDimwnsions(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+        imgWidthSmall=(width/3)+30;
+        imgWidthBig=width-imgWidthSmall;
+
+//        myImageView_firstItem.getLayoutParams().width=imgWidthSmall;
+//        myImageView.getLayoutParams().width=imgWidthBig;
+        myImageView_firstItem.setLayoutParams(new RelativeLayout.LayoutParams(imgWidthSmall, convert(105)));
+        myImageView.setLayoutParams(new RelativeLayout.LayoutParams(imgWidthBig,  convert(105)));
+        Log.e("widthandH",width+" and "+height);
+        Log.e("widffff",imgWidthSmall+" and "+imgWidthBig);
+    }
+
+    public int convert(int px){
+        Resources r = getResources();
+        px = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 105,r.getDisplayMetrics()));
+        Log.e("pxxxxx",px+"");
+        return px;
+    }
 }

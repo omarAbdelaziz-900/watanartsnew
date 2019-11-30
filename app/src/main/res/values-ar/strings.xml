@@ -195,5 +195,7 @@
     <string name="favourite_list">Favourite List</string>
     <string name="my_wallet">My Wallet</string>
     <string name="free_credits">Free Credits</string>
+    <string name="category">Category</string>
 
+    <string name="mobile_cover">Mobile Cover</string>
 </resources>

@@ -319,11 +319,9 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 
                                         getMvpView().hideLoading();
                                         handleThrowableError(throwable);
-
                                     }
                                 }
                         )
-
         );
     }
 
@@ -1266,54 +1264,10 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
         return ext;
     }
 
-    private void uploadFileFailed(String path) {
-
-        Log.e("FailMethod", "Entered Fail Method");
-
-        Calendar calendar = Calendar.getInstance();
-        Log.e("TimeIs", "->" + calendar.get(Calendar.HOUR) + " " + calendar.get(Calendar.MINUTE) + " " +
-                calendar.get(Calendar.SECOND) + " " + calendar.get(Calendar.HOUR) + " ");
-
-        int index = failIndex + 1;
-        String thisFileName;
-        if (getExtension(path).toLowerCase().contains("png")) {
-            thisFileName = getNameWithOutExtension(filetoUpload.getName()) + ".png.part_" + index + "." + bs.size();
-        } else {
-            thisFileName = getNameWithOutExtension(filetoUpload.getName()) + ".jpg.part_" + index + "." + bs.size();
-        }
-
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), failList.get(failIndex));
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", thisFileName, requestBody);
-        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), thisFileName);
-
-        getCompositeDisposable().add(getDataManager().uploadFile(fileToUpload, filename)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(settingResponseModel -> {
-                    if (settingResponseModel != null && settingResponseModel.getResult() != null
-                            && settingResponseModel.getISResultHasData() == 1) {
-                        failIndex++;
-                        uploadFileFailed(path);
-                        failList.remove(failIndex);
-                    }
-                    getMvpView().hideLoading();
-
-                }, throwable -> {
-                    if (!isViewAttached()) {
-                        return;
-                    }
-
-                    failList.add(bs.get(uploadIndex));
-
-//                    handleThrowableError(throwable);
-                }));
-    }
-
 
     // Uploading Image slices
     private void uploadFile(List<String> listPaths) {
         int index = serverUploadIndex + 1;
-
 
         Log.e("DATA", serverUploadIndex + "          " + bs.size());
         Log.e("PATH", listPaths.get(segmentationIndex));

@@ -21,6 +21,7 @@ import com.WattanArt.Dagger.module.ActivityModule;
 //import com.WattanArt.ui.OldPackages.NewsDetails.NewsDetailsActivity;
 //import com.WattanArt.ui.OldPackages.NewsTicker.NewsTickerFragment;
 //import com.WattanArt.ui.OldPackages.Slides.SlidesFragment;
+import com.WattanArt.ui.Category.CategoryActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.WattanArt.ui.About.AboutActivity;
 import com.WattanArt.ui.ContactUs.ContactInnerFragment;
@@ -64,4 +65,5 @@ public interface ActivityComponent {
     void inject(TermsActivity termsActivity);
 
     void inject(ComponentActivity componentActivity);
+    void inject(CategoryActivity categoryActivity);
 }

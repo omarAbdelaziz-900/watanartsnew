@@ -13,6 +13,9 @@ import com.WattanArt.ui.About.AboutPresenterMvp;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintMvpPresnter;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintMvpView;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintPresenterImp;
+import com.WattanArt.ui.Category.CategoryMvpPresenter;
+import com.WattanArt.ui.Category.CategoryMvpView;
+import com.WattanArt.ui.Category.CategoryPresenterImp;
 import com.WattanArt.ui.ContactUs.ContactUsMvpView;
 import com.WattanArt.ui.ContactUs.ContactUsPresenterImp;
 import com.WattanArt.ui.ContactUs.ContactUsPresenterMvp;
@@ -169,7 +172,13 @@ public class ApplicationModule {
     }
 
 
+    @Provides
+    @PerActivity
+    CategoryMvpPresenter<CategoryMvpView> provideCategooryPresenter
+            (CategoryPresenterImp<CategoryMvpView> presenterImp){
 
+        return presenterImp;
+    }
 //    @Provides
 //    @PerActivity
 //    EditImagePresenterMvp<EditImageMvpView> EditImagePresenterImp(

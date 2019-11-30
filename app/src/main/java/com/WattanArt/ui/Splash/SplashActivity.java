@@ -72,9 +72,9 @@ public class SplashActivity extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-//                    Intent intent = new Intent(SplashActivity.this, getNextActivity());
+                    Intent intent = new Intent(SplashActivity.this, getNextActivity());
 //                    Intent intent = new Intent(SplashActivity.this, EditDesignActivity.class);
-                    Intent intent = new Intent(SplashActivity.this, ComponentActivity.class);
+//                    Intent intent = new Intent(SplashActivity.this, ComponentActivity.class);
 //                    Intent intent = new Intent(SplashActivity.this, CategoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.EditDesign.EditDesignActivity"></activity>
-        <activity android:name=".ui.Category.CategoryActivity" /> <!-- Watan Art Activities -->
+        <activity android:name=".ui.Category.CategoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" /> <!-- Watan Art Activities -->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="75d46093d7e8cd599947e96a56423644ee05dad7" />
@@ -56,8 +58,7 @@
         <activity
             android:name=".ui.mobileCase.ComponentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme_NoTitlebar"
-            android:windowSoftInputMode="stateHidden" />
+            android:theme="@style/AppTheme_NoTitlebar" />
         <activity
             android:name=".ui.Home.HomeActivity"
             android:screenOrientation="portrait"

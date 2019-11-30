@@ -44,6 +44,7 @@ import com.WattanArt.model.Response.SliderModel;
 import com.WattanArt.model.Response.TermsResposeModel;
 import com.WattanArt.model.Response.requestModel;
 import com.WattanArt.Utils.config.Constants;
+import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
 import com.google.gson.JsonObject;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -231,6 +232,11 @@ public class AppDataManager implements ApiService {
     @Override
     public Observable<HomeIntroResponseModel> getHomeIntro(int Language) {
         return getApi().getHomeIntro(Language);
+    }
+
+    @Override
+    public Observable<CategoryMobileRsponseModel> getSubCategory(int Language, Integer CatID) {
+        return getApi().getSubCategory(Language,CatID);
     }
 
     @Override
