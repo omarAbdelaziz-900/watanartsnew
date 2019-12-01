@@ -118,6 +118,10 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
 
     int colorPosition=-1 ,stylePostion=-1;
 
+    float[] pts ;
+
+    String mobileImageUrl;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +146,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         measureImageDimensions();
     }
 
+
     void initView() {
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setTitle("");
@@ -155,17 +160,15 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         view_image = findViewById(R.id.view_image);
 
 
-        dimensionData = new DimensionData(600, 1420, 590,
-                1410, 0, 600,
-                1420, 0, 0);
+        dimensionData = new DimensionData(600, 1000, 590,
+                1000, 0, 600,
+                1000, 0, 0);
 
-        component.initData(dimensionData, new Pair<>(R.drawable.huaweiy9, R.drawable.huaweiy9_2));
+//        component.initData(dimensionData, new Pair<>(R.drawable.huaweiy9, R.drawable.huaweiy9_2));
+
         cover = (CoverView) component.getComponentView(R.id.cover);
         accessoriesView = (AccessoriesView) component.getComponentView(R.id.accessories);
 //        accessoriesView.setData(R.drawable.huaweiy9_2);
-
-
-
     }
 
     public void pickFromGalleryAction() {
@@ -227,11 +230,30 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         if (cover.getDrawable()!=null) {
             Bitmap bitmap = ((BitmapDrawable) cover.getDrawable()).getBitmap();
 
+//            currentBitmap = Bitmap.createBitmap(bitmap,
+//                    0, 0, bitmap.getWidth(),
+//                    bitmap.getHeight(), cover.getImageMatrix(), true);
+
             currentBitmap = Bitmap.createBitmap(bitmap,
                     0, 0, bitmap.getWidth(),
                     bitmap.getHeight(), cover.getImageMatrix(), true);
 
+
             mobileBitmap = loadBitmapFromView(component);
+
+//            Matrix inverse = new Matrix();
+//            cover.getImageMatrix().invert(inverse);
+//            inverse.mapPoints(pts);
+//            Log.e("inverseM",inverse+"");
+//
+//            Bitmap original = currentBitmap;
+//
+//            Bitmap adjusted = Bitmap.createBitmap(original.getWidth(),
+//                    original.getHeight(),
+//                    original.getConfig());
+//            Canvas canvas = new Canvas(adjusted);
+//            canvas.setMatrix(inverse);
+//            canvas.drawBitmap(original, 0, 0, null);
 
 
             float rorationAngle = cover.getCurrentAngle();
@@ -282,30 +304,6 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (General_Color!=null) {
-            if (!General_Color.isEmpty())
-                General_Color.clear();
-        }
-        if (General_Style!=null) {
-            if (!General_Style.isEmpty())
-                General_Style.clear();
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onColorItemsClickFromAdapter( int position) {
         cover.layout(0, 0, linear_container.getLayoutParams().width, linear_container.getLayoutParams().height);
         accessoriesView.setData(null);
@@ -337,6 +335,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent.hasExtra("mobileImage")){
             mobileImage = intent.getStringExtra("mobileImage");
+            mobileImageUrl="http://23.236.154.106:8063/UploadedImages/"+mobileImage;
+            component.initUrlData(dimensionData, new Pair<>( R.drawable.__picker_fixed_bg_for_mobile,mobileImageUrl));
             Log.e("mobileImage",mobileImage+"");
         }
 
@@ -479,6 +479,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
                 Log.e("matrixCalc",""+mat);
 //                cover.setImageMatrix(mat);
 
+                 pts = new float[]{event.getX(), event.getY()};
+                Log.e("ptspts",""+pts);
                 return false;
             }
         });
@@ -497,4 +499,29 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         }
         return bitmap;
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (General_Color!=null) {
+            if (!General_Color.isEmpty())
+                General_Color.clear();
+        }
+        if (General_Style!=null) {
+            if (!General_Style.isEmpty())
+                General_Style.clear();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

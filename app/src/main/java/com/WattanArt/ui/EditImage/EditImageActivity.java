@@ -479,10 +479,10 @@ public class EditImageActivity extends AppCompatActivity implements
                 Log.e("currentRatioIndex4", currentRatioIndex + "");
 
 
-//                if (finalIndex == currentRatioIndex) {
-//                    Log.e("currentRatioIndex5",currentRatioIndex+"");
-//                    return;
-//                }
+                if (finalIndex == currentRatioIndex) {
+                    Log.e("currentRatioIndex5",currentRatioIndex+"");
+                    return;
+                }
 
 
                 currentRatioIndex = finalIndex;

@@ -3,6 +3,8 @@ package com.WattanArt.artcomponent;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.bumptech.glide.Glide;
+
 public class ObjectView extends ViewTemplate<Integer> {
 
     //
@@ -26,6 +28,16 @@ public class ObjectView extends ViewTemplate<Integer> {
         setImageResource(data);
     }
 
+
+//    @Override
+//    public void setData(String data) {
+//        Glide.with(this)
+//                .load(data)
+//                .into(this);
+//        if (dimensionData == null)return;
+//        setCornerRadius(dimensionData.getRadius());
+//
+//    }
 
     @Override
     public boolean isTouchable() {

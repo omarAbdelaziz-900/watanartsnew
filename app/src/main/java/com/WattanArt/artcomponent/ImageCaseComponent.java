@@ -114,6 +114,12 @@ public class ImageCaseComponent extends FrameLayout {
 //        getAccessoriesComponent().setData(t.second);
     }
 
+    public <T> void initUrlData(DimensionData dimensionData, Pair<T, String> t) {
+        setDimensions(dimensionData);
+        getObjectComponent().setData(t.first);
+        getAccessoriesComponent().setData(t.second);
+    }
+
     public <T> void setCoverData(T t) {
         getCoverComponent().setData(t);
     }
