@@ -467,7 +467,7 @@ public class EditImageActivity extends AppCompatActivity implements
             Log.e("finalIndexx", finalIndex + "");
             Log.e("ratio_holderChildCount", ratio_holder.getChildCount() + "");
 
-//            int finalIndex1 = index;
+            int finalIndex1 = index;
 
             ratio_holder.getChildAt(index).setOnClickListener(view -> {
 
