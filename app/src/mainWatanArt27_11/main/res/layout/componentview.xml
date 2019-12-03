@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/constraintLayout"
+>
+    <com.WattanArt.artcomponent.ObjectView
+            android:id="@+id/component"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <com.WattanArt.artcomponent.CoverView
+            android:id="@+id/cover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@+id/component"
+            app:layout_constraintTop_toTopOf="@+id/component"
+    />
+    <!--<com.WattanArt.artcomponent.CoverView-->
+        <!--android:id="@+id/cover"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/component"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/component"-->
+        <!--/>-->
+    <com.WattanArt.artcomponent.AccessoriesView
+            android:id="@+id/accessories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/component"
+            app:layout_constraintTop_toTopOf="@id/component"
+    />
+    <ImageView
+            android:id="@+id/error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/stat_notify_error"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/component"
+            app:layout_constraintEnd_toEndOf="@+id/component"
+            app:layout_constraintTop_toTopOf="@+id/component"
+            app:layout_constraintBottom_toBottomOf="@+id/component"
+    />
+</android.support.constraint.ConstraintLayout>

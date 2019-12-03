@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/myScrollView"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/bg_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_color_curve">
+
+            <ImageView
+                android:id="@+id/icon_back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:layout_marginStart="4dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="@null" />
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:text="@string/edit_Profile"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/font_size_xxxlarge"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/ivSplash"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/logo"
+                android:contentDescription="@null" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="26dp"
+            android:orientation="vertical">
+
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="@string/full_name"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/font_size_large" />
+
+            <com.WattanArt.Utils.widgets.CustomEditText
+                android:id="@+id/editprofile_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edit_text_background"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:gravity="start|center"
+
+                android:hint="@string/full_name_edit"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:nextFocusDown="@+id/editprofile_mail"
+                android:inputType="textPersonName"
+                android:textAlignment="viewStart"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textSize="@dimen/font_size_large" />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:gravity="start"
+                android:text="@string/email"
+                android:textAlignment="viewStart"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/font_size_xlarge" />
+
+            <com.WattanArt.Utils.widgets.CustomEditText
+                android:id="@+id/editprofile_mail"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:background="@drawable/edit_text_background"
+                android:gravity="start"
+                android:hint="@string/email_edit"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:nextFocusDown="@+id/editprofile_phone"
+                android:inputType="textEmailAddress"
+                android:textAlignment="viewStart"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:textSize="@dimen/font_size_large"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="@string/password"
+                android:textSize="@dimen/font_size_large"
+                android:textColor="@color/yellow" />
+
+            <LinearLayout
+                android:id="@+id/linear_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                    android:id="@+id/editprofile_password"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:hint="@string/password_edit"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/colorPrimaryDark" />
+
+                <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                    android:id="@+id/change_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="2dp"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:gravity="end|center"
+                    android:text="@string/change"
+                    android:textSize="@dimen/font_size_large"
+                    android:textColor="@color/yellow" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:src="@color/colorPrimaryDark" />
+
+            <!--<com.WattanArt.Utils.widgets.CustomeTextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="5dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:backgroundTint="@color/colorPrimaryDark"-->
+            <!--android:text="@string/confirm_password"-->
+            <!--android:textColor="@color/yellow" />-->
+
+            <!--<com.WattanArt.Utils.widgets.CustomEditText-->
+            <!--android:id="@+id/editprofile_confirm_password"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:backgroundTint="@color/colorPrimaryDark"-->
+            <!--android:hint="@string/password_edit"-->
+            <!--android:inputType="textPassword"-->
+            <!--android:textColor="@color/colorPrimaryDark"-->
+            <!--android:textColorHint="@color/colorPrimaryDark" />-->
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="@string/phone"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/font_size_large" />
+
+
+            <com.WattanArt.Utils.widgets.CustomEditText
+                android:id="@+id/editprofile_phone"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:gravity="start"
+                android:hint="@string/phone_edit"
+                android:textSize="@dimen/font_size_large"
+                android:inputType="phone"
+                android:background="@drawable/edit_text_background"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                />
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/country"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/font_size_large" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!--<com.WattanArt.CheckUtils.widgets.CustomeTextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="5dp"-->
+                    <!--android:text="Egypt"-->
+                    <!--android:textColor="@color/colorPrimaryDark"-->
+                    <!--android:textSize="16dp" />-->
+
+                    <Spinner
+                        android:id="@+id/editprofile_country_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:gravity="start"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="viewStart" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark" />
+            </LinearLayout>
+
+            <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/city"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/font_size_large" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!--<com.WattanArt.CheckUtils.widgets.CustomeTextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="5dp"-->
+                    <!--android:text="Tanta"-->
+                    <!--android:textColor="@color/colorPrimaryDark"-->
+                    <!--android:textSize="16dp" />-->
+
+                    <Spinner
+                        android:id="@+id/editprofile_city_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:gravity="start"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="viewStart" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark" />
+            </LinearLayout>
+
+            <com.WattanArt.Utils.widgets.CustomeButtonBold
+                android:id="@+id/editprofile_save"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/signup_btn_background"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_xlarge" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+

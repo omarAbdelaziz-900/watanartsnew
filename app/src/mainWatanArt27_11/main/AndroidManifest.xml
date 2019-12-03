@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.WattanArt">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".MyApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.EditDesign.EditDesignActivity"></activity>
+        <activity android:name=".ui.Category.CategoryActivity"
+            android:theme="@style/AppTheme_NoTitlebar"/> <!-- Watan Art Activities -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="75d46093d7e8cd599947e96a56423644ee05dad7" />
+
+        <activity
+            android:name=".ui.EditImage.EditImageActivity"
+            android:label="@string/title_edit_images"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity
+            android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.Splash.SplashActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.Register.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.Login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Login"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.mobileCase.ComponentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.Home.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.Shipping.ShippingActivity"
+            android:label="@string/title_shipping_order"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" /> <!-- End Watan Art Activities -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".ui.Terms.TermsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity> <!-- <meta-data -->
+        <!-- android:name="io.futurestud.tutorials.glide.glidemodule.SimpleGlideModule" -->
+        <!-- android:value="GlideModule" /> -->
+        <!-- <meta-data -->
+        <!-- android:name="io.futurestud.tutorials.glide.glidemodule.CustomImageSizeGlideModule" -->
+        <!-- android:value="GlideModule" /> -->
+        <!-- for images behind an unsafe https url -->
+        <!--
+        <meta-data
+            android:name="io.futurestud.tutorials.glide.glidemodule.UnsafeOkHttpGlideModule"
+            android:value="GlideModule" />
+        -->
+        <!-- <meta-data -->
+        <!-- android:name="com.facebook.sdk.ApplicationId" -->
+        <!-- android:value="@string/facebook_app_id" /> -->
+        <!-- <meta-data -->
+        <!-- android:name="com.facebook.sdk.ApplicationId" -->
+        <!-- android:value="@string/facebook_app_id" /> -->
+        <!-- <activity android:name="com.facebook.FacebookActivity" -->
+        <!-- android:configChanges= -->
+        <!-- "keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
+        <!-- android:label="@string/app_name" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.facebook.CustomTabActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+        <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- FireBase Push Notification Services -->
+        <!-- <service -->
+        <!-- android:name=".Services.firebase.FirebaseIDService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- <service android:name=".Services.firebase.MyFirebaseMessagingService"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!--
+<service android:name=".Services.firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        &lt;!&ndash; Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more. &ndash;&gt;
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        &lt;!&ndash; Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. &ndash;&gt;
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        -->
+        <service
+            android:name=".Services.firebase.FirebaseIDService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <activity
+            android:name=".ui.EditProfile.EditProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.About.AboutActivity"
+            android:label="@string/title_about"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.ContactUs.ContactUsActivity"
+            android:label="@string/contact_us"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.Order.OrderDetails.OrderDetailsActivity"
+            android:label="@string/title_activity_order_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.CanvasPrint.CanvasPrintActivity"
+            android:label="@string/title_canvas_print"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.FAQ.FaqActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".TestActivity" />
+        <activity
+            android:name=".ui.Payment.WebviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity
+            android:name=".ui.getFreeCredit.GetFreeCreditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+    </application>
+
+</manifest>

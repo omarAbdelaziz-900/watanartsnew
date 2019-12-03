@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/oneTablue_iv"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="visible"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@null" />
+    <!--android:src="@drawable/img_veiw_list"-->
+
+    <LinearLayout
+        android:id="@+id/twoTablue_linear"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/firstTablue_iv_in_twoTablue_linear"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            />
+        <ImageView
+            android:id="@+id/secondTablue_iv_in_twoTablue_linear"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/threeTablue_linear"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/firstTablue_iv_in_thirdTablue_linear"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            />
+        <ImageView
+            android:id="@+id/secondTablue_iv_in_thirdTablue_linear"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
+
+
+            />
+        <ImageView
+            android:id="@+id/thirdTablue_iv_in_thirdTablue_linear"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
+
+            />
+
+    </LinearLayout>
+    <com.WattanArt.Utils.widgets.CustomeTextViewBold
+        android:id="@+id/canvasTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mesh Canvas"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp"
+        android:textSize="@dimen/font_size_xlarge"
+        android:textColor="@color/dark_grey" />
+
+    <com.WattanArt.Utils.widgets.CustomeTextView
+        android:id="@+id/canvasText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:text=""
+        android:textColor="@color/dark_grey" />
+
+</LinearLayout>
