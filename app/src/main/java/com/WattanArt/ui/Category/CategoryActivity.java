@@ -129,8 +129,13 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
     public void onItemsClickFromAdapter(int position) {
 //        Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
         Intent intent=new Intent(CategoryActivity.this, ComponentActivity.class);
+
         intent.putExtra("mobileImage",mobileImage=responseModelObj.getResult()
                 .get(mobileType).getItems().get(position).getProd_image());
+
+        intent.putExtra("mobileType",mobileImage=responseModelObj.getResult()
+                .get(mobileType).getItems().get(position).getType());
+
 
         Bundle args = new Bundle();
         args.putSerializable("General_Style",(Serializable)responseModelObj.getResult()
@@ -243,6 +248,7 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
             if (!categoryItemModels.isEmpty())
                 categoryItemModels.clear();
         }
+        finish();
     }
 
     @Override

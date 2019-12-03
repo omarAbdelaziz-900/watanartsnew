@@ -2,20 +2,17 @@ package com.WattanArt.ui.mobileCase;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -29,9 +26,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
+import com.WattanArt.Utils.ViewHelper;
+import com.WattanArt.Utils.config.Constants;
+import com.WattanArt.Utils.widgets.BitmapUtils;
+import com.WattanArt.Utils.widgets.CustomeTextView;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.artcomponent.AccessoriesView;
 import com.WattanArt.artcomponent.CoverView;
@@ -40,13 +42,11 @@ import com.WattanArt.artcomponent.ImageCaseComponent;
 import com.WattanArt.artcomponent.ObjectView;
 import com.WattanArt.model.Response.ImageUploadResponseModel;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
+import com.WattanArt.ui.ShippingForMobile.ShippingMobileActivity;
 import com.WattanArt.ui.base.BaseActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,11 +58,10 @@ import butterknife.ButterKnife;
 import me.iwf.photopicker.PhotoPicker;
 
 
-public class ComponentActivity extends BaseActivity implements MobileMvpView ,ColorBgMobileAdapter.ItemListenerOfItems{
+public class ComponentActivity extends BaseActivity implements MobileMvpView ,ColorBgMobileAdapter.ItemListenerOfItems {
 
     CustomeTextViewBold pick_from_gallery_tv;
     CustomeTextViewBold complete_tv;
-    ImageView toolbar_image_view;
     final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 102;
 
     //    CoverView cover;
@@ -76,7 +75,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
     // Fields
     private String TAG = this.getClass().getSimpleName();
     ArrayList<String> photos;
-    Bitmap currentBitmap , mobileBitmap;
+    Bitmap currentBitmap, mobileBitmap;
 
     @Inject
     MobileMvpPresenter<MobileMvpView> mPresenter;
@@ -99,18 +98,26 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
     @BindView(R.id.linear_container)
     View linear_container;
 
+    @BindView(R.id.toolbar_image_view)
+    ImageView mToolbarBackImageView;
 
+    @BindView(R.id.submit)
+    CustomeTextView submit;
 
     @BindView(R.id.toolbar_tv_title)
-    public CustomeTextViewBold mToolbarTitleTextView;
+    CustomeTextViewBold mToolbarTitleTextView;
+
+
+
 
     double centreX ,centreY ,a;
 
-    String mobileImage;
+    String mobileImage ,mobileType;
     ArrayList<Object>  General_Style ,General_Color;
     ColorBgMobileAdapter colorBgMobileAdapter;
     int colorOrStyleType;
-    File fileGeting;
+
+    File fileForMobile ,fileForCover;
 
     int actW,actH;
     float scaleX,scaleY;
@@ -121,6 +128,13 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
     float[] pts ;
 
     String mobileImageUrl;
+
+    Intent intent;
+
+    String filename,filename2;
+
+    String mobileName,coverName;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,49 +154,71 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
             mPresenter.onAttach(this);
         }
         initView();
+
         getData();
         actionColorOrStyle();
         pickFromGalleryAction();
         measureImageDimensions();
+        mToolbarBackImageView.setVisibility(View.VISIBLE);
+        mToolbarTitleTextView.setText(R.string.mobile_cover);
+        mToolbarTitleTextView.setVisibility(View.VISIBLE);
+
+        mToolbarBackImageView.setOnClickListener(v -> {
+            onBackPressed();
+        });
     }
 
 
     void initView() {
-        setSupportActionBar(findViewById(R.id.toolbar));
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbarTitleTextView.setText(getString(R.string.mobile_cover));
-        toolbar_image_view = findViewById(R.id.toolbar_image_view);
+//        setSupportActionBar(findViewById(R.id.toolbar));
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mToolbarTitleTextView.setText(getString(R.string.mobile_cover));
         pick_from_gallery_tv = findViewById(R.id.pick_from_gallery_tv);
         complete_tv = findViewById(R.id.order_design_tv);
         component = findViewById(R.id.componentView);
-        objectView = findViewById(R.id.component);
         view_image = findViewById(R.id.view_image);
 
-
-        dimensionData = new DimensionData(600, 1000, 590,
-                1000, 0, 600,
-                1000, 0, 0);
+         intent=getIntent();
+        if (intent.hasExtra("mobileType")){
+            mobileType = intent.getStringExtra("mobileType");
+            Log.e("mobileType",mobileType+"");
+        }
+        if (mobileType!=null) {
+            checkisMobileOrTablet();
+        }
 
 //        component.initData(dimensionData, new Pair<>(R.drawable.huaweiy9, R.drawable.huaweiy9_2));
 
         cover = (CoverView) component.getComponentView(R.id.cover);
         accessoriesView = (AccessoriesView) component.getComponentView(R.id.accessories);
+
+        objectView = (ObjectView) component.getComponentView(R.id.component);
 //        accessoriesView.setData(R.drawable.huaweiy9_2);
     }
 
+    public void checkisMobileOrTablet(){
+
+        if (mobileType.equals(Constants.MOBLIE_TYPE)){
+            dimensionData = new DimensionData(700, 1150, 690,
+                    1150, 60, 700,
+                    1150, 0, 0);
+
+        }else  if (mobileType.equals(Constants.TAbLET_TYPE)){
+            dimensionData = new DimensionData(1000, 1000, 1000-10,
+                    1000, 60, 1000,
+                    1000, 0, 0);
+        }
+    }
     public void pickFromGalleryAction() {
         pick_from_gallery_tv.setOnClickListener(v -> pickFromGallery());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void pickFromGallery() {
-
         if (ActivityCompat.checkSelfPermission(ComponentActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_STORAGE_READ_ACCESS_PERMISSION);
-
         } else {
             PhotoPicker.builder()
                     .setGridColumnCount(3)
@@ -216,77 +252,11 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
     }
 
 
-    public Bitmap loadBitmapFromView(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-        v.draw(c);
-        return b;
-    }
 
 
-    public void makeOrder(View view) {
-
-        if (cover.getDrawable()!=null) {
-            Bitmap bitmap = ((BitmapDrawable) cover.getDrawable()).getBitmap();
-
-//            currentBitmap = Bitmap.createBitmap(bitmap,
-//                    0, 0, bitmap.getWidth(),
-//                    bitmap.getHeight(), cover.getImageMatrix(), true);
-
-            currentBitmap = Bitmap.createBitmap(bitmap,
-                    0, 0, bitmap.getWidth(),
-                    bitmap.getHeight(), cover.getImageMatrix(), true);
 
 
-            mobileBitmap = loadBitmapFromView(component);
 
-//            Matrix inverse = new Matrix();
-//            cover.getImageMatrix().invert(inverse);
-//            inverse.mapPoints(pts);
-//            Log.e("inverseM",inverse+"");
-//
-//            Bitmap original = currentBitmap;
-//
-//            Bitmap adjusted = Bitmap.createBitmap(original.getWidth(),
-//                    original.getHeight(),
-//                    original.getConfig());
-//            Canvas canvas = new Canvas(adjusted);
-//            canvas.setMatrix(inverse);
-//            canvas.drawBitmap(original, 0, 0, null);
-
-
-            float rorationAngle = cover.getCurrentAngle();
-            float zoom = cover.getCurrentScale();
-
-            saveTempBitmap(mobileBitmap);
-
-            Log.i(TAG, String.format("Size (%d , %d) allMobile Size (%d , %d) current Rottion Angle %f and Zoom %f", currentBitmap.getWidth(), currentBitmap.getHeight()
-                    , mobileBitmap.getWidth(), mobileBitmap.getHeight(), rorationAngle, zoom));
-
-            getBitmab();
-        }
-    }
-
-    void getBitmab() {
-        Log.e("photo",photos.get(0));
-            File imgFile = new File(photos.get(0));
-        if (imgFile.exists()) {
-                final BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 8;
-                Bitmap bitmap = BitmapFactory.decodeFile(String.valueOf(imgFile), options);
-                bitmap=currentBitmap;
-                if (bitmap != null) {
-//                    mPresenter.returnUploadedImage(photos,imgFile);
-                    mPresenter.returnUploadedImage(photos,fileGeting);
-                }
-            }
-    }
-
-    @Override
-    public void returnUploadedImage(ImageUploadResponseModel imageUploadResponseModel) {
-        Log.e("imageName",imageUploadResponseModel.getFileName());
-    }
 
     private void initColorRecyclerView() {
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -304,26 +274,48 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
     }
 
     @Override
+    public void returnUploadedImageForMobile(ImageUploadResponseModel imageUploadResponseModel) {
+        Log.e("imageNameFromMobile",imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState()==5){
+//            ViewHelper.showProgressDialog(this);
+            mobileName=imageUploadResponseModel.getFileName();
+            mPresenter.returnUploadedImageForCover(photos, fileForCover);
+        }
+    }
+
+    @Override
+    public void returnUploadedImageForCover(ImageUploadResponseModel imageUploadResponseModel) {
+//        ViewHelper.hideProgressDialog();
+//        hideLoading();
+        Log.e("imageNameFromCover",imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState()==5){
+            coverName=imageUploadResponseModel.getFileName();
+            sendBitmapImage();
+        }
+    }
+
+    @Override
     public void onColorItemsClickFromAdapter( int position) {
-        cover.layout(0, 0, linear_container.getLayoutParams().width, linear_container.getLayoutParams().height);
-        accessoriesView.setData(null);
+//        cover.layout(0, 0, linear_container.getLayoutParams().width, linear_container.getLayoutParams().height);
+        objectView.setData(null);
         Log.e("position->>",position+"");
         if (position!=colorPosition) {
             Log.e("colorPosotion",colorPosition+"");
-            accessoriesView.setBackgroundColor(Color.parseColor("#"+General_Color.get(position)));
+            objectView.setBackgroundColor(Color.parseColor("#"+General_Color.get(position)));
             colorPosition=position;
         }
     }
 
     @Override
     public void onStyleItemsClickFromAdapter(int position) {
-        cover.setBackgroundColor(0x00000000);
-        cover.layout(0, 0, linear_container.getLayoutParams().width, linear_container.getLayoutParams().height);
+        objectView.setBackgroundColor(0x00000000);
+//        cover.layout(0, 0, linear_container.getLayoutParams().width, linear_container.getLayoutParams().height);
         String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
         Log.e("colorPosotion",stylePostion+"");
         Log.e("position",position+"");
         if (position!=stylePostion) {
-            accessoriesView.setData(imgName);
+//            accessoriesView.setData(imgName);
+            objectView.setData(imgName);
             stylePostion=position;
         }
     }
@@ -331,14 +323,17 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
 
 
     public void getData() {
-        Intent intent=getIntent();
+
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent.hasExtra("mobileImage")){
             mobileImage = intent.getStringExtra("mobileImage");
             mobileImageUrl="http://23.236.154.106:8063/UploadedImages/"+mobileImage;
-            component.initUrlData(dimensionData, new Pair<>( R.drawable.__picker_fixed_bg_for_mobile,mobileImageUrl));
+            component.initUrlData(dimensionData, new Pair<>( mobileImageUrl,mobileImageUrl));
+            objectView.setBackgroundColor(Color.parseColor("#cf878787"));
             Log.e("mobileImage",mobileImage+"");
+
         }
+
 
         if (args!=null) {
             General_Style = (ArrayList<Object>) args.getSerializable("General_Style");
@@ -347,79 +342,16 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
             Log.e("General_Color", General_Color + "");
         }
 
-        color_recyclerview.setVisibility(View.GONE);
+        color_recyclerview.setVisibility(View.VISIBLE);
+        styleBottomHolder.setBackground(getDrawable(R.drawable.background_selected_bordered));
+        initColorRecyclerView();
     }
 
     public void actionColorOrStyle(){
-        colorBottomHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorBgMobileAdapter!=null){
-                    colorBgMobileAdapter.notifyDataSetChanged();
-                }
-                color_recyclerview.setVisibility(View.VISIBLE);
-                colorOrStyleType=1;
-                if (General_Color!=null){
-                    initColorRecyclerView();
-                }
-            }
-        });
-
-        styleBottomHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorBgMobileAdapter!=null){
-                    colorBgMobileAdapter.notifyDataSetChanged();
-                }
-                color_recyclerview.setVisibility(View.VISIBLE);
-                colorOrStyleType=2;
-                if (General_Style!=null){
-                    initColorRecyclerView();
-                }
-            }
-        });
+        colorBottomHolder.setOnClickListener(v -> colorBottomClick());
+        styleBottomHolder.setOnClickListener(v -> styleBottomClick());
     }
 
-
-    public void saveTempBitmap(Bitmap bitmap) {
-        if (isExternalStorageWritable()) {
-            saveImage(bitmap);
-        }else{
-            //prompt the user or do something
-        }
-    }
-
-    private File saveImage(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fname = "Shutta_"+ timeStamp +".jpg";
-
-         fileGeting = new File(myDir, fname);
-        if (fileGeting.exists()) fileGeting.delete ();
-        try {
-            FileOutputStream out = new FileOutputStream(fileGeting);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-            Log.e("kljkjkjk",fileGeting+"");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fileGeting;
-    }
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
 
 
     public void measureImageDimensions(){
@@ -486,19 +418,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         });
     }
 
-    public Bitmap convertUrlToBitmap(String imgName){
-        Bitmap bitmap = null;
-        String drawableRes="http://23.236.154.106:8063/UploadedImages/"+imgName;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        try {
-            URL url = new URL(drawableRes);
-            bitmap=BitmapFactory.decodeStream((InputStream)url.getContent());
-        } catch (IOException e) {
-            //Log.e(TAG, e.getMessage());
-        }
-        return bitmap;
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -511,6 +431,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
             if (!General_Style.isEmpty())
                 General_Style.clear();
         }
+        finish();
     }
 
     @Override
@@ -524,4 +445,201 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView ,Co
         }
     }
 
+    public void replaceCOverImage(View view) {
+        styleBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+        colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+        replaceBottomHolder.setBackground(getDrawable(R.drawable.background_selected));
+        pickFromGallery();
+    }
+
+    public void colorBottomClick(){
+        styleBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+        colorBottomHolder.setBackground(getDrawable(R.drawable.background_selected));
+        replaceBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+        if (colorBgMobileAdapter!=null){
+            colorBgMobileAdapter.notifyDataSetChanged();
+        }
+        color_recyclerview.setVisibility(View.VISIBLE);
+        colorOrStyleType=1;
+        if (General_Color!=null){
+            initColorRecyclerView();
+        }
+    }
+
+    public void styleBottomClick(){
+        styleBottomHolder.setBackground(getDrawable(R.drawable.background_selected));
+        colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+        replaceBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+        if (colorBgMobileAdapter!=null){
+            colorBgMobileAdapter.notifyDataSetChanged();
+        }
+        color_recyclerview.setVisibility(View.VISIBLE);
+        colorOrStyleType=2;
+        if (General_Style!=null){
+            initColorRecyclerView();
+        }
+    }
+
+    public void submit(View view) {
+        if (cover.getDrawable() != null) {
+            Bitmap bitmap = ((BitmapDrawable) cover.getDrawable()).getBitmap();
+            currentBitmap = Bitmap.createBitmap(bitmap,
+                    0, 0, bitmap.getWidth(),
+                    bitmap.getHeight(), cover.getImageMatrix(), true);
+
+            mobileBitmap = loadBitmapFromView(component);
+
+            float rorationAngle = cover.getCurrentAngle();
+            float zoom = cover.getCurrentScale();
+
+
+//            saveTempBitmapForMobile(BitmapUtils.scaleDown(mobileBitmap, 1000, true));
+            saveTempBitmapForMobile(mobileBitmap);
+            saveTempBitmapForCover(currentBitmap);
+
+            Log.i(TAG, String.format("Size (%d , %d) allMobile Size (%d , %d) current Rottion Angle %f and Zoom %f", currentBitmap.getWidth(), currentBitmap.getHeight()
+                    , mobileBitmap.getWidth(), mobileBitmap.getHeight(), rorationAngle, zoom));
+
+//            sendBitmapImage();
+
+            if (photos != null && fileForMobile != null) {
+                mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
+            }else {
+                Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public  void saveTempBitmapForMobile(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForMobile(bitmap);
+        }else{
+            //prompt the user or do something
+        }
+    }
+
+//    @Override
+//    public void showLoadingFragment() {
+//        super.showLoadingFragment();
+//    }
+
+    @Override
+    public void showLoading() {
+        super.showLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+    }
+
+    public  void saveTempBitmapForCover(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForCover(bitmap);
+        }else{
+            //prompt the user or do something
+        }
+    }
+
+    public  File saveImageForMobile(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images");
+        myDir.mkdirs();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//         filename = "Shutta_"+ timeStamp +".jpg";
+         filename = timeStamp +".jpg";
+
+        fileForMobile = new File(myDir, filename);
+
+        if (fileForMobile.exists()) fileForMobile.delete ();
+        try {
+            FileOutputStream out= new FileOutputStream(fileForMobile);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            Log.e("fileGetting", fileForMobile +"");
+//            saveImageForMobileForSending(finalBitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForMobile;
+    }
+
+    public  File saveImageForCover(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images2");
+        myDir.mkdirs();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//         filename = "Shutta_"+ timeStamp +".jpg";
+        filename = timeStamp +".jpg";
+
+        fileForCover = new File(myDir, filename);
+
+        if (fileForCover.exists()) fileForCover.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForCover);
+//            FileOutputStream out = this.openFileOutput(filename , Context.MODE_PRIVATE);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+//            mobileBitmap.recycle();
+            Log.e("fileGetting", fileForCover +"");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForCover;
+    }
+
+
+    /* Checks if external storage is available for read and write */
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Bitmap loadBitmapFromView(View v) {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(b);
+//        Paint q = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        canvas.drawColor(Color.TRANSPARENT);
+        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+//        v.setLayerType(LAYER_TYPE_HARDWARE, q);
+        v.draw(canvas);
+        return b;
+    }
+
+    public void imageToSend(){
+        try {
+            FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
+            mobileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            stream.close();
+            mobileBitmap.recycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendBitmapImage(){
+        initColorRecyclerView();
+        if (colorBgMobileAdapter!=null) {
+            color_recyclerview.setAdapter(colorBgMobileAdapter);
+        }
+        imageToSend();
+        Intent intent = new Intent(this, ShippingMobileActivity.class);
+        intent.putExtra("image", filename);
+        intent.putExtra("mobileName", mobileName);
+        intent.putExtra("coverName", coverName);
+        startActivity(intent);
+    }
 }

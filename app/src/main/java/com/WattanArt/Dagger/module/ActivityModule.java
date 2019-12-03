@@ -24,6 +24,9 @@ import com.WattanArt.ui.EditProfile.EditProfilePresenterImp;
 import com.WattanArt.ui.FAQ.FAQMvpPresenterImp;
 import com.WattanArt.ui.FAQ.FAQMvpView;
 import com.WattanArt.ui.FAQ.FAQMvpViewPresenter;
+import com.WattanArt.ui.FlashMemory.FlashMemoryMvpPresenter;
+import com.WattanArt.ui.FlashMemory.FlashMemoryMvpView;
+import com.WattanArt.ui.FlashMemory.FlashMemoryPresenterImp;
 import com.WattanArt.ui.HomeFragment.HomeMvpPresenter;
 import com.WattanArt.ui.HomeFragment.HomeMvpView;
 import com.WattanArt.ui.HomeFragment.HomePresenterImp;
@@ -44,6 +47,9 @@ import com.WattanArt.ui.Setting.SettingPresenterImp;
 import com.WattanArt.ui.Shipping.ShippingMvpView;
 import com.WattanArt.ui.Shipping.ShippingPresenter;
 import com.WattanArt.ui.Shipping.ShippingPresenterMvp;
+import com.WattanArt.ui.ShippingForMobile.ShippingMobileMvpPresenter;
+import com.WattanArt.ui.ShippingForMobile.ShippingMobileMvpView;
+import com.WattanArt.ui.ShippingForMobile.ShippingMobilePresenterImp;
 import com.WattanArt.ui.getFreeCredit.GetFreeCreditPresenter;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCredit;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCreditPresenter;
@@ -333,4 +339,17 @@ public class ActivityModule {
         return presenter;
     }
 
+    @Provides
+    @PerActivity
+    FlashMemoryMvpPresenter<FlashMemoryMvpView> flashMemoryMvpViewMobilePresenterMvp(
+            FlashMemoryPresenterImp<FlashMemoryMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    ShippingMobileMvpPresenter<ShippingMobileMvpView> shippingMobileMvpViewMobilePresenterMvp(
+            ShippingMobilePresenterImp<ShippingMobileMvpView> presenter) {
+        return presenter;
+    }
 }

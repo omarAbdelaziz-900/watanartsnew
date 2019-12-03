@@ -6,5 +6,6 @@ import com.WattanArt.model.Response.SelectCountryCitiyListsResponseModel;
 import com.WattanArt.ui.base.MvpView;
 
 public interface MobileMvpView extends MvpView {
-   void returnUploadedImage(ImageUploadResponseModel imageUploadResponseModel);
+   void returnUploadedImageForMobile(ImageUploadResponseModel imageUploadResponseModel);
+   void returnUploadedImageForCover(ImageUploadResponseModel imageUploadResponseModel);
 }

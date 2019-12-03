@@ -157,6 +157,7 @@
             android:layout_height="35dp"
             android:layout_gravity="start"
             android:layout_marginStart="@dimen/_24sdp"
+            android:layout_marginEnd="@dimen/_24sdp"
             android:layout_marginTop="30dp"
             android:text="@string/choose_what"
             android:textAllCaps="false"
@@ -173,8 +174,8 @@
 
             <LinearLayout
                 android:id="@+id/constraintLayout"
-                android:layout_marginStart="@dimen/_14sdp"
-                android:layout_marginEnd="@dimen/_14sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="1"
@@ -187,13 +188,14 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:id="@+id/tablou_relativelayout"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_80sdp" >
+                    android:layout_height="@dimen/_90sdp" >
 
                     <ImageView
                         android:id="@+id/myImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_80sdp"
-                        android:src="@color/yellow" />
+                        android:layout_height="@dimen/_90sdp"
+                        android:src="@drawable/tablou_pic"
+                        android:scaleType="fitXY"/>
 
                     <com.WattanArt.Utils.widgets.CustomeTextViewBold
                         android:id="@+id/tablou_txt"
@@ -236,7 +238,7 @@
                         <ImageView
                             android:id="@+id/myImageView_firstItem"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_80sdp"
+                            android:layout_height="@dimen/_90sdp"
                             android:scaleType="fitXY" />
 
                         <com.WattanArt.Utils.widgets.CustomeTextViewBold
@@ -277,9 +279,8 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/_4sdp"
-                android:paddingEnd="@dimen/_12sdp"
                 android:scrollbars="vertical"
+                android:layout_marginStart="@dimen/_10sdp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
 

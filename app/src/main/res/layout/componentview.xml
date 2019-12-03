@@ -1,65 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
-
-<android.support.constraint.ConstraintLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/constraintLayout"
->
+    android:id="@+id/constraintLayout"
+    >
     <com.WattanArt.artcomponent.ObjectView
-            android:id="@+id/component"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        android:id="@+id/component"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
+    <com.WattanArt.artcomponent.CoverView
+        android:id="@+id/cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@+id/component"
+        app:layout_constraintTop_toTopOf="@+id/component"
+        />
     <!--<com.WattanArt.artcomponent.CoverView-->
-        <!--android:id="@+id/cover"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/component"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/component"-->
-        <!--/>-->
+    <!--android:id="@+id/cover"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/component"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/component"-->
+    <!--/>-->
     <com.WattanArt.artcomponent.AccessoriesView
-            android:id="@+id/accessories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        android:id="@+id/accessories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
-        android:scaleType="fitXY"
-    />
+        />
     <ImageView
-            android:id="@+id/error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/stat_notify_error"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/component"
-            app:layout_constraintEnd_toEndOf="@+id/component"
-            app:layout_constraintTop_toTopOf="@+id/component"
-            app:layout_constraintBottom_toBottomOf="@+id/component"
-    />
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/stat_notify_error"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/component"
+        app:layout_constraintEnd_toEndOf="@+id/component"
+        app:layout_constraintTop_toTopOf="@+id/component"
+        app:layout_constraintBottom_toBottomOf="@+id/component"
+        />
 </android.support.constraint.ConstraintLayout>
 
-<com.WattanArt.artcomponent.CoverView
-android:id="@+id/cover"
-android:layout_width="0dp"
-android:layout_height="0dp"
-android:layout_centerInParent="true"
-    />
 
-</RelativeLayout>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<RelativeLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--   >-->
+
+<!--<android.support.constraint.ConstraintLayout-->
+
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/constraintLayout"-->
+<!--&gt;-->
+<!--    <com.WattanArt.artcomponent.ObjectView-->
+<!--            android:id="@+id/component"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Hello World!"-->
+<!--            android:scaleType="fitXY"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"/>-->
+
+<!--    &lt;!&ndash;<com.WattanArt.artcomponent.CoverView&ndash;&gt;-->
+<!--        &lt;!&ndash;android:id="@+id/cover"&ndash;&gt;-->
+<!--        &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;app:layout_constraintStart_toStartOf="@+id/component"&ndash;&gt;-->
+<!--        &lt;!&ndash;app:layout_constraintTop_toTopOf="@+id/component"&ndash;&gt;-->
+<!--        &lt;!&ndash;/>&ndash;&gt;-->
+<!--    <com.WattanArt.artcomponent.AccessoriesView-->
+<!--            android:id="@+id/accessories"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+
+<!--        android:scaleType="fitXY"-->
+<!--    />-->
+<!--    <ImageView-->
+<!--            android:id="@+id/error"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@android:drawable/stat_notify_error"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/component"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/component"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/component"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/component"-->
+<!--    />-->
+<!--</android.support.constraint.ConstraintLayout>-->
+
+<!--<com.WattanArt.artcomponent.CoverView-->
+<!--android:id="@+id/cover"-->
+<!--android:layout_width="0dp"-->
+<!--android:layout_height="0dp"-->
+<!--android:layout_centerInParent="true"-->
+<!--    />-->
+
+<!--</RelativeLayout>-->

@@ -176,6 +176,8 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
 
     String currency;
 
+    int patternId;
+    double insidePrice ,outsidePrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,6 +276,9 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
                             imageModel.setMainImageWidth(imageWidth);
                             imageModel.setImageHeight(imageHeight);
                             imageModel.setImageWidth(imageWidth);
+
+
+
                             imageModel.setQuantity(1);
                             imageModel.setSegmented(false);
                             imageModel.setPath(path);
@@ -287,6 +292,8 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
                                     try {
                                         int finalPosition = position;
 
+                                        setRatioFromWidthAndHeight(position);
+
                                         BitmapLoadUtils.decodeBitmapInBackground(ShippingActivity.this,
                                                 imageModelList.get(finalPosition).getUri(),
                                                 imageModelList.get(finalPosition).getUri(),
@@ -299,6 +306,8 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
                                                                                @NonNull String imageInputPath,
                                                                                @Nullable String imageOutputPath) {
 
+                                                        patternId=imageModelList.get(finalPosition).getTypePatternId();
+                                                        Log.e("patternIddd",patternId+"");
                                                         final double factorHeight = ((double) imageModelList.get(finalPosition).getMainImageHeight()) / ((double) bitmap.getHeight());
                                                         final double factorWidth = ((double) imageModelList.get(finalPosition).getMainImageWidth()) / ((double) bitmap.getWidth());
 
@@ -467,6 +476,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
 
             try {
                 index = data.getIntExtra(Constants.EXTRA_INDEX, 0);
+                patternId=imageModelList.get(index).getTypePatternId();
                 if (imageModelList.get(index) == null) {
                     //this image is deleted from the EditImageActivity
                     imageModelList.remove(index);
@@ -488,6 +498,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
             if (data != null) {
                 ArrayList<String> photos =
                         data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                patternId=imageModelList.get(index).getTypePatternId();
                 if (replaceImage) {
                     replaceImage = false;
 
@@ -604,6 +615,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
                 }
             }
         } else if (requestCode == OPEN_REGISTERATION_CODE && resultCode == RESULT_OK) {
+            patternId=imageModelList.get(index).getTypePatternId();
             if (couponEditText.getText().toString().isEmpty()){
                 // no copoun code used
                 hasCouponChecked=true;
@@ -615,6 +627,8 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
             }
 //            completeOrder();
         }
+
+//        setRatioFromWidthAndHeight();
     }
 
 
@@ -716,30 +730,14 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
                         getDiscountRate())) / Double.valueOf(100);
 
 
-                if (adapter.getPiecesNumber() == 3) {
-                    double mainPrice;
-                    if (isInEgypt) {
-                        mainPrice = pattenList.getPrices().getLocal3PiecePrice();
-                    } else {
-                        mainPrice = pattenList.getPrices().getWorld3PiecePrice();
-                    }
-                    priceTextView.setText(getString(R.string.price_item_1) + " " + mainPrice * afterDiscountRate + " " + currency);
-                } else if (adapter.getPiecesNumber() > 3) {
-                    double mainPrice;
-                    if (isInEgypt) {
-                        mainPrice = (adapter.getPiecesNumber() - 3) * pattenList.getPrices().getLocalPiecePrice() + pattenList.getPrices().getLocal3PiecePrice();
-                    } else {
-                        mainPrice = (adapter.getPiecesNumber() - 3) * pattenList.getPrices().getWorldPiecePrice() + pattenList.getPrices().getWorld3PiecePrice();
-                    }
-                    priceTextView.setText(getString(R.string.price_item_1) + " " + mainPrice * afterDiscountRate + " " + currency);
-                } else {
-                    if (isInEgypt) {
-                        priceTextView.setText(getString(R.string.price_item_1) + " " + adapter.getPiecesNumber() *
-                                pattenList.getPrices().getLocalPiecePrice() * afterDiscountRate + " " + currency);
-                    } else {
-                        priceTextView.setText(getString(R.string.price_item_1) + " " + adapter.getPiecesNumber() *
-                                pattenList.getPrices().getWorldPiecePrice() * afterDiscountRate + " " + currency);
-                    }
+                if (adapter == null || pattenList == null)
+                    return;
+
+                if (pattenList.getPatternType()!=null){
+
+                    int finalPrice =adapter.getPiecesNumber()*getprice();
+                    priceTextView.setText(getString(R.string.price_item_1) + " " + adapter.getPiecesNumber() *
+                            finalPrice * afterDiscountRate + " " + currency);
                 }
             }
         } else {
@@ -1022,41 +1020,17 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
         checkShippingPrice();
     }
 
+
     private void checkShippingPrice() {
         if (adapter == null || pattenList == null)
             return;
 
-        if (adapter.getPiecesNumber() == 3) {
-            double mainPrice;
-            if (isInEgypt) {
-                mainPrice = pattenList.getPrices().getLocal3PiecePrice();
-            } else {
-                mainPrice = pattenList.getPrices().getWorld3PiecePrice();
-            }
-            mainPriceHolder = mainPrice;
-            priceTextView.setText(getString(R.string.price_item_1) + " " + mainPrice + " " + currency);
-        } else if (adapter.getPiecesNumber() > 3) {
-            double mainPrice;
-            if (isInEgypt) {
-                mainPrice = (adapter.getPiecesNumber() - 3) * pattenList.getPrices().getLocalPiecePrice() + pattenList.getPrices().getLocal3PiecePrice();
-            } else {
-                mainPrice = (adapter.getPiecesNumber() - 3) * pattenList.getPrices().getWorldPiecePrice() + pattenList.getPrices().getWorld3PiecePrice();
-            }
-            mainPriceHolder = mainPrice;
-            priceTextView.setText(getString(R.string.price_item_1) + " " + mainPrice + " " + currency);
-        } else {
-            if (isInEgypt) {
-//                mainPriceHolder = adapter.getPiecesNumber() * pattenList.getPrices().getLocalPiecePrice();
-//                priceTextView.setText(getString(R.string.price_item_1) + " " + adapter.getPiecesNumber() * pattenList.getPrices().getLocalPiecePrice() + " " + getString(R.string.price_item_2));
-                mainPriceHolder = pattenList.getPrices().getLocal3PiecePrice();
-                priceTextView.setText(getString(R.string.price_item_1) + " " + mainPriceHolder + " " + currency);
-            } else {
-//                mainPriceHolder = adapter.getPiecesNumber() * pattenList.getPrices().getWorldPiecePrice();
-//                priceTextView.setText(getString(R.string.price_item_1) + " " + adapter.getPiecesNumber() * pattenList.getPrices().getWorldPiecePrice() + " " + getString(R.string.price_item_2));
-                mainPriceHolder = pattenList.getPrices().getWorld3PiecePrice();
-                priceTextView.setText(getString(R.string.price_item_1) + " " + mainPriceHolder + " " + currency);
-            }
+        if (pattenList.getPatternType()!=null){
+
+            int finalPrice =adapter.getPiecesNumber()*getprice();
+            priceTextView.setText(getString(R.string.price_item_1) + " " + finalPrice + " " + currency);
         }
+
         if (isCouponCodeApplied) {
             applyCouponCode(true);
         }
@@ -1223,5 +1197,119 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void setRatioFromWidthAndHeight(int index){
+        if (imageModelList.get(index).getMainImageHeight() == imageModelList.get(index).getMainImageWidth()) {
+            imageModelList.get(index).setCurrentRatio(20f/20f);
+            imageModelList.get(index).setTypePatternId(1);
+
+        } else if (imageModelList.get(index).getMainImageHeight() > imageModelList.get(index).getMainImageWidth()) {
+
+            if (imageModelList.get(index).getMainImageHeight() >= 600 && imageModelList.get(index).getMainImageWidth() >= 600 &&
+                    (((float) imageModelList.get(index).getMainImageHeight()) / 1.5f) >= 600) {
+                imageModelList.get(index).setCurrentRatio(20f / 30f);
+                imageModelList.get(index).setTypePatternId(2);
+            } else {
+                imageModelList.get(index).setTypePatternId(1);
+                imageModelList.get(index).setCurrentRatio(20f/20f);
+            }
+
+        } else if (imageModelList.get(index).getMainImageHeight() < imageModelList.get(index).getMainImageWidth()) {
+
+            if (imageModelList.get(index).getMainImageHeight() >= 600 && imageModelList.get(index).getMainImageWidth() >= 600 &&
+                    (((float) imageModelList.get(index).getMainImageWidth()) / 1.5f) >= 600) {
+                imageModelList.get(index).setCurrentRatio(30f / 20f);
+                imageModelList.get(index).setTypePatternId(3);
+            } else {
+                imageModelList.get(index).setTypePatternId(1);
+                imageModelList.get(index).setCurrentRatio(20f/20f);
+            }
+
+        } else {
+            imageModelList.get(index).setTypePatternId(1);
+            imageModelList.get(index).setCurrentRatio(20f/20f);
+        }
+
+        Log.e("ratioImageModelList",imageModelList.get(index).getCurrentRatio()+"");
+    }
+
+    public int getprice( ){
+        int price = 0;
+        if (patternId==1){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(0).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(0).getOutPrice();
+            }
+        }else if (patternId==2){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(1).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(1).getOutPrice();
+            }
+        }else if (patternId==3){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(2).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(2).getOutPrice();
+            }
+        }else if (patternId==4){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(3).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(3).getOutPrice();
+            }
+        }else if (patternId==5){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(4).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(4).getOutPrice();
+            }
+        }else if (patternId==6){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(5).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(5).getOutPrice();
+            }
+        }else if (patternId==7){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(6).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(6).getOutPrice();
+            }
+        }else if (patternId==8){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(7).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(7).getOutPrice();
+            }
+        }else if (patternId==9){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(8).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(8).getOutPrice();
+            }
+        }else if (patternId==10){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(9).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(9).getOutPrice();
+            }
+        }else if (patternId==11){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(10).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(10).getOutPrice();
+            }
+        }else if (patternId==12){
+            if (isInEgypt) {
+                price = pattenList.getPatternType().get(11).getPrice();
+            }else {
+                price = pattenList.getPatternType().get(11).getOutPrice();
+            }
+        }
+        Log.e("ppppp",patternId+"");
+        return price;
     }
 }

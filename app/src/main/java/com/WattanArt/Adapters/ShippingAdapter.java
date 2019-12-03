@@ -372,6 +372,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         holder.replace.setOnClickListener(view -> {
             onReplaceOnImage.onOneImageReplaced(position);
         });
+
     }
 
 
@@ -385,90 +386,18 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 
         for (int i = 0; i < ShippingActivity.imageModelList.size(); i++) {
             Pair<Integer, Integer> piece = pairPieces[(int) ShippingActivity.imageModelList.get(i).getCurrentRatioIndex()];
-            pieces += (piece.first+1) * (piece.second+1) *  ShippingActivity.imageModelList.get(i).getQuantity();
+//            pieces += (piece.first+1) * (piece.second+1) *  ShippingActivity.imageModelList.get(i).getQuantity();
+            pieces += ShippingActivity.imageModelList.get(i).getQuantity();
         }
-//        for (ImageModel imageModel : ShippingActivity.imageModelList) {
 
-//            if (imageModel.getCurrentRatio() == 0) {
-
-//                pieces += 1 * imageModel.getQuantity();
-//
-//            } else {
-//
-//                if (imageModel.getCurrentRatio() == ratios[0] || imageModel.getCurrentRatio() == ratios[1] || imageModel.getCurrentRatio() == ratios[2]) {
-//                    pieces += 1 * imageModel.getQuantity();
-//                } else {
-//                    pieces += 3 * imageModel.getQuantity();
-//                }
-//
-//            }
-//        }
-
-        Log.e("Pieces", "" + pieces);
+        Log.e("PiecesFromAdapter", "" + pieces);
         getNewpieces.returnPrice(pieces);
         return pieces;
     }
 
-//    private double getPatternPrice(float ratio, List<SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity> pattenList, int quantity) {
-//
-//        double price = 0d;
-//        this.pattenList = pattenList;
-//        if (ratio == ratios[0]) {
-//            for (SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity patternTypeEntity : pattenList) {
-//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x8")) {
-//                    price = patternTypeEntity.getPrice() * quantity;
-//                    break;
-//                }
-//            }
-//        } else if (ratio == ratios[1]) {
-//            for (SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity patternTypeEntity : pattenList) {
-//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x12")) {
-//                    price = patternTypeEntity.getPrice() * quantity;
-//                    break;
-//                }
-//            }
-//        } else if (ratio == ratios[2]) {
-//            for (SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity patternTypeEntity : pattenList) {
-//                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x8")) {
-//                    price = patternTypeEntity.getPrice() * quantity;
-//                    break;
-//                }
-//            }
-//        } else if (ratio == ratios[3]) {
-//            for (SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity patternTypeEntity : pattenList) {
-//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x24")) {
-//                    price = patternTypeEntity.getPrice() * quantity;
-//                    break;
-//                }
-//            }
-//        } else if (ratio == ratios[4]) {
-//            for (SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity patternTypeEntity : pattenList) {
-//                if (patternTypeEntity.getPatternText().toLowerCase().equals("12x24")) {
-//                    price = patternTypeEntity.getPrice() * quantity;
-//                    break;
-
-//                }
-//            }
-//        } else if (ratio == ratios[5]) {
-//            for (SelectCountryCitiyListsResponseModel.ResultEntity.PatternTypeEntity patternTypeEntity : pattenList) {
-//                if (patternTypeEntity.getPatternText().toLowerCase().equals("8x36")) {
-//                    price = patternTypeEntity.getPrice() * quantity;
-//                    break;
-//                }
-//            }
-//        }
-//
-//        return price;
-//    }
 
     public double CalculatePrice() {
         double price = 0d;
-//        if (pattenList != null) {
-//            for (ImageModel imageModel : ShippingActivity.imageModelList) {
-//                double retur = getPatternPrice(imageModel.getCurrentRatio(), pattenList, imageModel.getQuantity());
-//                price += retur;
-//            }
-//        }
 
         if (getNewPrice != null) {
             getNewPrice.returnPrice(price);
@@ -506,51 +435,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
                 width = ratioDimensions.getWidth();
             }
         }
-/*
-        int widthMode = View.MeasureSpec.getMode(imageViewUpdated.getWidth());
-        int widthSize = View.MeasureSpec.getSize(imageViewUpdated.getWidth());
-        int heightMode = View.MeasureSpec.getMode(imageViewUpdated.getHeight());
-        int heightSize = View.MeasureSpec.getSize(imageViewUpdated.getHeight());
-        int heightWindow = displayMetrics.heightPixels;
-        int widthWindow = displayMetrics.widthPixels;
 
-        Log.e(ShippingAdapter.class.getSimpleName(), "MeasureSpec:: widthWindow:" + String.valueOf(widthWindow) + ", heightWindow:" + String.valueOf(heightWindow));
-
-        if (heightSize > (heightWindow / 6f))
-            heightSize = (int) (heightWindow / 5.5f);
-
-        //Measure Height
-        if (heightMode == View.MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = Math.min((int) (heightSize * mTargetAspectRatio), widthSize);
-            height = Math.min((int) (width / mTargetAspectRatio), heightSize);
-        } else if (heightMode == View.MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = Math.min((int) (heightSize * mTargetAspectRatio), widthSize);
-            height = Math.min((int) (width / mTargetAspectRatio), heightSize);
-        } else {
-            //Be whatever you want
-            height = desiredHeight;
-        }
-
-        //Measure Width
-        if (widthMode == View.MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = widthSize;
-        } else if (widthMode == View.MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = Math.min((int) (height * mTargetAspectRatio), widthSize);
-            if (width == widthSize) {
-                height = Math.min((int) (width / mTargetAspectRatio), heightSize);
-            } else {
-                height = heightSize;
-            }
-        } else {
-            //Be whatever you want
-            width = (int) (height * mTargetAspectRatio);
-        }
-//
-*/
         Log.e(ShippingAdapter.class.getSimpleName(), "MeasureSpec:: width:" + String.valueOf(width) + ", height:" + String.valueOf(height));
         //MUST CALL THIS
         imageViewUpdated.getLayoutParams().height = height;

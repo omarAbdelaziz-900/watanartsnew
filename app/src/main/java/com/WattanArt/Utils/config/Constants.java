@@ -30,6 +30,9 @@ public class Constants {
     public static final String LinkTOShare = "http://watanarts.com/";
 
 
+    public static final String MOBLIE_TYPE = "1";
+    public static final String TAbLET_TYPE = "2";
+
     public static final int FB_LOGIN = 1;
     public static final int TWITTER_LOGIN = 2;
 

@@ -19,8 +19,16 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.EditDesign.EditDesignActivity"></activity>
-        <activity android:name=".ui.Category.CategoryActivity"
+        <activity android:name=".ui.ShippingForMobile.ShippingMobileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"/>
+        <activity
+            android:name=".ui.FlashMemory.FlashMemoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity android:name=".ui.EditDesign.EditDesignActivity" />
+        <activity
+            android:name=".ui.Category.CategoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar" /> <!-- Watan Art Activities -->
         <meta-data

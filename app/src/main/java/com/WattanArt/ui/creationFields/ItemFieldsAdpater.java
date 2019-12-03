@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.WattanArt.R;
 import com.WattanArt.Utils.SharedPrefTool.PreferenceHelper;
@@ -22,6 +23,7 @@ import com.WattanArt.Utils.config.Constants;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.model.Response.HomeIntroResponseModel;
 import com.WattanArt.ui.Category.CategoryActivity;
+import com.WattanArt.ui.FlashMemory.FlashMemoryActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -42,7 +44,7 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
     protected ItemListener mListener;
     Context mContext;
 
-//    HomeIntroResponseModel.ResultBean.CategoryBean item;
+//    HomeIntroResponseModel.Result.CategoryBean item;
 
     int itemPosition;
     @NonNull
@@ -81,11 +83,22 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, CategoryActivity.class);
-                intent.putExtra("catId",item.getCat_ID());
-                mContext.startActivity(intent);
-                if (mListener != null) {
-                    mListener.onItemClick(item,position);
+
+                if (position == 0) {
+                    Intent intent = new Intent(mContext, FlashMemoryActivity.class);
+//                    intent.putExtra("catId", item.getCat_ID());
+                    mContext.startActivity(intent);
+                } else {
+                    if (position == 1 || position == 2) {
+                        Toast.makeText(mContext, "Comming Soon", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(mContext, CategoryActivity.class);
+                        intent.putExtra("catId", item.getCat_ID());
+                        mContext.startActivity(intent);
+                        if (mListener != null) {
+                            mListener.onItemClick(item, position);
+                        }
+                    }
                 }
             }
         });

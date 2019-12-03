@@ -290,6 +290,7 @@ public class EditImageActivity extends AppCompatActivity implements
             onBackPressed();
         });
 
+        Log.e("onCReatte","onCReatte");
 
         CustomeTextViewBold mToolbarTitleTextView = findViewById(R.id.toolbar_tv_title);
         mToolbarTitleTextView.setText(R.string.title_edit_images);
@@ -466,23 +467,22 @@ public class EditImageActivity extends AppCompatActivity implements
             Log.e("finalIndexx", finalIndex + "");
             Log.e("ratio_holderChildCount", ratio_holder.getChildCount() + "");
 
-            int finalIndex1 = index;
+//            int finalIndex1 = index;
 
             ratio_holder.getChildAt(index).setOnClickListener(view -> {
 
 
-                mainImageModel.setTypeOmarPattern(finalIndex + 1);
+                mainImageModel.setTypePatternId(finalIndex + 1);
 
-                Log.e("TypeOmarPattern", mainImageModel.getTypeOmarPattern() + "");
+                Log.e("TypeOmarPattern", mainImageModel.getTypePatternId() + "");
                 Log.e("finalIndexxInsideClick", finalIndex + "");
-
                 Log.e("currentRatioIndex4", currentRatioIndex + "");
 
 
-                if (finalIndex == currentRatioIndex) {
-                    Log.e("currentRatioIndex5",currentRatioIndex+"");
-                    return;
-                }
+//                if (finalIndex == currentRatioIndex) {
+//                    Log.e("currentRatioIndex5",currentRatioIndex+"");
+//                    return;
+//                }
 
 
                 currentRatioIndex = finalIndex;
@@ -494,6 +494,8 @@ public class EditImageActivity extends AppCompatActivity implements
                 if (finalIndex != 0) {
 //                    if (mainImageModel.getMainImageWidth() >= 1000 && mainImageModel.getMainImageHeight() >= 1000) {
                     if (mainImageModel.getMainImageWidth() >= 600 && mainImageModel.getMainImageHeight() >= 600) {
+
+
                         ratio_holder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected_bordered));
 
 //                        mGestureCropImageView.setTargetAspectRatio(0);
@@ -537,15 +539,10 @@ public class EditImageActivity extends AppCompatActivity implements
                             mGestureCropImageView.setImageToWrapCropBounds(true);
                         } ,50);
 
-                        //zoom out image to fit screen and no resolution issues occured
-//                        new Handler().postDelayed(() -> {
-//                            float currentScale = mGestureCropImageView.getCurrentScale();
-//                            mGestureCropImageView.zoomOutImage(0);
-//                            mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
-//                        }, 300);
-//                        if (ratios[finalIndex] != ratio) {
-//                            mGestureCropImageView.click();
-//                        }
+
+//                        float currentScale = mGestureCropImageView.getCurrentScale();
+//                        mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
+//                        mGestureCropImageView.zoomOutImage(currentScale);
 
                     } else {
                         Toast toast = Toast.makeText(this, getString(R.string.can_not_change_ratio), Toast.LENGTH_LONG);
@@ -1485,6 +1482,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
                     if (isSelectOneImage) {
 
+
                         Glide.with(EditImageActivity.this)
                                 .asBitmap()
                                 .load(photos.get(0))
@@ -1557,36 +1555,8 @@ public class EditImageActivity extends AppCompatActivity implements
 
                                         isFlip = false;
 
-                                        if (mainImageModel.getMainImageHeight() == mainImageModel.getMainImageWidth()) {
-                                            mainImageModel.setCurrentRatio(1f);
-                                            chooseCurrentSelectedRationBackground(1f);
+                                        setRatioFromWidthAndHeight();
 
-                                        } else if (mainImageModel.getMainImageHeight() > mainImageModel.getMainImageWidth()) {
-
-                                            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
-                                                    (((float) mainImageModel.getMainImageHeight()) / 1.5f) >= 600) {
-                                                mainImageModel.setCurrentRatio(8f / 12);
-                                                chooseCurrentSelectedRationBackground(8f / 12);
-                                            } else {
-                                                mainImageModel.setCurrentRatio(1f);
-                                                chooseCurrentSelectedRationBackground(1f);
-                                            }
-
-                                        } else if (mainImageModel.getMainImageHeight() < mainImageModel.getMainImageWidth()) {
-
-                                            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
-                                                    (((float) mainImageModel.getMainImageWidth()) / 1.5f) >= 600) {
-                                                mainImageModel.setCurrentRatio(12f / 8f);
-                                                chooseCurrentSelectedRationBackground(12f / 8f);
-                                            } else {
-                                                mainImageModel.setCurrentRatio(1f);
-                                                chooseCurrentSelectedRationBackground(1f);
-                                            }
-
-                                        } else {
-                                            mainImageModel.setCurrentRatio(1f);
-                                            chooseCurrentSelectedRationBackground(1f);
-                                        }
                                         ratio = mainImageModel.getCurrentRatio();
 
                                         Log.e("currentRatioIndex12", mainImageModel.getCurrentRatioIndex() + "");
@@ -1597,6 +1567,11 @@ public class EditImageActivity extends AppCompatActivity implements
                                         isSegmented = false;
                                         mainImageModel.setSegmented(isSegmented);
                                         moOverlayView.drawCropGrid(new Canvas());
+
+                                        moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
+                                        moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
+                                        chooseCurrentSelectedRationBackground(currentRatioIndex);
+//                                        moOverlayView.drawCropGrid(new Canvas());
 
                                         prepareImageFromShippingActivity(false);
                                     }
@@ -1653,7 +1628,6 @@ public class EditImageActivity extends AppCompatActivity implements
                 mainImageModel.setSaturation(saturation);
                 mainImageModel.setCurrentRatio(ratio);
                 mainImageModel.setCurrentRatioIndex(currentRatioIndex);
-
                 setResultUri(Uri.fromFile(new File(mainImageModel.getPath())));
             }
         }
@@ -1679,6 +1653,11 @@ public class EditImageActivity extends AppCompatActivity implements
         mDialog.findViewById(R.id.cancel_btn).setOnClickListener(v -> {
             mDialog.dismiss();
         });
+
+        mDialog.findViewById(R.id.close_popup).setOnClickListener(v -> {
+            mDialog.dismiss();
+        });
+
         mDialog.show();
 
     }
@@ -1993,6 +1972,40 @@ public class EditImageActivity extends AppCompatActivity implements
             } else {
                 mGestureCropImageView.setImageToWrapCropBounds();
             }
+        }
+    }
+
+    public void setRatioFromWidthAndHeight(){
+
+        if (mainImageModel.getMainImageHeight() == mainImageModel.getMainImageWidth()) {
+            mainImageModel.setCurrentRatio(20f/20f);
+            chooseCurrentSelectedRationBackground(20f/20f);
+
+        } else if (mainImageModel.getMainImageHeight() > mainImageModel.getMainImageWidth()) {
+
+            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
+                    (((float) mainImageModel.getMainImageHeight()) / 1.5f) >= 600) {
+                mainImageModel.setCurrentRatio(20f / 30f);
+                chooseCurrentSelectedRationBackground(20f / 30f);
+            } else {
+                mainImageModel.setCurrentRatio(20f/20f);
+                chooseCurrentSelectedRationBackground(20f/20f);
+            }
+
+        } else if (mainImageModel.getMainImageHeight() < mainImageModel.getMainImageWidth()) {
+
+            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
+                    (((float) mainImageModel.getMainImageWidth()) / 1.5f) >= 600) {
+                mainImageModel.setCurrentRatio(30f / 20f);
+                chooseCurrentSelectedRationBackground(30f / 20f);
+            } else {
+                mainImageModel.setCurrentRatio(20f/20f);
+                chooseCurrentSelectedRationBackground(20f/20f);
+            }
+
+        } else {
+            mainImageModel.setCurrentRatio(20f/20f);
+            chooseCurrentSelectedRationBackground(20f/20f);
         }
     }
 }

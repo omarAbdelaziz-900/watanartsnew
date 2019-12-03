@@ -187,7 +187,7 @@
  من فضلك قم بمشاركة هذا الكود لتحصل علي رصيد أكثر . </string>
 
     <string name="pick_from_gallery">Select image</string>
-    <string name="choose_what">Choose What you want to create</string>
+    <string name="choose_what">قم باختيار ما تريد انشاءه</string>
 
     <string name="my_account">My Account</string>
 
@@ -198,4 +198,5 @@
     <string name="category">Category</string>
 
     <string name="mobile_cover">Mobile Cover</string>
+    <string name="flash_memory">Flash Memory</string>
 </resources>

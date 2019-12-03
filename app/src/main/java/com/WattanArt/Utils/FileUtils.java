@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
 
 
@@ -17,6 +18,8 @@ import com.WattanArt.logging.Logger;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Android Team on 1/31/2018.
@@ -147,7 +150,6 @@ public class FileUtils {
         if(!file.isDirectory())
             file.delete();
     }
-
 
 
 }

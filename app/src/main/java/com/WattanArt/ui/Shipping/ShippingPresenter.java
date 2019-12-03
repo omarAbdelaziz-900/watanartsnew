@@ -81,7 +81,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-import static com.WattanArt.ui.EditImage.EditImageActivity.typeOmar;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
 import static com.WattanArt.ui.Shipping.ShippingActivity.OPEN_REGISTERATION_CODE;
 import static com.WattanArt.ui.Shipping.ShippingActivity.REQUEST_STORAGE_READ_ACCESS_PERMISSION;
@@ -104,7 +103,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 
 
     boolean isRemember = true;
-    List<SelectCountryCitiyListsResponseModel.Result.PatternType> patternTypeEntityList;
+    List<SelectCountryCitiyListsResponseModel.Result.PatternTypeBean> patternTypeEntityList;
     UserData userData = new UserData();
     ValidationTool validationTool = new ValidationTool(MyApplication.getAppContext());
 
@@ -149,22 +148,39 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 //            8f/8f
 //    };
 
+//    float[] ratios = new float[]{
+//            20f / 20f,//0
+//            20f / 30f,//1
+//            30f / 20f,//2
+//
+//            60f / 20f,//3
+//            60f / 30f,//4
+//            90f / 20f,//5
+//
+//            30f / 30f,//6
+//            40f / 30f,//7
+//            50f / 30f,//8
+//
+//            40f / 40f,//9
+//            60f / 60f,//10
+//            80f / 80f};//11
+
     float[] ratios = new float[]{
-            20f / 20f,//0
-            20f / 30f,//1
-            30f / 20f,//2
+            20f / 20f,
+            20f / 30f,
+            30f / 20f,
+            60f / 20f,
+            60f / 30f,
+            90f / 20f,
 
-            60f / 20f,//3
-            60f / 30f,//4
-            90f / 20f,//5
+            30f / 30f,
 
-            30f / 30f,//6
-            40f / 30f,//7
-            50f / 30f,//8
+            40f / 30f,
+            50f / 30f,
 
-            40f / 40f,//9
-            60f / 60f,//10
-            80f / 80f};//11
+            40f / 40f,
+            60f / 60f,
+            80f / 80f};
 
     EditText address, code, phone;
     int city, country, buyType;
@@ -849,11 +865,11 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
     public boolean checkOrderQuantity(List<ImageModel> imageModels) {
         int quantity = 0;
         for (ImageModel imageModel : imageModels) {
-            Log.e("TypePaternOrderQuantity",imageModel.getTypeOmarPattern()+"");
-            if ((imageModel.getCurrentRatio() == ratios[0] && (imageModel.getTypeOmarPattern()==1 || imageModel.getTypeOmarPattern() == 7))||
+            Log.e("TypePaternOrderQuantity",imageModel.getTypePatternId()+"");
+            if ((imageModel.getCurrentRatio() == ratios[0] && (imageModel.getTypePatternId()==1 || imageModel.getTypePatternId() == 7))||
                     imageModel.getCurrentRatio() == ratios[1] ||
                     imageModel.getCurrentRatio() == ratios[2]
-                    ||(imageModel.getCurrentRatio() == ratios[6] && imageModel.getTypeOmarPattern() == 7)
+                    ||(imageModel.getCurrentRatio() == ratios[6] && imageModel.getTypePatternId() == 7)
                     ||imageModel.getCurrentRatio() == ratios[7]
                     ||imageModel.getCurrentRatio() == ratios[8]) {
                 quantity += imageModel.getQuantity();
@@ -992,7 +1008,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 //        return id;
 //    }
 
-    private int getPatternId(float ratio, List<SelectCountryCitiyListsResponseModel.Result.PatternType> pattenList,int type) {
+    private int getPatternId(float ratio, List<SelectCountryCitiyListsResponseModel.Result.PatternTypeBean> pattenList,int type) {
 
         int id = 0;
 
@@ -1004,6 +1020,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 //                    break;
 //                }
 //            }
+
         } else if (ratio == ratios[1]&& type==2) {
             id = 2;
 //            for (SelectCountryCitiyListsResponseModel.Result.PatternType patternTypeEntity : pattenList) {
@@ -1094,7 +1111,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
 //                }
 //            }
         }
-
+        Log.e("ididid",id+"");
         return id;
     }
 
@@ -1324,7 +1341,10 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                         try {
                             OrderDetailsItem orderDetailsItems = new OrderDetailsItem();
                             orderDetailsItems.setMainImage(response.body().getFileName());
-                            orderDetailsItems.setPatternID(getPatternId(imageModels.get(orderDetailsItemsIndex).getCurrentRatio(), patternTypeEntityList,imageModels.get(orderDetailsItemsIndex).getTypeOmarPattern()));
+//                            orderDetailsItems.setPatternID(getPatternId(imageModels.get(orderDetailsItemsIndex).getCurrentRatio(), patternTypeEntityList,imageModels.get(orderDetailsItemsIndex).getTypePatternId()));
+                            orderDetailsItems.setPatternID(imageModels.get(orderDetailsItemsIndex).getTypePatternId());
+                            Log.e("patternIdFromPresenter",imageModels.get(orderDetailsItemsIndex).getTypePatternId()+"");
+                            Log.e("ratioFromPresenter",imageModels.get(orderDetailsItemsIndex).getCurrentRatio()+"");
                             orderDetailsItems.setQuantiy(imageModels.get(orderDetailsItemsIndex).getQuantity());
                             orderDetailsItemsList.add(orderDetailsItems);
                         } catch (Exception e) {

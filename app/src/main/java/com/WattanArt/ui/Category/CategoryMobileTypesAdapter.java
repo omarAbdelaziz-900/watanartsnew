@@ -3,6 +3,7 @@ package com.WattanArt.ui.Category;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,10 @@ public class CategoryMobileTypesAdapter extends RecyclerView.Adapter<CategoryMob
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+        int pxWidth = displayMetrics.widthPixels;
+        Log.e("pxWidth",pxWidth+"");
+        holder.card_view_parent.setMinimumWidth(pxWidth/2);
 //        if (mobileType==1){
             final  CategoryMobileRsponseModel.ResultBean.ItemsBean result=categoryItemModels.get(position);
 
