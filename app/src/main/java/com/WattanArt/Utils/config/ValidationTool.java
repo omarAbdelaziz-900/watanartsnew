@@ -130,6 +130,55 @@ public class ValidationTool {
     }
 
 
+    public boolean validatePhone( Context context ,EditText editText) {
+
+
+        String content = editText.getText().toString();
+        String splitContent;
+        if (isNotEmpty(content)) {
+
+            if (content.length()==2){
+                if (!content.startsWith("0")){
+                    editText.setError(context.getResources().getString(R.string.invalid_phone_start));
+                    return false;
+                }else if (content.startsWith("0")&& content.length()<11){
+                    editText.setError(context.getResources().getString(R.string.invalid_phone_egypt));
+                    return false;
+                }else if (content.startsWith("00")&& content.length()==11){
+                    editText.setError(context.getResources().getString(R.string.invalid_phone_out));
+                    return false;
+                }else {
+                    return true;
+                }
+            }else if (content.length()>2) {
+                if ( content.length() == 11) {
+                    if (content.startsWith("0")) {
+                        return true;
+                    }else {
+                        editText.setError(context.getResources().getString(R.string.invalid_phone_start_with_0));
+                        return false;
+                    }
+                } else if (content.length() > 11) {
+                    if (content.startsWith("00")) {
+                        return true;
+                    }else {
+                        editText.setError(context.getResources().getString(R.string.invalid_phone_start_with_00));
+                        return false;
+                    }
+                }else {
+                    editText.setError(context.getResources().getString(R.string.invalid_phone));
+                    return false;
+                }
+            }
+            }else {
+            editText.setError(context.getResources().getString(R.string.invalid_phone_add));
+            return false;
+        }
+        return false;
+    }
+
+
+
     private static boolean checkIsNumber(String content) {
         String regex = "[0-9]+";
         if (content.matches(regex)) {

@@ -1,14 +1,13 @@
 package com.WattanArt.ui.Category;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryMobileRsponseModel implements Serializable {
 
 
     /**
-     * result : [{"Cat_ID":6,"Name":"Android","Image":"2019112712225171967.jpg","Items":[{"Product_Properties":[],"Prod_ID":6,"Price":100,"Type":"1","Prod_Name":"Samsong ","Prod_image":"201911271212377968.png","Language":0},{"Product_Properties":[],"Prod_ID":8,"Price":200,"Type":"1","Prod_Name":"Oppo","Prod_image":"20191127122211179969.png","Language":0},{"Product_Properties":[],"Prod_ID":9,"Price":300,"Type":"2","Prod_Name":"Lenovo","Prod_image":"201911271226215239610.png","Language":0},{"Product_Properties":[],"Prod_ID":10,"Price":400,"Type":"2","Prod_Name":"Htc","Prod_image":"20191127122791249611.png","Language":0}],"General_Color":["C71585","ffffff","000000","4B0082","32CD32"],"General_Style":["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg"],"Language":0},{"Cat_ID":7,"Name":"IPhone","Image":"2019112712035772966.jpg","Items":[],"General_Color":["C71585","ffffff","000000","4B0082","32CD32"],"General_Style":["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg"],"Language":0}]
+     * result : [{"Cat_ID":6,"Name":"Android","Image":"2019112712225171967.jpg","Items":[{"Product_Properties":[],"Prod_ID":6,"Price":100,"OutPrice":80,"Type":"1","Prod_Name":"Samsong ","Prod_image":"201911271212377968.png","Language":2},{"Product_Properties":[],"Prod_ID":8,"Price":200,"OutPrice":180,"Type":"1","Prod_Name":"Oppo","Prod_image":"20191127122211179969.png","Language":2},{"Product_Properties":[],"Prod_ID":9,"Price":300,"OutPrice":280,"Type":"2","Prod_Name":"Lenovo","Prod_image":"201911271226215239610.png","Language":2},{"Product_Properties":[],"Prod_ID":10,"Price":400,"OutPrice":380,"Type":"2","Prod_Name":"Htc","Prod_image":"20191127122791249611.png","Language":2}],"General_Color":["C71585","ffffff","000000","4B0082","32CD32"],"General_Style":["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg"],"Language":2},{"Cat_ID":7,"Name":"IPhone","Image":"2019112712035772966.jpg","Items":[],"General_Color":["C71585","ffffff","000000","4B0082","32CD32"],"General_Style":["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg"],"Language":2}]
      * ISResultHasData : 1
      */
 
@@ -36,10 +35,10 @@ public class CategoryMobileRsponseModel implements Serializable {
          * Cat_ID : 6
          * Name : Android
          * Image : 2019112712225171967.jpg
-         * Items : [{"Product_Properties":[],"Prod_ID":6,"Price":100,"Type":"1","Prod_Name":"Samsong ","Prod_image":"201911271212377968.png","Language":0},{"Product_Properties":[],"Prod_ID":8,"Price":200,"Type":"1","Prod_Name":"Oppo","Prod_image":"20191127122211179969.png","Language":0},{"Product_Properties":[],"Prod_ID":9,"Price":300,"Type":"2","Prod_Name":"Lenovo","Prod_image":"201911271226215239610.png","Language":0},{"Product_Properties":[],"Prod_ID":10,"Price":400,"Type":"2","Prod_Name":"Htc","Prod_image":"20191127122791249611.png","Language":0}]
+         * Items : [{"Product_Properties":[],"Prod_ID":6,"Price":100,"OutPrice":80,"Type":"1","Prod_Name":"Samsong ","Prod_image":"201911271212377968.png","Language":2},{"Product_Properties":[],"Prod_ID":8,"Price":200,"OutPrice":180,"Type":"1","Prod_Name":"Oppo","Prod_image":"20191127122211179969.png","Language":2},{"Product_Properties":[],"Prod_ID":9,"Price":300,"OutPrice":280,"Type":"2","Prod_Name":"Lenovo","Prod_image":"201911271226215239610.png","Language":2},{"Product_Properties":[],"Prod_ID":10,"Price":400,"OutPrice":380,"Type":"2","Prod_Name":"Htc","Prod_image":"20191127122791249611.png","Language":2}]
          * General_Color : ["C71585","ffffff","000000","4B0082","32CD32"]
          * General_Style : ["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg"]
-         * Language : 0
+         * Language : 2
          */
 
         private int Cat_ID;
@@ -111,14 +110,16 @@ public class CategoryMobileRsponseModel implements Serializable {
              * Product_Properties : []
              * Prod_ID : 6
              * Price : 100
+             * OutPrice : 80
              * Type : 1
              * Prod_Name : Samsong
              * Prod_image : 201911271212377968.png
-             * Language : 0
+             * Language : 2
              */
 
             private int Prod_ID;
             private int Price;
+            private int OutPrice;
             private String Type;
             private String Prod_Name;
             private String Prod_image;
@@ -139,6 +140,14 @@ public class CategoryMobileRsponseModel implements Serializable {
 
             public void setPrice(int Price) {
                 this.Price = Price;
+            }
+
+            public int getOutPrice() {
+                return OutPrice;
+            }
+
+            public void setOutPrice(int OutPrice) {
+                this.OutPrice = OutPrice;
             }
 
             public String getType() {

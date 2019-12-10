@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.WattanArt.R;
 import com.WattanArt.Utils.config.Constants;
@@ -26,9 +27,9 @@ import java.util.List;
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.MyViewHolder> {
     private Context context;
 
-    private List<OrderDetailsResponseModel.ResultEntity> responseList;
+    private List<OrderDetailsResponseModel.ResultBean> responseList;
 
-    public OrderDetailsAdapter(Context context, List<OrderDetailsResponseModel.ResultEntity> responseList) {
+    public OrderDetailsAdapter(Context context, List<OrderDetailsResponseModel.ResultBean> responseList) {
         this.context = context;
         this.responseList = responseList;
     }
@@ -55,6 +56,12 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         }
         holder.mRatioTextView.setText(" "+String.valueOf(responseList.get(position).getPattern())+" ");
         holder.mquantityTextView.setText(" "+String.valueOf(responseList.get(position).getQuantiy())+" ");
+
+        if (responseList.get(0).getOrderType()==0){
+            holder.kind_txt.setText(context.getString(R.string.ratio));
+        }else {
+            holder.kind_txt.setText(context.getString(R.string.kind));
+        }
         if (responseList.get(position).getQuantiy() < 3) {
             totalPrice = totalPrice + responseList.get(position).getPiecePrice() * responseList.get(position).getQuantiy();
         } else {
@@ -67,24 +74,25 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         options.placeholder(R.drawable.img_not_available);
         options.centerInside();
         options.timeout(60000); //1M
-//
-//        Glide.with(context)
-//                .load(Constants.BASE_URL + Constants.UPLOAD+ responseList.get(position).getMainImage())
-//                .apply(options)
-//                .into(holder.mdetailsImageView);
-
         Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage());
         Glide.with(context)
-//                .asBitmap()
                 .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage())
                 .apply(options).into(holder.mdetailsImageView);// {
-//                .apply(options).into(new BitmapImageViewTarget(holder.mdetailsImageView) {
-//            @Override
-//            protected void setResource(Bitmap resource) {
-//                RoundedBitmapDrawable circularBitmapDrawable =
-//                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-//               holder.mdetailsImageView.setImageDrawable(circularBitmapDrawable);
-//            }});
+
+        if (responseList.get(position).getCat_ID()==9){
+
+            holder.detailsImage_iv2.setVisibility(View.VISIBLE);
+            Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage());
+            Glide.with(context)
+                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(0).getLowPrintscreenImg())
+                    .apply(options).into(holder.mdetailsImageView);// {
+
+            Glide.with(context)
+                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(1).getLowPrintscreenImg())
+                    .apply(options).into(holder.detailsImage_iv2);// {
+        }else {
+            holder.detailsImage_iv2.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -105,17 +113,19 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        ImageView mdetailsImageView,line_gray;
-        CustomeTextView mRatioTextView, mquantityTextView, mpriceTextView;
+        ImageView mdetailsImageView,line_gray,detailsImage_iv2;
+        CustomeTextView mRatioTextView  , mquantityTextView , mpriceTextView ,kind_txt;
 
         public MyViewHolder(View view) {
             super(view);
 
             mdetailsImageView = view.findViewById(R.id.detailsImage_iv);
+            detailsImage_iv2 = view.findViewById(R.id.detailsImage_iv2);
             line_gray = view.findViewById(R.id.line_gray);
             mRatioTextView = view.findViewById(R.id.ratio_tv);
             mquantityTextView = view.findViewById(R.id.quantity_tv);
             mpriceTextView = view.findViewById(R.id.price_tv);
+            kind_txt = view.findViewById(R.id.kind_txt);
 
 
         }

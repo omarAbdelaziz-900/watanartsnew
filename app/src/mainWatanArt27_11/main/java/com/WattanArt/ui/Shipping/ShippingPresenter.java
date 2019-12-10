@@ -159,8 +159,8 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
             90f / 20f,//5
 
             30f / 30f,//6
-            40f / 30f,//7
-            50f / 30f,//8
+            30f / 40f,
+            30f / 50f,
 
             40f / 40f,//9
             60f / 60f,//10

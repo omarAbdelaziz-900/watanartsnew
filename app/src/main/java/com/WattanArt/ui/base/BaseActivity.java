@@ -13,9 +13,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.WattanArt.DTDialog;
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.Dagger.component.DaggerActivityComponent;
 import com.WattanArt.Dagger.module.ActivityModule;
+import com.WattanArt.Intents;
 import com.WattanArt.MyApplication;
 import com.WattanArt.R;
 import com.WattanArt.Utils.UtilitiesManager;
@@ -174,5 +176,13 @@ public abstract class BaseActivity extends AppCompatActivity
 
     //TODO: SETUP YOUR VIEW REQUIRMENT OR ADAPTERS ...ETC
     protected abstract void setUpActivityOrFragmentRequirment();
+
+    public void showLoaderDialog(){
+        Intents.showProgressDialog(DTDialog.newInstance(), "callback", this);
+    }
+
+    public void hideLoaderDialog(){
+        Intents.hideProgressDialog("callback", this);
+    }
 }
 

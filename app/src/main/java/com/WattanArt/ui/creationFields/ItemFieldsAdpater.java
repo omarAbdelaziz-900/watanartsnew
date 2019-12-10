@@ -43,10 +43,12 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
     List<HomeIntroResponseModel.ResultBean.CategoryBean> mValues ;
     protected ItemListener mListener;
     Context mContext;
-
+    List< HomeIntroResponseModel.ResultBean.CategoryBean.Item> itemsArrayList;
 //    HomeIntroResponseModel.Result.CategoryBean item;
 
     int itemPosition;
+    int prod_Id;
+    String priceIn ,priceOut;
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,11 +62,12 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
 
 
 
-    public ItemFieldsAdpater(Context context, List<HomeIntroResponseModel.ResultBean.CategoryBean> mValues, ItemListener itemListener) {
+    public ItemFieldsAdpater(Context context, List< HomeIntroResponseModel.ResultBean.CategoryBean.Item> itemsArrayList,List<HomeIntroResponseModel.ResultBean.CategoryBean> mValues, ItemListener itemListener) {
 
         this.mValues = mValues;
         this.mContext = context;
         this.mListener=itemListener;
+        this.itemsArrayList=itemsArrayList;
     }
 
     @Override
@@ -76,8 +79,11 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
         holder.textView.setText(item.getName());
         loadImage(item.getImage(),holder.imageView);
 
-//        holder.imageView.setImageResource(item.drawable);
-//        holder.relativeLayout.setBackgroundColor(Color.parseColor(item.color));
+        for (int i=0 ; i<itemsArrayList.size();i++){
+            prod_Id =itemsArrayList.get(0).getProdID();
+            priceIn =itemsArrayList.get(0).getPrice()+"";
+            priceOut =itemsArrayList.get(0).getOutPrice()+"";
+        }
 
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -86,14 +92,16 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
 
                 if (position == 0) {
                     Intent intent = new Intent(mContext, FlashMemoryActivity.class);
-//                    intent.putExtra("catId", item.getCat_ID());
+                    intent.putExtra("prod_Id", prod_Id+"");
+                    intent.putExtra("priceIn", priceIn+"");
+                    intent.putExtra("priceOut", priceOut+"");
                     mContext.startActivity(intent);
                 } else {
                     if (position == 1 || position == 2) {
                         Toast.makeText(mContext, "Comming Soon", Toast.LENGTH_SHORT).show();
                     } else {
                         Intent intent = new Intent(mContext, CategoryActivity.class);
-                        intent.putExtra("catId", item.getCat_ID());
+                        intent.putExtra("catId", item.getCatID());
                         mContext.startActivity(intent);
                         if (mListener != null) {
                             mListener.onItemClick(item, position);
@@ -109,7 +117,7 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public CustomeTextViewBold textView;
+        public TextView textView;
         public ImageView imageView;
         public RelativeLayout relativeLayout;
 
@@ -119,7 +127,7 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
             super(v);
 
 //            v.setOnClickListener(this);
-            textView = (CustomeTextViewBold) v.findViewById(R.id.textView);
+            textView =  v.findViewById(R.id.textView);
             imageView = (ImageView) v.findViewById(R.id.imageView);
             relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
 

@@ -168,7 +168,8 @@ public class EditProfileActivity extends BaseActivity implements EditProfileMvpV
     @Override
     public Boolean checkIfValid() {
         boolean validName = validationTool.validateRequiredField(mEditProfileFullName, this.getString(R.string.enter_full_name));
-        boolean validPhone = validationTool.validatePhone(mEditProfilePhone, this.getString(R.string.invalid_phone));
+//        boolean validPhone = validationTool.validatePhone(mEditProfilePhone, this.getString(R.string.invalid_phone));
+        boolean validPhone = validationTool.validatePhone(this ,mEditProfilePhone);
         boolean validMail = validationTool.validateEmail(mEditProfileMail, this.getString(R.string.invalid_email));
         boolean vaildCountrySpinner = spinnerValid(mCountrySpinner, countryId);
         boolean vaildCitySpinner = spinnerValid(mCitySpinner, cityId);

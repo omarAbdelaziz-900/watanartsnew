@@ -45,6 +45,8 @@ import com.WattanArt.model.Response.TermsResposeModel;
 import com.WattanArt.model.Response.requestModel;
 import com.WattanArt.Utils.config.Constants;
 import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
+import com.WattanArt.ui.ShippingForMobile.MobileOrderRequest;
+import com.WattanArt.ui.ShippingForMobile.MobileOrderResponse;
 import com.google.gson.JsonObject;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -364,5 +366,10 @@ public class AppDataManager implements ApiService {
     @Override
     public Observable<TermsResposeModel> getTerms(LanguageRequestModel languageRequest) {
         return getApi().getTerms(languageRequest);
+    }
+
+    @Override
+    public Observable<MobileOrderResponse> getSubmitOrderForMobile(MobileOrderRequest mobileOrderRequest) {
+        return getApi().getSubmitOrderForMobile(mobileOrderRequest);
     }
 }

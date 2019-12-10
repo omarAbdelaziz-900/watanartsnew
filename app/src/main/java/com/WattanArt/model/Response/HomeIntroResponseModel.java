@@ -1,16 +1,19 @@
 package com.WattanArt.model.Response;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
+
 
 public class HomeIntroResponseModel {
 
-    /**
-     * result : {"ImageList":["20181204121643559610.jpg","20181204121695959611.jpg","201812041216152179612.jpg"],"IntroVideo":"https://www.youtube.com/watch?v=djh0mkjoaUY","IntroText":"A wonderful way to bring your memories to life and decorate your wall with different sizes self-adhesive photo boards .\n\n\n","IntroTitle":"Watan Arts","Category":[{"Cat_ID":1,"Name":"Phone Cover","Image":"20191029111557207968.jpeg","Items":[],"Language":2,"UserIdValue":null,"Base64":null,"Extension":null,"SharedLink":null,"PagesCount":0,"CurrentPage":0,"RowsPerPage":10},{"Cat_ID":5,"Name":"Mug","Image":"20191029111627636969.jpg","Items":[],"Language":2,"UserIdValue":null,"Base64":null,"Extension":null,"SharedLink":null,"PagesCount":0,"CurrentPage":0,"RowsPerPage":10}],"Language":2,"UserIdValue":null,"Base64":null,"Extension":null,"SharedLink":null,"PagesCount":0,"CurrentPage":0,"RowsPerPage":10}
-     * ISResultHasData : 1
-     */
-
+    @SerializedName("result")
+    @Expose
     private ResultBean result;
-    private int ISResultHasData;
+    @SerializedName("ISResultHasData")
+    @Expose
+    private Integer iSResultHasData;
 
     public ResultBean getResult() {
         return result;
@@ -20,273 +23,336 @@ public class HomeIntroResponseModel {
         this.result = result;
     }
 
-    public int getISResultHasData() {
-        return ISResultHasData;
+    public Integer getISResultHasData() {
+        return iSResultHasData;
     }
 
-    public void setISResultHasData(int ISResultHasData) {
-        this.ISResultHasData = ISResultHasData;
+    public void setISResultHasData(Integer iSResultHasData) {
+        this.iSResultHasData = iSResultHasData;
     }
 
-    public static class ResultBean {
-        /**
-         * ImageList : ["20181204121643559610.jpg","20181204121695959611.jpg","201812041216152179612.jpg"]
-         * IntroVideo : https://www.youtube.com/watch?v=djh0mkjoaUY
-         * IntroText : A wonderful way to bring your memories to life and decorate your wall with different sizes self-adhesive photo boards .
-         * IntroTitle : Watan Arts
-         * Category : [{"Cat_ID":1,"Name":"Phone Cover","Image":"20191029111557207968.jpeg","Items":[],"Language":2,"UserIdValue":null,"Base64":null,"Extension":null,"SharedLink":null,"PagesCount":0,"CurrentPage":0,"RowsPerPage":10},{"Cat_ID":5,"Name":"Mug","Image":"20191029111627636969.jpg","Items":[],"Language":2,"UserIdValue":null,"Base64":null,"Extension":null,"SharedLink":null,"PagesCount":0,"CurrentPage":0,"RowsPerPage":10}]
-         * Language : 2
-         * UserIdValue : null
-         * Base64 : null
-         * Extension : null
-         * SharedLink : null
-         * PagesCount : 0
-         * CurrentPage : 0
-         * RowsPerPage : 10
-         */
+    public class ResultBean {
 
-        private String IntroVideo;
-        private String IntroText;
-        private String IntroTitle;
-        private int Language;
-        private Object UserIdValue;
-        private Object Base64;
-        private Object Extension;
-        private Object SharedLink;
-        private int PagesCount;
-        private int CurrentPage;
-        private int RowsPerPage;
-        private List<String> ImageList;
-        private List<CategoryBean> Category;
+        @SerializedName("ImageList")
+        @Expose
+        private List<String> imageList = null;
+        @SerializedName("IntroVideo")
+        @Expose
+        private String introVideo;
+        @SerializedName("IntroText")
+        @Expose
+        private String introText;
+        @SerializedName("IntroTitle")
+        @Expose
+        private String introTitle;
+        @SerializedName("Category")
+        @Expose
+        private List<CategoryBean> category = null;
+        @SerializedName("Language")
+        @Expose
+        private Integer language;
+        @SerializedName("UserIdValue")
+        @Expose
+        private Object userIdValue;
+        @SerializedName("Base64")
+        @Expose
+        private Object base64;
+        @SerializedName("Extension")
+        @Expose
+        private Object extension;
+        @SerializedName("SharedLink")
+        @Expose
+        private Object sharedLink;
+        @SerializedName("PagesCount")
+        @Expose
+        private Integer pagesCount;
+        @SerializedName("CurrentPage")
+        @Expose
+        private Integer currentPage;
+        @SerializedName("RowsPerPage")
+        @Expose
+        private Integer rowsPerPage;
 
-        public String getIntroVideo() {
-            return IntroVideo;
+        public List<String> getImageList() {
+            return imageList;
         }
 
-        public void setIntroVideo(String IntroVideo) {
-            this.IntroVideo = IntroVideo;
+        public void setImageList(List<String> imageList) {
+            this.imageList = imageList;
+        }
+
+        public String getIntroVideo() {
+            return introVideo;
+        }
+
+        public void setIntroVideo(String introVideo) {
+            this.introVideo = introVideo;
         }
 
         public String getIntroText() {
-            return IntroText;
+            return introText;
         }
 
-        public void setIntroText(String IntroText) {
-            this.IntroText = IntroText;
+        public void setIntroText(String introText) {
+            this.introText = introText;
         }
 
         public String getIntroTitle() {
-            return IntroTitle;
+            return introTitle;
         }
 
-        public void setIntroTitle(String IntroTitle) {
-            this.IntroTitle = IntroTitle;
-        }
-
-        public int getLanguage() {
-            return Language;
-        }
-
-        public void setLanguage(int Language) {
-            this.Language = Language;
-        }
-
-        public Object getUserIdValue() {
-            return UserIdValue;
-        }
-
-        public void setUserIdValue(Object UserIdValue) {
-            this.UserIdValue = UserIdValue;
-        }
-
-        public Object getBase64() {
-            return Base64;
-        }
-
-        public void setBase64(Object Base64) {
-            this.Base64 = Base64;
-        }
-
-        public Object getExtension() {
-            return Extension;
-        }
-
-        public void setExtension(Object Extension) {
-            this.Extension = Extension;
-        }
-
-        public Object getSharedLink() {
-            return SharedLink;
-        }
-
-        public void setSharedLink(Object SharedLink) {
-            this.SharedLink = SharedLink;
-        }
-
-        public int getPagesCount() {
-            return PagesCount;
-        }
-
-        public void setPagesCount(int PagesCount) {
-            this.PagesCount = PagesCount;
-        }
-
-        public int getCurrentPage() {
-            return CurrentPage;
-        }
-
-        public void setCurrentPage(int CurrentPage) {
-            this.CurrentPage = CurrentPage;
-        }
-
-        public int getRowsPerPage() {
-            return RowsPerPage;
-        }
-
-        public void setRowsPerPage(int RowsPerPage) {
-            this.RowsPerPage = RowsPerPage;
-        }
-
-        public List<String> getImageList() {
-            return ImageList;
-        }
-
-        public void setImageList(List<String> ImageList) {
-            this.ImageList = ImageList;
+        public void setIntroTitle(String introTitle) {
+            this.introTitle = introTitle;
         }
 
         public List<CategoryBean> getCategory() {
-            return Category;
+            return category;
         }
 
-        public void setCategory(List<CategoryBean> Category) {
-            this.Category = Category;
+        public void setCategory(List<CategoryBean> category) {
+            this.category = category;
         }
 
-        public static class CategoryBean {
-            /**
-             * Cat_ID : 1
-             * Name : Phone Cover
-             * Image : 20191029111557207968.jpeg
-             * Items : []
-             * Language : 2
-             * UserIdValue : null
-             * Base64 : null
-             * Extension : null
-             * SharedLink : null
-             * PagesCount : 0
-             * CurrentPage : 0
-             * RowsPerPage : 10
-             */
+        public Integer getLanguage() {
+            return language;
+        }
 
-            private int Cat_ID;
-            private String Name;
-            private String Image;
-            private int Language;
-            private Object UserIdValue;
-            private Object Base64;
-            private Object Extension;
-            private Object SharedLink;
-            private int PagesCount;
-            private int CurrentPage;
-            private int RowsPerPage;
-            private List<?> Items;
+        public void setLanguage(Integer language) {
+            this.language = language;
+        }
 
-            public int getCat_ID() {
-                return Cat_ID;
+        public Object getUserIdValue() {
+            return userIdValue;
+        }
+
+        public void setUserIdValue(Object userIdValue) {
+            this.userIdValue = userIdValue;
+        }
+
+        public Object getBase64() {
+            return base64;
+        }
+
+        public void setBase64(Object base64) {
+            this.base64 = base64;
+        }
+
+        public Object getExtension() {
+            return extension;
+        }
+
+        public void setExtension(Object extension) {
+            this.extension = extension;
+        }
+
+        public Object getSharedLink() {
+            return sharedLink;
+        }
+
+        public void setSharedLink(Object sharedLink) {
+            this.sharedLink = sharedLink;
+        }
+
+        public Integer getPagesCount() {
+            return pagesCount;
+        }
+
+        public void setPagesCount(Integer pagesCount) {
+            this.pagesCount = pagesCount;
+        }
+
+        public Integer getCurrentPage() {
+            return currentPage;
+        }
+
+        public void setCurrentPage(Integer currentPage) {
+            this.currentPage = currentPage;
+        }
+
+        public Integer getRowsPerPage() {
+            return rowsPerPage;
+        }
+
+        public void setRowsPerPage(Integer rowsPerPage) {
+            this.rowsPerPage = rowsPerPage;
+        }
+
+
+        public class CategoryBean {
+
+            @SerializedName("Cat_ID")
+            @Expose
+            private Integer catID;
+            @SerializedName("Name")
+            @Expose
+            private String name;
+            @SerializedName("Image")
+            @Expose
+            private String image;
+            @SerializedName("Items")
+            @Expose
+            private List<Item> items = null;
+            @SerializedName("General_Color")
+            @Expose
+            private List<String> generalColor = null;
+            @SerializedName("General_Style")
+            @Expose
+            private List<String> generalStyle = null;
+            @SerializedName("Language")
+            @Expose
+            private Integer language;
+
+            public Integer getCatID() {
+                return catID;
             }
 
-            public void setCat_ID(int Cat_ID) {
-                this.Cat_ID = Cat_ID;
+            public void setCatID(Integer catID) {
+                this.catID = catID;
             }
 
             public String getName() {
-                return Name;
+                return name;
             }
 
-            public void setName(String Name) {
-                this.Name = Name;
+            public void setName(String name) {
+                this.name = name;
             }
 
             public String getImage() {
-                return Image;
+                return image;
             }
 
-            public void setImage(String Image) {
-                this.Image = Image;
+            public void setImage(String image) {
+                this.image = image;
             }
 
-            public int getLanguage() {
-                return Language;
+            public List<Item> getItems() {
+                return items;
             }
 
-            public void setLanguage(int Language) {
-                this.Language = Language;
+            public void setItems(List<Item> items) {
+                this.items = items;
             }
 
-            public Object getUserIdValue() {
-                return UserIdValue;
+            public List<String> getGeneralColor() {
+                return generalColor;
             }
 
-            public void setUserIdValue(Object UserIdValue) {
-                this.UserIdValue = UserIdValue;
+            public void setGeneralColor(List<String> generalColor) {
+                this.generalColor = generalColor;
             }
 
-            public Object getBase64() {
-                return Base64;
+            public List<String> getGeneralStyle() {
+                return generalStyle;
             }
 
-            public void setBase64(Object Base64) {
-                this.Base64 = Base64;
+            public void setGeneralStyle(List<String> generalStyle) {
+                this.generalStyle = generalStyle;
             }
 
-            public Object getExtension() {
-                return Extension;
+            public Integer getLanguage() {
+                return language;
             }
 
-            public void setExtension(Object Extension) {
-                this.Extension = Extension;
+            public void setLanguage(Integer language) {
+                this.language = language;
             }
 
-            public Object getSharedLink() {
-                return SharedLink;
-            }
 
-            public void setSharedLink(Object SharedLink) {
-                this.SharedLink = SharedLink;
-            }
+            public class Item {
 
-            public int getPagesCount() {
-                return PagesCount;
-            }
+                @SerializedName("Product_Properties")
+                @Expose
+                private List<Object> productProperties = null;
+                @SerializedName("Prod_ID")
+                @Expose
+                private Integer prodID;
+                @SerializedName("Price")
+                @Expose
+                private Integer price;
+                @SerializedName("OutPrice")
+                @Expose
+                private Integer outPrice;
+                @SerializedName("Type")
+                @Expose
+                private String type;
+                @SerializedName("Prod_Name")
+                @Expose
+                private String prodName;
+                @SerializedName("Prod_image")
+                @Expose
+                private Object prodImage;
+                @SerializedName("Language")
+                @Expose
+                private Integer language;
 
-            public void setPagesCount(int PagesCount) {
-                this.PagesCount = PagesCount;
-            }
+                public List<Object> getProductProperties() {
+                    return productProperties;
+                }
 
-            public int getCurrentPage() {
-                return CurrentPage;
-            }
+                public void setProductProperties(List<Object> productProperties) {
+                    this.productProperties = productProperties;
+                }
 
-            public void setCurrentPage(int CurrentPage) {
-                this.CurrentPage = CurrentPage;
-            }
+                public Integer getProdID() {
+                    return prodID;
+                }
 
-            public int getRowsPerPage() {
-                return RowsPerPage;
-            }
+                public void setProdID(Integer prodID) {
+                    this.prodID = prodID;
+                }
 
-            public void setRowsPerPage(int RowsPerPage) {
-                this.RowsPerPage = RowsPerPage;
-            }
+                public Integer getPrice() {
+                    return price;
+                }
 
-            public List<?> getItems() {
-                return Items;
-            }
+                public void setPrice(Integer price) {
+                    this.price = price;
+                }
 
-            public void setItems(List<?> Items) {
-                this.Items = Items;
+                public Integer getOutPrice() {
+                    return outPrice;
+                }
+
+                public void setOutPrice(Integer outPrice) {
+                    this.outPrice = outPrice;
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
+                }
+
+                public String getProdName() {
+                    return prodName;
+                }
+
+                public void setProdName(String prodName) {
+                    this.prodName = prodName;
+                }
+
+                public Object getProdImage() {
+                    return prodImage;
+                }
+
+                public void setProdImage(Object prodImage) {
+                    this.prodImage = prodImage;
+                }
+
+                public Integer getLanguage() {
+                    return language;
+                }
+
+                public void setLanguage(Integer language) {
+                    this.language = language;
+                }
+
             }
         }
     }
+
+
 }

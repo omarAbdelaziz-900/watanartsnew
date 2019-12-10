@@ -43,6 +43,7 @@ import com.WattanArt.Adapters.ImagesModelAdapter;
 import com.WattanArt.Adapters.ThumbnailsAdapter;
 import com.WattanArt.R;
 import com.WattanArt.Utils.Localization;
+import com.WattanArt.Utils.SharedPrefTool.PreferenceHelper;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.WrapContentLinearLayoutManager;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
@@ -74,6 +75,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.iwf.photopicker.PhotoPicker;
+
+//import static com.WattanArt.ui.Shipping.ShippingActivity.patternId;
 
 public class EditImageActivity extends AppCompatActivity implements
         CropImageView.LowPixelsInteractions,
@@ -133,6 +136,8 @@ public class EditImageActivity extends AppCompatActivity implements
     boolean isLowResolution;
 
     public static int typeOmar;
+
+    int indexForPattern=0;
 //    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f, 12f / 12f, 12f / 16f, 12f / 20f};
 //
 //    Pair<Integer, Integer>[] pairDimens = new Pair[]{new Pair(600, 600), new Pair(1000, 1000), new Pair(1000, 1000),
@@ -165,17 +170,20 @@ public class EditImageActivity extends AppCompatActivity implements
 
             30f / 30f,
 
-            40f / 30f,
-            50f / 30f,
+            30f / 40f,
+            30f / 50f,
 
             40f / 40f,
             60f / 60f,
             80f / 80f};
 
     Pair<Integer, Integer>[] pairDimens = new Pair[]{
+
+            //////// W     H
             new Pair(600, 600),
             new Pair(600, 800),
             new Pair(800, 600),
+
             new Pair(1200, 600),
 
             new Pair(1200, 800),
@@ -185,10 +193,10 @@ public class EditImageActivity extends AppCompatActivity implements
             new Pair(800, 800),
 
 //            new Pair(800, 1000),
-            new Pair(1000, 800),
+            new Pair(800, 1000),
 
 //            new Pair(800, 1200),
-            new Pair(1200, 800),
+            new Pair(800, 1200),
 
             new Pair(1000, 1000),
             new Pair(1200, 1200),
@@ -210,6 +218,10 @@ public class EditImageActivity extends AppCompatActivity implements
             new Pair(2, 2),
             new Pair(3, 3)
     };
+
+
+
+    int patternId;
 
     @Inject
     EditImagePresenterImp mPresenter;
@@ -303,9 +315,9 @@ public class EditImageActivity extends AppCompatActivity implements
 
         tempMatrix = mainImageModel.getMatrix();
 
-//        if (getIntent().hasExtra(Constants.EXTRA_ASPECT_RATIO_OPTIONS)) {
-//            mainImageModel.setCurrentRatio(getIntent().getFloatExtra(Constants.EXTRA_ASPECT_RATIO_OPTIONS, 0f));
-//        }
+        if (getIntent().hasExtra(Constants.EXTRA_ASPECT_RATIO_OPTIONS)) {
+           patternId = (getIntent().getIntExtra(Constants.EXTRA_ASPECT_RATIO_OPTIONS, 0));
+        }
 
 
         deleteImage = findViewById(R.id.deleteImage);
@@ -366,67 +378,13 @@ public class EditImageActivity extends AppCompatActivity implements
         isFlip = mainImageModel.isFlipped();
 
 
-        for (int index = 0; index < bottomControlsHolder.getChildCount(); index++) {
-            int finalIndex = index;
-            bottomControlsHolder.getChildAt(finalIndex).setOnClickListener(view -> {
-                for (int i = 0; i < subControlsHolder.getChildCount(); i++) {
-                    if (i == finalIndex) {
-                        subControlsHolder.getChildAt(i).setVisibility(View.VISIBLE);
-                    } else {
-                        subControlsHolder.getChildAt(i).setVisibility(View.GONE);
-                    }
-                }
-
-                bottomControlsHolder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected));
-
-                for (int i = 0; i < bottomControlsHolder.getChildCount(); i++) {
-                    if (i != finalIndex) {
-                        bottomControlsHolder.getChildAt(i).setBackground(getDrawable(R.drawable.background_unselected));
-                    }
-                }
 
 
-//                rotate action
-                if (finalIndex == 1) {
+//           sssss
 
-                    rotateDegree += 90F;
-
-                    if (rotateDegree == 360F) {
-                        rotateDegree = 0;
-                    }
-                    rotateByAngle(90);
-                }
+        clickbottomControlsHolder();
 
 
-                //flip action
-                if (finalIndex == 2) {
-                    Bitmap bitmap = fastFlip(mGestureCropImageView.getViewBitmap());
-                    mGestureCropImageView.setImageBitmap(bitmap);
-                    mainImageModel.setBitmap(fastFlip(mainImageModel.getBitmap()));
-                    mainImageModel.setFilteredBitmap(fastFlip(mainImageModel.getFilteredBitmap()));
-                    isFlip = !isFlip;
-                }
-
-//                if (finalIndex == 7) {
-
-                //            mGestureCropImageView.postScale(mainImageModel.getCurrentScale(),
-//                    (mainImageModel.getImageWidth() / 2) + mainImageModel.getPositionX(),
-//                    (mainImageModel.getImageHeight() / 2) + mainImageModel.getPositionY());
-
-//                    mGestureCropImageView.zoomImageToPositionMine(2.3598654f,
-//                            313f,
-//                            179f);
-
-//                    TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
-//                    textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
-//                        @Override
-//                        public void onDone(String inputText, int colorCode) {
-//                            mGestureCropImageView.addText(inputText, colorCode);
-//                        }
-//                    });
-//                }
-            });
-        }
 
 
         ratio = mainImageModel.getCurrentRatio();
@@ -453,135 +411,8 @@ public class EditImageActivity extends AppCompatActivity implements
         moOverlayView.drawCropGrid(new Canvas());
 
 
-        for (int index = 0; index < ratio_holder.getChildCount(); index++) {
+        clickRatioBottomHolder();
 
-
-//            if (mainImageModel.getCurrentRatio() == ratios[index]) {
-//                ratio_holder.getChildAt(index).setBackground(getDrawable(R.drawable.background_selected_bordered));
-//            }
-
-
-            int finalIndex = index;
-
-
-            Log.e("finalIndexx", finalIndex + "");
-            Log.e("ratio_holderChildCount", ratio_holder.getChildCount() + "");
-
-            int finalIndex1 = index;
-
-            ratio_holder.getChildAt(index).setOnClickListener(view -> {
-
-
-                mainImageModel.setTypePatternId(finalIndex + 1);
-
-                Log.e("TypeOmarPattern", mainImageModel.getTypePatternId() + "");
-                Log.e("finalIndexxInsideClick", finalIndex + "");
-                Log.e("currentRatioIndex4", currentRatioIndex + "");
-
-
-//                if (finalIndex == currentRatioIndex) {
-//                    Log.e("currentRatioIndex5",currentRatioIndex+"");
-//                    return;
-//                }
-
-
-                currentRatioIndex = finalIndex;
-                Log.e("currentRatioIndex20", currentRatioIndex + "");
-
-                //not 8*8 ratio
-                Log.e("MainImageWidth", mainImageModel.getMainImageWidth() + "");
-                Log.e("MainImageHeight", mainImageModel.getMainImageHeight() + "");
-                if (finalIndex != 0) {
-//                    if (mainImageModel.getMainImageWidth() >= 1000 && mainImageModel.getMainImageHeight() >= 1000) {
-                    if (mainImageModel.getMainImageWidth() >= 600 && mainImageModel.getMainImageHeight() >= 600) {
-
-
-                        ratio_holder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected_bordered));
-
-//                        mGestureCropImageView.setTargetAspectRatio(0);
-                        mGestureCropImageView.setTargetAspectRatio(ratios[finalIndex]);
-
-
-                        ratio = ratios[finalIndex];
-                        Log.e("ratioInside", ratio + "");
-                        currentRatioIndex = finalIndex;
-                        mainImageModel.setCurrentRatioIndex(currentRatioIndex);
-
-                        Log.e("currentRatioIndex6", currentRatioIndex + "");
-                        Log.e("currentRatioIndex7", mainImageModel.getCurrentRatioIndex() + "");
-
-                        for (int i = 0; i < ratio_holder.getChildCount(); i++) {
-                            if (i != finalIndex)
-                                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
-                        }
-
-
-                        if (finalIndex == 0 || finalIndex == 1 || finalIndex == 2
-                                || finalIndex == 6 || finalIndex == 7 || finalIndex == 8) {
-//                            moOverlayView.setCropGridColumnCount(0);
-                            isSegmented = false;
-                            mainImageModel.setSegmented(false);
-                        } else {
-//                            moOverlayView.setCropGridColumnCount(2);
-                            isSegmented = true;
-                            mainImageModel.setSegmented(true);
-                        }
-
-
-                        moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
-                        moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
-                        Log.e("currentRatioIndex8", currentRatioIndex + "");
-
-                        moOverlayView.drawCropGrid(new Canvas());
-                        mGestureCropImageView.setImageToWrapCropBounds(false);
-                        new Handler().postDelayed(() ->{
-                            mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
-                            mGestureCropImageView.setImageToWrapCropBounds(true);
-                        } ,50);
-
-
-//                        float currentScale = mGestureCropImageView.getCurrentScale();
-//                        mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
-//                        mGestureCropImageView.zoomOutImage(currentScale);
-
-                    } else {
-                        Toast toast = Toast.makeText(this, getString(R.string.can_not_change_ratio), Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                    }
-
-                } else {
-
-                    ratio_holder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected_bordered));
-
-                    mGestureCropImageView.setTargetAspectRatio(ratios[finalIndex]);
-                    ratio = ratios[finalIndex];
-                    currentRatioIndex = finalIndex;
-                    Log.e("currentRatioIndex9", currentRatioIndex + "");
-                    mainImageModel.setCurrentRatioIndex(currentRatioIndex);
-
-                    for (int i = 0; i < ratio_holder.getChildCount(); i++) {
-                        if (i != finalIndex)
-                            ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
-                    }
-
-                    moOverlayView.setCropGridColumnCount(0);
-                    moOverlayView.setCropGridRowCount(0);
-                    isSegmented = false;
-                    moOverlayView.drawCropGrid(new Canvas());
-                    mGestureCropImageView.setImageToWrapCropBounds();
-
-                    //zoom out image to fit screen and no resolution issues occured
-                    float currentScale = mGestureCropImageView.getCurrentScale();
-                    mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
-                    mGestureCropImageView.zoomOutImage(currentScale);
-
-                }
-
-                isRotateEstablished = true;
-
-            });
-        }
 
 
         imageHeight = mainImageModel.getImageHeight();
@@ -612,39 +443,9 @@ public class EditImageActivity extends AppCompatActivity implements
             toast.show();
         });
         isInitial = false;
+
+
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_submit, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        //respond to menu item selection
-//
-//        if (item.getItemId() == R.id.submit) {
-//
-//        }
-////            mGestureCropImageView.cropAndSaveImage(Bitmap.CompressFormat.JPEG, 100, new BitmapCropCallback() {
-////                @Override
-////                public void onBitmapCropped(@NonNull Uri resultUri, int offsetX, int offsetY, int imageWidth, int imageHeight) {
-////                    Log.e("ssssssss", "Ssssssssssss");
-////                }
-////
-////                @Override
-////                public void onCropFailure(@NonNull Throwable t) {
-////                    t.printStackTrace();
-////                }
-////            });
-////        }
-//        return true;
-//
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void pickFromGallery() {
@@ -1011,7 +812,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-
+//        chooseCurrentSelectedRationBackground(patternId);
         finish();
 //        setResultUri(getImageUri(this, mainImageModel.getBitmap()),
 //                mGestureCropImageView.getTargetAspectRatio(), 0, 0, 0, 0);
@@ -1167,9 +968,15 @@ public class EditImageActivity extends AppCompatActivity implements
         Log.e("MainImageWidthhh", mainImageModel.getMainImageWidth() + "");
         Log.e("MainImageHeightttt", mainImageModel.getMainImageHeight() + "");
 
+        if (currentRatioIndex==5.0){
+            imageHeight=imageHeight+200;
+        }
+        if (currentRatioIndex==4.0){
+            imageHeight=imageHeight+30;
+        }
         Log.e("currentRatioIndex10", currentRatioIndex + "");
-        show = imageHeight < pairDimens[(int) currentRatioIndex].second ||
-                imageWidth < pairDimens[(int) currentRatioIndex].first;
+        show = imageHeight+100 <= pairDimens[(int) currentRatioIndex].second ||
+                imageWidth+100 <= pairDimens[(int) currentRatioIndex].first;
 
         Log.e("currentRatioIndex11", currentRatioIndex + "");
 //        imageWidth=mainImageModel.getMainImageWidth();
@@ -1321,6 +1128,8 @@ public class EditImageActivity extends AppCompatActivity implements
     @Override
     public void showHidePixelsImage(boolean show) {
         show = checkLowResolutionView();
+        isLowResolution = !checkLowResolutionView();
+        isLowResolution = checkLowResolutionView();
         lowPixelsIv.setVisibility(isLowResolution ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -1334,8 +1143,8 @@ public class EditImageActivity extends AppCompatActivity implements
         imageHeight = (int) (height * mainImageModel.getFactorHeight());
         imageWidth = (int) (width * mainImageModel.getFactorWidth());
 
-        imageHeight = (int) (height * mainImageModel.getFactorHeight()) + 50;
-        imageWidth = (int) (width * mainImageModel.getFactorWidth()) + 50;
+        imageHeight = (int) (height * mainImageModel.getFactorHeight()) + 80;
+        imageWidth = (int) (width * mainImageModel.getFactorWidth()) + 80;
 
         Log.e("FromActivityX_Y", "x is " + x + "     and Y= " + y + "    width is " + imageWidth + "    height is " + imageHeight);
         Log.e("FromActivityX_YBefore", "x is " + x + "     and Y= " + y + "    width is " + width + "    height is " + height);
@@ -1483,6 +1292,7 @@ public class EditImageActivity extends AppCompatActivity implements
                     if (isSelectOneImage) {
 
 
+//                        ggjhgj
                         Glide.with(EditImageActivity.this)
                                 .asBitmap()
                                 .load(photos.get(0))
@@ -1522,6 +1332,8 @@ public class EditImageActivity extends AppCompatActivity implements
                                         mainImageModel.setQuantity(1);
                                         mainImageModel.setPath(photos.get(0));
 
+                                        mainImageModel.setTypePatternId(PreferenceHelper.getIndexID(EditImageActivity.this));
+                                        Log.e("mmmooomm",PreferenceHelper.getIndexID(EditImageActivity.this)+"");
                                         brightness = 0;
                                         hue = 0;
                                         saturation = 0;
@@ -1555,7 +1367,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
                                         isFlip = false;
 
-                                        setRatioFromWidthAndHeight();
+//                                        chooseCurrentSelectedRationBackground(patternId);
 
                                         ratio = mainImageModel.getCurrentRatio();
 
@@ -1570,17 +1382,21 @@ public class EditImageActivity extends AppCompatActivity implements
 
                                         moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
                                         moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
-                                        chooseCurrentSelectedRationBackground(currentRatioIndex);
+                                        chooseCurrentSelectedRationBackground(patternId);
 //                                        moOverlayView.drawCropGrid(new Canvas());
 
                                         prepareImageFromShippingActivity(false);
+
+
                                     }
                                 });
                     }
                 }
             }
         }
-
+        checkLowResolutionView();
+//        patternId=1;
+//        chooseCurrentSelectedRationBackground(patternId);
 
     }
 
@@ -1629,6 +1445,8 @@ public class EditImageActivity extends AppCompatActivity implements
                 mainImageModel.setCurrentRatio(ratio);
                 mainImageModel.setCurrentRatioIndex(currentRatioIndex);
                 setResultUri(Uri.fromFile(new File(mainImageModel.getPath())));
+
+                preparePatternID(indexForPattern);
             }
         }
     }
@@ -1679,6 +1497,11 @@ public class EditImageActivity extends AppCompatActivity implements
         mDialog.findViewById(R.id.cancel_btn).setOnClickListener(v -> {
             mDialog.dismiss();
         });
+
+        mDialog.findViewById(R.id.close_popup).setOnClickListener(v -> {
+            mDialog.dismiss();
+        });
+
         mDialog.show();
     }
 
@@ -1783,7 +1606,9 @@ public class EditImageActivity extends AppCompatActivity implements
                         mGestureCropImageView.setTargetAspectRatio(mainImageModel.getCurrentRatio());
                         isRotateEstablished = true;
 
-                        chooseCurrentSelectedRationBackground(mainImageModel.getCurrentRatio());
+                        Log.e("ratioForChange",mainImageModel.getCurrentRatio()+"");
+                        chooseCurrentSelectedRationBackground(patternId);
+//                        setRatioFromWidthAndHeight();
 
 //                        if (mainImageModel.getPositionX() != 0 && mainImageModel.getPositionY() != 0) {
                         if (mainImageModel.getMatrix() != null) {
@@ -1883,12 +1708,94 @@ public class EditImageActivity extends AppCompatActivity implements
 //        }
 //    }
 
-    private void chooseCurrentSelectedRationBackground(float ratio) {
-        for (int i = 0; i < ratio_holder.getChildCount(); i++) {
-            if (currentRatioIndex == i)
-                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected_bordered));
-            else
-                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
+//    private void chooseCurrentSelectedRationBackground(float ratio) {
+//        for (int i = 0; i < ratio_holder.getChildCount(); i++) {
+//            if (currentRatioIndex == i)
+//                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected_bordered));
+//            else
+//                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
+//        }
+//    }
+
+    private void chooseCurrentSelectedRationBackground(int patternId) {
+//        for (int i = 0; i < ratio_holder.getChildCount(); i++) {
+//            kjkjbjb
+//            if (patternId-1 == i)
+//                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected_bordered));
+//            else
+//                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
+//        }
+
+        if (patternId==1){
+            ratio_holder.getChildAt(0).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else {
+            ratio_holder.getChildAt(0).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==2){
+            ratio_holder.getChildAt(2).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else {
+            ratio_holder.getChildAt(2).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==3){
+            ratio_holder.getChildAt(3).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(3).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==4){
+            ratio_holder.getChildAt(5).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else {
+            ratio_holder.getChildAt(5).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==5){
+            ratio_holder.getChildAt(1).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(1).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==6){
+            ratio_holder.getChildAt(4).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else {
+            ratio_holder.getChildAt(4).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==7){
+            ratio_holder.getChildAt(6).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(6).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==8){
+            ratio_holder.getChildAt(7).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(7).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==9){
+            ratio_holder.getChildAt(8).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(8).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==10){
+            ratio_holder.getChildAt(9).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(9).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==11){
+            ratio_holder.getChildAt(10).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(10).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==12){
+            ratio_holder.getChildAt(11).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else {
+            ratio_holder.getChildAt(11).setBackground(getDrawable(R.drawable.background_selected));
         }
     }
 
@@ -1975,37 +1882,352 @@ public class EditImageActivity extends AppCompatActivity implements
         }
     }
 
-    public void setRatioFromWidthAndHeight(){
 
-        if (mainImageModel.getMainImageHeight() == mainImageModel.getMainImageWidth()) {
-            mainImageModel.setCurrentRatio(20f/20f);
-            chooseCurrentSelectedRationBackground(20f/20f);
+    public void clickbottomControlsHolder(){
+        for (int index = 0; index < bottomControlsHolder.getChildCount(); index++) {
+            int finalIndex = index;
+            bottomControlsHolder.getChildAt(finalIndex).setOnClickListener(view -> {
+                for (int i = 0; i < subControlsHolder.getChildCount(); i++) {
+                    if (i == finalIndex) {
+                        subControlsHolder.getChildAt(i).setVisibility(View.VISIBLE);
+                    } else {
+                        subControlsHolder.getChildAt(i).setVisibility(View.GONE);
+                    }
+                }
 
-        } else if (mainImageModel.getMainImageHeight() > mainImageModel.getMainImageWidth()) {
+                bottomControlsHolder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected));
 
-            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
-                    (((float) mainImageModel.getMainImageHeight()) / 1.5f) >= 600) {
-                mainImageModel.setCurrentRatio(20f / 30f);
-                chooseCurrentSelectedRationBackground(20f / 30f);
-            } else {
-                mainImageModel.setCurrentRatio(20f/20f);
-                chooseCurrentSelectedRationBackground(20f/20f);
-            }
+                for (int i = 0; i < bottomControlsHolder.getChildCount(); i++) {
+                    if (i != finalIndex) {
+                        bottomControlsHolder.getChildAt(i).setBackground(getDrawable(R.drawable.background_unselected));
+                    }
+                }
 
-        } else if (mainImageModel.getMainImageHeight() < mainImageModel.getMainImageWidth()) {
 
-            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
-                    (((float) mainImageModel.getMainImageWidth()) / 1.5f) >= 600) {
-                mainImageModel.setCurrentRatio(30f / 20f);
-                chooseCurrentSelectedRationBackground(30f / 20f);
-            } else {
-                mainImageModel.setCurrentRatio(20f/20f);
-                chooseCurrentSelectedRationBackground(20f/20f);
-            }
+//                rotate action
+                if (finalIndex == 1) {
 
-        } else {
-            mainImageModel.setCurrentRatio(20f/20f);
-            chooseCurrentSelectedRationBackground(20f/20f);
+                    rotateDegree += 90F;
+
+                    if (rotateDegree == 360F) {
+                        rotateDegree = 0;
+                    }
+                    rotateByAngle(90);
+                }
+
+
+                //flip action
+                if (finalIndex == 2) {
+                    Bitmap bitmap = fastFlip(mGestureCropImageView.getViewBitmap());
+                    mGestureCropImageView.setImageBitmap(bitmap);
+                    mainImageModel.setBitmap(fastFlip(mainImageModel.getBitmap()));
+                    mainImageModel.setFilteredBitmap(fastFlip(mainImageModel.getFilteredBitmap()));
+                    isFlip = !isFlip;
+                }
+
+//                if (finalIndex == 7) {
+
+                //            mGestureCropImageView.postScale(mainImageModel.getCurrentScale(),
+//                    (mainImageModel.getImageWidth() / 2) + mainImageModel.getPositionX(),
+//                    (mainImageModel.getImageHeight() / 2) + mainImageModel.getPositionY());
+
+//                    mGestureCropImageView.zoomImageToPositionMine(2.3598654f,
+//                            313f,
+//                            179f);
+
+//                    TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
+//                    textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+//                        @Override
+//                        public void onDone(String inputText, int colorCode) {
+//                            mGestureCropImageView.addText(inputText, colorCode);
+//                        }
+//                    });
+//                }
+            });
         }
     }
+
+   public void clickRatioBottomHolder(){
+        for (int index = 0; index < ratio_holder.getChildCount(); index++) {
+
+
+//            if (mainImageModel.getCurrentRatio() == ratios[index]) {
+//                ratio_holder.getChildAt(index).setBackground(getDrawable(R.drawable.background_selected_bordered));
+//            }
+
+
+            int finalIndex = index;
+
+
+
+            Log.e("finalIndexx", finalIndex + "");
+            Log.e("ratio_holderChildCount", ratio_holder.getChildCount() + "");
+
+
+//            int finalIndex1 = index;
+
+
+            ratio_holder.getChildAt(index).setOnClickListener(view -> {
+
+
+                isRotateEstablished=false;
+
+                indexForPattern=finalIndex+1;
+
+//                preparePatternID(indexForPattern);
+
+                Log.e("TypeOmarPattern", mainImageModel.getTypePatternId() + "");
+                Log.e("finalIndexxInsideClick", finalIndex + "");
+                Log.e("currentRatioIndex4", currentRatioIndex + "");
+
+
+//                if (finalIndex == currentRatioIndex) {
+//                    Log.e("currentRatioIndex5",currentRatioIndex+"");
+//                    return;
+//                }
+
+                PreferenceHelper.saveIndexID(EditImageActivity.this,mainImageModel.getTypePatternId());
+
+                currentRatioIndex = finalIndex;
+                Log.e("currentRatioIndex20", currentRatioIndex + "");
+
+                //not 8*8 ratio
+                Log.e("MainImageWidth", mainImageModel.getMainImageWidth() + "");
+                Log.e("MainImageHeight", mainImageModel.getMainImageHeight() + "");
+                if (finalIndex != 0) {
+//                    if (mainImageModel.getMainImageWidth() >= 1000 && mainImageModel.getMainImageHeight() >= 1000) {
+                    if (mainImageModel.getMainImageWidth() >= 600 && mainImageModel.getMainImageHeight() >= 600) {
+
+
+                        ratio_holder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected_bordered));
+
+
+                        mGestureCropImageView.setTargetAspectRatio(ratios[finalIndex]);
+                        ratio = ratios[finalIndex];
+                        Log.e("ratioInside", ratio + "");
+                        currentRatioIndex = finalIndex;
+//                        mainImageModel.setCurrentRatioIndex(currentRatioIndex);
+
+                        Log.e("currentRatioIndex6", currentRatioIndex + "");
+                        Log.e("currentRatioIndex7", mainImageModel.getCurrentRatioIndex() + "");
+
+                        for (int i = 0; i < ratio_holder.getChildCount(); i++) {
+                            if (i != finalIndex)
+                                ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
+                        }
+
+
+                        if (finalIndex == 0 || finalIndex == 1 || finalIndex == 2
+                                || finalIndex == 6 || finalIndex == 7 || finalIndex == 8) {
+//                            moOverlayView.setCropGridColumnCount(0);
+                            isSegmented = false;
+                            mainImageModel.setSegmented(false);
+                        } else {
+//                            moOverlayView.setCropGridColumnCount(2);
+                            isSegmented = true;
+                            mainImageModel.setSegmented(true);
+                        }
+
+
+                        moOverlayView.setCropGridRowCount(pairPieces[(int) currentRatioIndex].second);
+                        moOverlayView.setCropGridColumnCount(pairPieces[(int) currentRatioIndex].first);
+                        Log.e("currentRatioIndex8", currentRatioIndex + "");
+
+                        moOverlayView.drawCropGrid(new Canvas());
+                        mGestureCropImageView.setImageToWrapCropBounds(false);
+                        new Handler().postDelayed(() ->{
+                            mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
+                            mGestureCropImageView.setImageToWrapCropBounds(true);
+                        } ,50);
+
+
+//                        float currentScale = mGestureCropImageView.getCurrentScale();
+//                        mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
+//                        mGestureCropImageView.zoomOutImage(currentScale);
+
+                    } else {
+                        Toast toast = Toast.makeText(this, getString(R.string.can_not_change_ratio), Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+
+                } else {
+
+                    ratio_holder.getChildAt(finalIndex).setBackground(getDrawable(R.drawable.background_selected_bordered));
+
+                    mGestureCropImageView.setTargetAspectRatio(ratios[finalIndex]);
+                    ratio = ratios[finalIndex];
+                    currentRatioIndex = finalIndex;
+                    Log.e("currentRatioIndex9", currentRatioIndex + "");
+                    mainImageModel.setCurrentRatioIndex(currentRatioIndex);
+
+                    for (int i = 0; i < ratio_holder.getChildCount(); i++) {
+                        if (i != finalIndex)
+                            ratio_holder.getChildAt(i).setBackground(getDrawable(R.drawable.background_selected));
+                    }
+
+                    moOverlayView.setCropGridColumnCount(0);
+                    moOverlayView.setCropGridRowCount(0);
+                    isSegmented = false;
+                    moOverlayView.drawCropGrid(new Canvas());
+                    mGestureCropImageView.setImageToWrapCropBounds();
+
+                    //zoom out image to fit screen and no resolution issues occured
+                    float currentScale = mGestureCropImageView.getCurrentScale();
+                    mGestureCropImageView.zoomOutImage(mGestureCropImageView.getMinScale());
+                    mGestureCropImageView.zoomOutImage(currentScale);
+
+                }
+
+                isRotateEstablished = true;
+
+            });
+        }
+    }
+
+
+//    public void setRatioFromWidthAndHeight(){
+//
+//        if (mainImageModel.getMainImageHeight() == mainImageModel.getMainImageWidth()) {
+//            mainImageModel.setCurrentRatio(20f/20f);
+//            chooseCurrentSelectedRationBackground(20f/20f);
+//
+//        } else if (mainImageModel.getMainImageHeight() > mainImageModel.getMainImageWidth()) {
+//
+//            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
+//                    (((float) mainImageModel.getMainImageHeight()) / 1.5f) >= 600) {
+//                mainImageModel.setCurrentRatio(30f / 20f);
+//                chooseCurrentSelectedRationBackground(30f / 20f);
+//            } else {
+//                mainImageModel.setCurrentRatio(20f/20f);
+//                chooseCurrentSelectedRationBackground(20f/20f);
+//            }
+//
+//        } else if (mainImageModel.getMainImageHeight() < mainImageModel.getMainImageWidth()) {
+//
+//            if (mainImageModel.getMainImageHeight() >= 600 && mainImageModel.getMainImageWidth() >= 600 &&
+//                    (((float) mainImageModel.getMainImageWidth()) / 1.5f) >= 600) {
+//                mainImageModel.setCurrentRatio(20f / 30f);
+//                chooseCurrentSelectedRationBackground(20f / 30f);
+//            } else {
+//                mainImageModel.setCurrentRatio(20f/20f);
+//                chooseCurrentSelectedRationBackground(20f/20f);
+//            }
+//
+//        } else {
+//            mainImageModel.setCurrentRatio(20f/20f);
+//            chooseCurrentSelectedRationBackground(20f/20f);
+//        }
+//    }
+
+    public boolean measureResolution(int patternId ,int width ,int height){
+        boolean goodResolution =false;
+
+        if (patternId == 1) {
+            if (height >= 600 && width >= 600){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 2) {
+            if (height >= 600 && width >= 800){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 3) {
+            if (height >= 600 && width >= 1200){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 4) {
+            if (height >= 600 && width >= 1400){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 5) {
+            if (height >= 800 && width >= 600){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 6) {
+            if (height >= 800 && width >= 1200){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 7) {
+            if (height >= 800 && width >= 800){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 8) {
+            if (height >= 1000 && width >= 800){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 9) {
+            if (height >= 1200 && width >= 800){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 10) {
+            if (height >= 1000 && width >= 1000){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 11) {
+            if (height >= 1200 && width >= 1200){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }else if (patternId == 12) {
+            if (height >= 2000 && width >= 2000){
+                goodResolution=true;
+            }else {
+                goodResolution=false;
+            }
+        }
+
+        return goodResolution;
+    }
+
+
+    public void preparePatternID(int indexForPattern){
+        if (indexForPattern==1){
+            mainImageModel.setTypePatternId(1);
+        }else if (indexForPattern==2){
+            mainImageModel.setTypePatternId(5);
+        }else if (indexForPattern==3){
+            mainImageModel.setTypePatternId(2);
+        }else if (indexForPattern==4){
+            mainImageModel.setTypePatternId(3);
+        }else if (indexForPattern==5){
+            mainImageModel.setTypePatternId(6);
+        }else if (indexForPattern==6){
+            mainImageModel.setTypePatternId(4);
+        }else if (indexForPattern==7){
+            mainImageModel.setTypePatternId(7);
+        }else if (indexForPattern==8){
+            mainImageModel.setTypePatternId(8);
+        }else if (indexForPattern==9){
+            mainImageModel.setTypePatternId(9);
+        }else if (indexForPattern==10){
+            mainImageModel.setTypePatternId(10);
+        }else if (indexForPattern==11){
+            mainImageModel.setTypePatternId(11);
+        }else if (indexForPattern==12){
+            mainImageModel.setTypePatternId(12);
+        }
+//        mainImageModel.setCurrentRatio(currentRatioIndex);
+    }
+
 }

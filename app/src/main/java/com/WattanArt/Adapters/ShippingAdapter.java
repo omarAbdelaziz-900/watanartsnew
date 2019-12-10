@@ -18,12 +18,15 @@ import android.widget.Toast;
 
 import com.WattanArt.R;
 import com.WattanArt.model.AppModels.ImageModel;
+import com.WattanArt.model.Response.SelectCountryCitiyListsResponseModel;
+import com.WattanArt.ui.Shipping.InEgyptHelper;
 import com.WattanArt.ui.Shipping.ShippingActivity;
 import com.yalantis.ucrop.view.UCropView;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by khaled.badawy on 4/15/2018.
@@ -35,6 +38,9 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
     private Context mContext;
     DisplayMetrics displayMetrics;
 
+    public static int patternId=0;
+
+    List<Integer> patternIds=new ArrayList<>();
 //    float[] ratios = new float[]{
 //            1f,
 //            8f / 12f,
@@ -88,8 +94,8 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 
             30f / 30f,
 
-            40f / 30f,
-            50f / 30f,
+            30f / 40f,
+            30f / 50f,
 
             40f / 40f,
             60f / 60f,
@@ -138,8 +144,14 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
     onDeleteOnImage onDeleteOnImage;
     onReplaceOnImage onReplaceOnImage;
     clickListner clickListner;
+    List<SelectCountryCitiyListsResponseModel.Result.PatternTypeBean> pattenList;
+    boolean isInEgypt = false;
 
-    public ShippingAdapter(Context context, List<ImageModel> ImageModelList
+    public ShippingAdapter(boolean isInEgypt ,List<SelectCountryCitiyListsResponseModel.Result.PatternTypeBean> pattenList){
+        this.isInEgypt=isInEgypt;
+        this.pattenList = pattenList;
+    }
+    public ShippingAdapter(boolean isInEgypt , List<SelectCountryCitiyListsResponseModel.Result.PatternTypeBean> pattenList,int patternId ,Context context, List<ImageModel> ImageModelList
             , getNewPrice getNewPrice, getNewpieces getNewpieces,
                            onDeleteOnImage onDeleteOnImage,
                            onReplaceOnImage onReplaceOnImage,
@@ -151,38 +163,41 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         this.onDeleteOnImage = onDeleteOnImage;
         this.onReplaceOnImage = onReplaceOnImage;
         this.clickListner = clickListner;
+        this.patternId = patternId;
+        this.pattenList = pattenList;
+        this.isInEgypt = isInEgypt;
         displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));//20*20
-        ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));//30*20
-        ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));//20*30
-        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));//20*60
-        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));//30*60
-        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));//20*90
+//        ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));//20*20
+//        ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));//30*20
+//        ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));//20*30
+//        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));//20*60
+//        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));//30*60
+//        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));//20*90
+//
+//        ratioDimensions.add(new RatioDimensions(ratios[6], 400, 400));//30*30
+//
+//        ratioDimensions.add(new RatioDimensions(ratios[7], 300, 400));//30*40
+//        ratioDimensions.add(new RatioDimensions(ratios[8], 300, 450));//30*50
+//
+//        ratioDimensions.add(new RatioDimensions(ratios[9], 400, 400));//40*40
+//        ratioDimensions.add(new RatioDimensions(ratios[10], 400, 400));//60*60
+//        ratioDimensions.add(new RatioDimensions(ratios[11], 400, 400));//80*80
 
-        ratioDimensions.add(new RatioDimensions(ratios[6], 400, 400));//30*30
+        ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));
+        ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));
+        ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));
+        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));
+        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));
+        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));
 
-        ratioDimensions.add(new RatioDimensions(ratios[7], 300, 400));//30*40
-        ratioDimensions.add(new RatioDimensions(ratios[8], 300, 450));//30*50
-
-        ratioDimensions.add(new RatioDimensions(ratios[9], 400, 400));//40*40
-        ratioDimensions.add(new RatioDimensions(ratios[10], 400, 400));//60*60
-        ratioDimensions.add(new RatioDimensions(ratios[11], 400, 400));//80*80
-
-//        ratioDimensions.add(new RatioDimensions(ratios[0], 600, 600));
-//        ratioDimensions.add(new RatioDimensions(ratios[1], 600, 800));
-//        ratioDimensions.add(new RatioDimensions(ratios[2], 800, 600));
-//        ratioDimensions.add(new RatioDimensions(ratios[3], 1200, 600));
-//        ratioDimensions.add(new RatioDimensions(ratios[4], 1200, 800));
-//        ratioDimensions.add(new RatioDimensions(ratios[5], 1400, 600));
-
-//        ratioDimensions.add(new RatioDimensions(ratios[6], 800, 800));
-//        ratioDimensions.add(new RatioDimensions(ratios[7], 800, 1000));
-//        ratioDimensions.add(new RatioDimensions(ratios[8], 800, 1200));
-//        ratioDimensions.add(new RatioDimensions(ratios[9], 1000, 1000));
-//        ratioDimensions.add(new RatioDimensions(ratios[10], 1200, 1200));
-//        ratioDimensions.add(new RatioDimensions(ratios[11], 2000, 2000));
+        ratioDimensions.add(new RatioDimensions(ratios[6], 400, 400));
+        ratioDimensions.add(new RatioDimensions(ratios[7], 400, 300));
+        ratioDimensions.add(new RatioDimensions(ratios[8], 450, 300));
+        ratioDimensions.add(new RatioDimensions(ratios[9], 400, 400));
+        ratioDimensions.add(new RatioDimensions(ratios[10], 400, 400));
+        ratioDimensions.add(new RatioDimensions(ratios[11], 400, 400));
 
     }
 
@@ -213,6 +228,18 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 //        }else {
         holder.gestureCropImageView.forceResetCropImageView();
 //        }
+
+        Log.e("hhhhh",pattenList.size()+"");
+        for (int i=0;i<ShippingActivity.imageModelList.size();i++){
+            Log.e("patternIdFromAdpterss",ShippingActivity.imageModelList.get(i).getTypePatternId()+"");
+            if (pattenList.size()!=0) {
+                getprice(i, ShippingActivity.imageModelList.get(i).getTypePatternId());
+                Log.e("getPattrenInPrice", ShippingActivity.imageModelList.get(i).getPattrenInPrice() + "");
+                Log.e("getPattrenOutPrice", ShippingActivity.imageModelList.get(i).getPattrenOutPrice() + "");
+            }
+        }
+       Log.e("imageModelListimage",ShippingActivity.imageModelList.size()+"");
+
 
         holder.gestureCropImageView.getCropImageView().setImageBitmap(null);
 
@@ -322,7 +349,7 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
             e.printStackTrace();
         }
 
-        holder.quantityTv.setText(ShippingActivity.imageModelList.get(position).getQuantity() + "");
+        holder.quantityTv.setText(ShippingActivity.imageModelList.get(position).getPatternAmount() + "");
 
 //        if (ShippingActivity.imageModelList.get(position).isSegmented()) {
 //            holder.gestureCropImageView.getOverlayView().setShowCropGrid(true);
@@ -350,23 +377,61 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
 
         holder.plusIV.setOnClickListener(view -> {
 
-            int quantity = Integer.valueOf(holder.quantityTv.getText().toString());
-            holder.quantityTv.setText(++quantity + "");
-            ShippingActivity.imageModelList.get(position).setQuantity(quantity);
+            omar();
+            if (InEgyptHelper.getInstance().isInEgypt()) {
+                isInEgypt = true;
+            }else {
+                isInEgypt = false;
+            }
 
-            getPiecesNumber();
-            CalculatePrice();
+            if (ShippingActivity.imageModelList.get(position).getPatternAmount()>=1){
+                holder.quantityTv.setText(ShippingActivity.imageModelList.get(position).getPatternAmount()+1 + "");
+                ShippingActivity.imageModelList.get(position).setPatternAmount(ShippingActivity.imageModelList.get(position).getPatternAmount()+1);
+                CalculatePrice();
+            }else {
+//                holder.quantityTv.setText(ShippingActivity.imageModelList.get(position).getPatternAmount() + "");
+//                ShippingActivity.imageModelList.get(position).setPatternAmount(1);
+            }
+
+
+//            int quantity = Integer.valueOf(holder.quantityTv.getText().toString());
+//            holder.quantityTv.setText(++quantity + "");
+//            ShippingActivity.imageModelList.get(position).setQuantity(quantity);
+////            ShippingActivity.imageModelList.get(position).setTypePatternId();
+//            getPiecesNumber();
+//            CalculatePrice();
+
         });
 
         holder.minusIV.setOnClickListener(view -> {
-
-            int quantity = Integer.valueOf(holder.quantityTv.getText().toString());
-            if (quantity > 1) {
-                holder.quantityTv.setText(--quantity + "");
-                ShippingActivity.imageModelList.get(position).setQuantity(quantity);
-                getPiecesNumber();
-                CalculatePrice();
+            omar();
+            if (InEgyptHelper.getInstance().isInEgypt()) {
+                isInEgypt = true;
+            }else {
+                isInEgypt = false;
             }
+            int quantity;
+            if (ShippingActivity.imageModelList.get(position).getPatternAmount()>1) {
+                if (ShippingActivity.imageModelList.get(position).getPatternAmount() != 1){
+                ShippingActivity.imageModelList.get(position).setPatternAmount(ShippingActivity.imageModelList.get(position).getPatternAmount() - 1);
+                holder.quantityTv.setText(ShippingActivity.imageModelList.get(position).getPatternAmount() + "");
+                CalculatePrice();
+            }else {
+
+                }
+            }else {
+//                holder.quantityTv.setText(ShippingActivity.imageModelList.get(position).getPatternAmount() + "");
+//                ShippingActivity.imageModelList.get(position).setPatternAmount(1);
+            }
+
+
+//            int quantity = Integer.valueOf(holder.quantityTv.getText().toString());
+//            if (quantity > 1) {
+//                holder.quantityTv.setText(--quantity + "");
+//                ShippingActivity.imageModelList.get(position).setQuantity(quantity);
+//                getPiecesNumber();
+//                CalculatePrice();
+//            }
         });
 
         holder.replace.setOnClickListener(view -> {
@@ -380,14 +445,27 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         void itemClicked(int position);
     }
 
+//    public int getPiecesNumber() {
+//        int pieces = 0;
+//
+//
+//        for (int i = 0; i < ShippingActivity.imageModelList.size(); i++) {
+//            Pair<Integer, Integer> piece = pairPieces[(int) ShippingActivity.imageModelList.get(i).getCurrentRatioIndex()];
+////            pieces += (piece.first+1) * (piece.second+1) *  ShippingActivity.imageModelList.get(i).getQuantity();
+//            pieces += ShippingActivity.imageModelList.get(i).getQuantity();
+//        }
+//
+//        Log.e("PiecesFromAdapter", "" + pieces);
+//        getNewpieces.returnPrice(pieces);
+//        return pieces;
+//    }
+
     public int getPiecesNumber() {
         int pieces = 0;
-
-
         for (int i = 0; i < ShippingActivity.imageModelList.size(); i++) {
-            Pair<Integer, Integer> piece = pairPieces[(int) ShippingActivity.imageModelList.get(i).getCurrentRatioIndex()];
+//            Pair<Integer, Integer> piece = pairPieces[(int) ShippingActivity.imageModelList.get(i).getCurrentRatioIndex()];
 //            pieces += (piece.first+1) * (piece.second+1) *  ShippingActivity.imageModelList.get(i).getQuantity();
-            pieces += ShippingActivity.imageModelList.get(i).getQuantity();
+            pieces += ShippingActivity.imageModelList.get(i).getPatternAmount();
         }
 
         Log.e("PiecesFromAdapter", "" + pieces);
@@ -395,19 +473,31 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         return pieces;
     }
 
+    public int getPatternId() {
+        int id = patternId;
+        return id;
+    }
 
-    public double CalculatePrice() {
-        double price = 0d;
+
+
+    public void CalculatePrice() {
+//        double price = 0d;
 
         if (getNewPrice != null) {
-            getNewPrice.returnPrice(price);
+            if (isInEgypt) {
+                getNewPrice.returnPrice(calculateInPrice(),getPiecesNumber());
+            }else {
+                getNewPrice.returnPrice(calculateOutPrice(),getPiecesNumber());
+            }
         }
-        return price;
+//        return price;
     }
 
     public interface getNewPrice {
-        void returnPrice(double price);
+        void returnPrice(double price,int piece);
     }
+
+
 
     public interface getNewpieces {
         void returnPrice(int piece);
@@ -503,4 +593,188 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
     }
 
 
+    public double getprice(int i , int patternId ){
+        double price = 0;
+        if (patternId==1){//10 >>20*20
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(0).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(0).getOutPrice());
+                Log.e("kjjjjj",pattenList.get(0).getOutPrice()+"");
+//            }
+        }else if (patternId==5){//50 >>30*20
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(4).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(4).getOutPrice());
+//            }
+        }else if (patternId==2){//20 >>20*30
+            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(1).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(1).getOutPrice());
+            }
+
+
+        }else if (patternId==3){//30 >>20*60
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(2).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(2).getOutPrice());
+//            }
+        }else if (patternId==6){//60 >>30*60
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(5).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(5).getOutPrice());
+//            }
+        }else if (patternId==4){//40 >>20*90
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(3).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(3).getOutPrice());
+//            }
+        }else if (patternId==7){//70 >>30*30
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(6).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(6).getOutPrice());
+//            }
+        }else if (patternId==8){//80 >>40*30
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(7).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(7).getOutPrice());
+//            }
+        }else if (patternId==9){//9 >>50*30
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(8).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(8).getOutPrice());
+//            }
+        }else if (patternId==10){//100 >>40*40
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(9).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(9).getOutPrice());
+//            }
+        }else if (patternId==11){//110 >>60*60
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(10).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(10).getOutPrice());
+//            }
+        }else if (patternId==12){//120 >>80*80
+//            if (isInEgypt) {
+                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(11).getPrice());
+                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(11).getOutPrice());
+//            }
+        }
+        Log.e("ppppp",patternId+"");
+        return price;
+    }
+
+
+//    public double getprice(int i , int patternId ){
+//        double price = 0;
+//        if (patternId==1){//10 >>20*20
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(0).getPrice());
+//                Log.e("ksssss",pattenList.get(0).getPrice()+"");
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(0).getOutPrice());
+//                Log.e("kjjjjj",pattenList.get(0).getOutPrice()+"");
+//            }
+//        }else if (patternId==5){//50 >>30*20
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(4).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(4).getOutPrice());
+//            }
+//        }else if (patternId==2){//20 >>20*30
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(1).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(1).getOutPrice());
+//            }
+//
+//
+//        }else if (patternId==3){//30 >>20*60
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(2).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(2).getOutPrice());
+//            }
+//        }else if (patternId==6){//60 >>30*60
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(5).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(5).getOutPrice());
+//            }
+//        }else if (patternId==4){//40 >>20*90
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(3).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(3).getOutPrice());
+//            }
+//        }else if (patternId==7){//70 >>30*30
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(6).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(6).getOutPrice());
+//            }
+//        }else if (patternId==8){//80 >>40*30
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(7).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(7).getOutPrice());
+//            }
+//        }else if (patternId==9){//9 >>50*30
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(8).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(8).getOutPrice());
+//            }
+//        }else if (patternId==10){//100 >>40*40
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(9).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(9).getOutPrice());
+//            }
+//        }else if (patternId==11){//110 >>60*60
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(10).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(10).getOutPrice());
+//            }
+//        }else if (patternId==12){//120 >>80*80
+//            if (isInEgypt) {
+//                ShippingActivity.imageModelList.get(i).setPattrenInPrice(pattenList.get(11).getPrice());
+//            }else {
+//                ShippingActivity.imageModelList.get(i).setPattrenOutPrice(pattenList.get(11).getOutPrice());
+//            }
+//        }
+//        Log.e("ppppp",patternId+"");
+//        return price;
+//    }
+
+
+
+
+    public double calculateInPrice(){
+        double price=0;
+        for (int i=0;i<ShippingActivity.imageModelList.size();i++){
+            price=price+(ShippingActivity.imageModelList.get(i).getPatternAmount() * ShippingActivity.imageModelList.get(i).getPattrenInPrice());
+        }
+        return price;
+    }
+
+    public double calculateOutPrice(){
+        double price=0;
+        for (int i=0;i<ShippingActivity.imageModelList.size();i++){
+            price=price+(ShippingActivity.imageModelList.get(i).getPatternAmount() * ShippingActivity.imageModelList.get(i).getPattrenOutPrice());
+            Log.e("OutttPrice",ShippingActivity.imageModelList.get(i).getPattrenOutPrice()+"");
+        }
+        return price;
+    }
+
+    void omar(){
+//        for (int i=0;i<ShippingActivity.imageModelList.size();i++){
+//            Log.e("patternIdFromAdpterss",ShippingActivity.imageModelList.get(i).getTypePatternId()+"");
+//            if (pattenList.size()!=0) {
+//                getprice(i, ShippingActivity.imageModelList.get(i).getTypePatternId());
+//                Log.e("getPattrenInPrice", ShippingActivity.imageModelList.get(i).getPattrenInPrice() + "");
+//                Log.e("getPattrenOutPrice", ShippingActivity.imageModelList.get(i).getPattrenOutPrice() + "");
+//            }
+//        }
+    }
 }

@@ -69,11 +69,13 @@
         tools:context=".ui.Shipping.ShippingActivity">
 
         <android.support.constraint.ConstraintLayout
+            android:paddingTop="@dimen/_16sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
             <LinearLayout
+                android:layout_margin="@dimen/_16sdp"
                 android:id="@+id/holder_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,10 +89,60 @@
 
                 <ImageView
                     android:id="@+id/bitmap_image_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"/>
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/linaer_adding_minus"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/holder_recycler"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/minusIV"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/ic_remove" />
+
+
+                <com.WattanArt.Utils.widgets.CustomeTextView
+                    android:id="@+id/quantityDescTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/qty"
+                    android:textColor="@color/colorPrimary" />
+
+                <com.WattanArt.Utils.widgets.CustomeTextView
+                    android:id="@+id/quantityTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:text="1"
+                    android:textColor="@color/colorPrimary" />
+
+
+                <ImageView
+                    android:id="@+id/plusIV"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/ic_add" />
+
+
+            </LinearLayout>
 
             <com.WattanArt.Utils.widgets.CustomeTextView
                 android:id="@+id/pieces_number"
@@ -98,12 +150,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="10dp"
-                android:text=""
+                android:text="jknjknjn"
                 android:textSize="14sp"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/holder_recycler" />
+                app:layout_constraintTop_toBottomOf="@id/linaer_adding_minus" />
 
             <com.WattanArt.Utils.widgets.CustomeTextView
                 android:id="@+id/priceTextView"
@@ -111,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="4dp"
-                android:text=""
+                android:text="jknknjnjn"
                 android:gravity="center"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -140,7 +192,7 @@
                     android:imeOptions="actionNext"
                     android:maxLines="1"
                     android:textSize="@dimen/font_size_large"
-                    android:maxLength="11"
+                    android:maxLength="15"
                     android:textColor="@color/dark_grey"
                     android:textColorHint="@color/dark_grey" />
 
@@ -261,6 +313,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="8dp"
                             android:text="@string/check_code"
+                            android:onClick="checkCode"
                             android:textColor="@color/colorPrimary"/>
                     </RelativeLayout>
 
@@ -377,6 +430,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="12sp"
+        android:onClick="completeOrder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
          />

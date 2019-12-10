@@ -136,6 +136,14 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
         intent.putExtra("mobileType",mobileImage=responseModelObj.getResult()
                 .get(mobileType).getItems().get(position).getType());
 
+        intent.putExtra("mobileId",mobileImage=responseModelObj.getResult()
+                .get(mobileType).getItems().get(position).getProd_ID()+"");
+
+    intent.putExtra("priceIn",mobileImage=responseModelObj.getResult()
+                    .get(mobileType).getItems().get(position).getPrice()+"");
+
+    intent.putExtra("priceOut",mobileImage=responseModelObj.getResult()
+                        .get(mobileType).getItems().get(position).getOutPrice()+"");
 
         Bundle args = new Bundle();
         args.putSerializable("General_Style",(Serializable)responseModelObj.getResult()

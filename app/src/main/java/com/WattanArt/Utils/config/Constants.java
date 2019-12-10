@@ -83,6 +83,7 @@ public class Constants {
     public static final int FACEBOOK_REGISTER = 2;
     public static final int FACEBOOK_REGISTER_WithPassword = 3;
     public static final String ORDERITEMPRICE = "OrderItemPrice";
+    public static final String ORDERChARGE = "Ordercharge";
 
     public static final String DEFAULT_PASSWORD = "123456";
 

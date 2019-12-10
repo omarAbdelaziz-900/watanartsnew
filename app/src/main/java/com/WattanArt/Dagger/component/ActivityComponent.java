@@ -23,6 +23,7 @@ import com.WattanArt.Dagger.module.ActivityModule;
 //import com.WattanArt.ui.OldPackages.Slides.SlidesFragment;
 import com.WattanArt.ui.Category.CategoryActivity;
 import com.WattanArt.ui.FlashMemory.FlashMemoryActivity;
+import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryActivity;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.WattanArt.ui.About.AboutActivity;
@@ -71,4 +72,5 @@ public interface ActivityComponent {
 
     void inject(FlashMemoryActivity flashMemoryActivity);
     void inject(ShippingMobileActivity shippingMobileActivity);
+    void inject(ShippingFlashMemoryActivity shippingFlashMemoryActivity);
 }

@@ -8,4 +8,6 @@ import com.WattanArt.ui.base.MvpView;
 public interface MobileMvpView extends MvpView {
    void returnUploadedImageForMobile(ImageUploadResponseModel imageUploadResponseModel);
    void returnUploadedImageForCover(ImageUploadResponseModel imageUploadResponseModel);
+   void showLoadingInner();
+   void hideLoadingInner();
 }

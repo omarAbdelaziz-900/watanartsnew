@@ -52,8 +52,13 @@
     <color name="degrade_grey">#EBE3E3</color>
     <color name="placeholder_grey_20">#33AAADC4</color>
 
+    <color name="placeholder_grey_220">#C9C9CE</color>
+
 
     <color name="black">#000000</color>
+
+    <color name="smooth_black">#54504B</color>
+
     <color name="blue_color_picker">#0066FF</color>
     <color name="brown_color_picker">#AF593E</color>
     <color name="green_color_picker">#01A368</color>
@@ -67,6 +72,7 @@
 
 
     <color name="gray_bg">#FFD1CACA</color>
+    <color name="white_bold">#fafdfa</color>
 
 
 </resources>

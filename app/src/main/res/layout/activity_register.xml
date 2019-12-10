@@ -81,6 +81,7 @@
                     android:textAlignment="viewStart"
                     android:textColor="@color/dark_grey"
                     android:textColorHint="@color/dark_grey"
+                    android:drawableEnd="@drawable/ic_star_black_24dp"
                     android:textSize="@dimen/font_size_large" />
 
                 <com.WattanArt.Utils.widgets.CustomEditText
@@ -99,6 +100,7 @@
                     android:textAlignment="viewStart"
                     android:textColor="@color/dark_grey"
                     android:textColorHint="@color/dark_grey"
+                    android:drawableEnd="@drawable/ic_star_black_24dp"
                     android:textSize="@dimen/font_size_large" />
 
                 <com.WattanArt.Utils.widgets.CustomEditText
@@ -117,6 +119,7 @@
                     android:textAlignment="viewStart"
                     android:textColor="@color/dark_grey"
                     android:textColorHint="@color/dark_grey"
+                    android:drawableEnd="@drawable/ic_star_black_24dp"
                     android:textSize="@dimen/font_size_large" />
 
                 <com.WattanArt.Utils.widgets.CustomEditText
@@ -136,6 +139,7 @@
                     android:textAlignment="viewStart"
                     android:textColor="@color/dark_grey"
                     android:textColorHint="@color/dark_grey"
+                    android:drawableEnd="@drawable/ic_star_black_24dp"
                     android:textSize="@dimen/font_size_large" />
 
                 <com.WattanArt.Utils.widgets.CustomEditText
@@ -151,9 +155,11 @@
                     android:gravity="start"
                     android:hint="@string/phone"
                     android:inputType="phone"
+                    android:maxLength="15"
                     android:textAlignment="viewStart"
                     android:textColor="@color/dark_grey"
                     android:textColorHint="@color/dark_grey"
+                    android:drawableEnd="@drawable/ic_star_black_24dp"
                     android:textSize="@dimen/font_size_large" />
 
                 <LinearLayout

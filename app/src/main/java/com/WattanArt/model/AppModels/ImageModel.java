@@ -29,6 +29,9 @@ public class ImageModel implements Parcelable {
     boolean isFlipped;
     float currentRatio;
     int typePatternId =1;
+    double pattrenInPrice;
+    double pattrenOutPrice;
+    int patternAmount =1;
     int positionX;
     int positionY;
     float Hue;
@@ -330,6 +333,30 @@ public class ImageModel implements Parcelable {
 
     public void setTypePatternId(int typePatternId) {
         this.typePatternId = typePatternId;
+    }
+
+    public double getPattrenInPrice() {
+        return pattrenInPrice;
+    }
+
+    public void setPattrenInPrice(double pattrenInPrice) {
+        this.pattrenInPrice = pattrenInPrice;
+    }
+
+    public double getPattrenOutPrice() {
+        return pattrenOutPrice;
+    }
+
+    public void setPattrenOutPrice(double pattrenOutPrice) {
+        this.pattrenOutPrice = pattrenOutPrice;
+    }
+
+    public int getPatternAmount() {
+        return patternAmount;
+    }
+
+    public void setPatternAmount(int patternAmount) {
+        this.patternAmount = patternAmount;
     }
 
     public int getPositionX() {

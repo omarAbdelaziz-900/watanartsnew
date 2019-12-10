@@ -43,7 +43,7 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
 
 //        getMvpView().showLoading();
 
-        getMvpView().showLoading();
+        getMvpView().showLoadingInner();
         int index = serverUploadIndex + 1;
 
         filetoUploadForMobile = new File(listPaths.get(0));
@@ -77,7 +77,7 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
 //
                 getMvpView().returnUploadedImageForMobile(response.body());
 
-                getMvpView().hideLoading();
+                getMvpView().hideLoadingInner();
 
                 if (response.code() == 200) {
                     if (response.body().getState() == 1) {
@@ -130,7 +130,7 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
                         MyApplication.getAppContext().getString(R.string.slow_connection)
                         , Toast.LENGTH_SHORT).show();
 
-                    getMvpView().hideLoading();
+                    getMvpView().hideLoadingInner();
 
             }
         });
@@ -141,9 +141,8 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
     public void returnUploadedImageForCover(List<String> list, File filePath) {
 
 
-        getMvpView().showLoading();
 
-        getMvpView().showLoading();
+        getMvpView().showLoadingInner();
         int index = serverUploadIndex + 1;
 
         filetoUploadForCover = new File(list.get(0));
@@ -177,7 +176,7 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
 //
                 getMvpView().returnUploadedImageForCover(response.body());
 
-                getMvpView().hideLoading();
+                getMvpView().hideLoadingInner();
 
 //                ViewHelper.hideProgressDialog();
                 if (response.code() == 200) {
@@ -231,7 +230,7 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
                         MyApplication.getAppContext().getString(R.string.slow_connection)
                         , Toast.LENGTH_SHORT).show();
 
-                getMvpView().hideLoading();
+                getMvpView().hideLoadingInner();
 
             }
         });
@@ -247,4 +246,6 @@ public class MobilePresenterImp<V extends MobileMvpView> extends BasePresenter<V
     private String getNameWithOutExtension(String s) {
         return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
     }
+
+
 }

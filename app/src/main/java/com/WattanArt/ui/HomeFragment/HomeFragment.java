@@ -27,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -41,6 +42,7 @@ import com.WattanArt.model.Response.HomeIntroResponseModel;
 import com.WattanArt.ui.CanvasPrint.CanvasPrintActivity;
 import com.WattanArt.ui.Category.CategoryActivity;
 import com.WattanArt.ui.EditImage.EditImageActivity;
+import com.WattanArt.ui.Shipping.InEgyptHelper;
 import com.WattanArt.ui.base.BaseFragment;
 import com.WattanArt.ui.creationFields.DataModel;
 import com.WattanArt.ui.creationFields.ItemFieldsAdpater;
@@ -106,7 +108,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
     ImageView myImageView;
 
     @BindView(R.id.myImageViewText_firstItem)
-    CustomeTextViewBold myImageViewText_firstItem;
+    TextView myImageViewText_firstItem;
 
     @BindView(R.id.relative__firstItem)
     RelativeLayout relative__firstItem;
@@ -116,6 +118,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
 
     List< HomeIntroResponseModel.ResultBean.CategoryBean> arrayList;
     List< HomeIntroResponseModel.ResultBean.CategoryBean> finalArrayList;
+    List< HomeIntroResponseModel.ResultBean.CategoryBean.Item> itemsArrayList;
 
     private String youtubeID = "";
     String link;
@@ -134,6 +137,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
+        InEgyptHelper.getInstance().setInEgypt(true);
 
         userData = new UserData();
         ActivityComponent component = getActivityComponent();
@@ -255,6 +259,12 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             loadImage(responseModel, 2, mThirdPreviewImageView);
         }
 
+        itemsArrayList=responseModel.getResult().getCategory().get(1).getItems();
+
+        Log.e("getProdID",responseModel.getResult().getCategory().get(1).getItems().get(0).getProdID()+"");
+
+
+
         initYouTube();
 
         Log.e("nameee",responseModel.getResult().getCategory().get(0).getName());
@@ -262,12 +272,12 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             arrayList=responseModel.getResult().getCategory();
             loadImage(arrayList.get(0).getImage(), myImageView_firstItem);
             myImageViewText_firstItem.setText(arrayList.get(0).getName());
-//            for (int i=0;i<arrayList.size();i++){
-//                if (i!=0){
-            catID=arrayList.get(0).getCat_ID();
+
+
+            catID=arrayList.get(0).getCatID();
             arrayList.remove(0);
             finalArrayList=arrayList;
-//                }
+
 
             itemFielsdsList2();
         }else {
@@ -387,7 +397,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         recyclerView.scrollToPosition(0);
-        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), finalArrayList, this );
+        ItemFieldsAdpater adapter = new ItemFieldsAdpater(getActivity(), itemsArrayList,finalArrayList, this );
         recyclerView.setAdapter(adapter);
     }
 

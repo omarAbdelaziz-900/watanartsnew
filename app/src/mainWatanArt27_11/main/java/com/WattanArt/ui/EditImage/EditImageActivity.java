@@ -173,9 +173,11 @@ public class EditImageActivity extends AppCompatActivity implements
             80f / 80f};
 
     Pair<Integer, Integer>[] pairDimens = new Pair[]{
+            //////// W     H
             new Pair(600, 600),
             new Pair(600, 800),
             new Pair(800, 600),
+
             new Pair(1200, 600),
 
             new Pair(1200, 800),
@@ -185,10 +187,10 @@ public class EditImageActivity extends AppCompatActivity implements
             new Pair(800, 800),
 
 //            new Pair(800, 1000),
-            new Pair(1000, 800),
+            new Pair(800, 1000),
 
 //            new Pair(800, 1200),
-            new Pair(1200, 800),
+            new Pair(800, 1200),
 
             new Pair(1000, 1000),
             new Pair(1200, 1200),

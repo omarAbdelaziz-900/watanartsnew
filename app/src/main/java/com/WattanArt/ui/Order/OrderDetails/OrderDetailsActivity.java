@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -53,9 +54,9 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsMv
 
     LinearLayoutManager linearLayoutManager;
     double totalPrice;
-    int orderId;
+    int orderId ;
     String stateValue;
-    double itemCost;
+    double itemCost ,chargePrice;
     UserData userData;
 
     @Override
@@ -88,6 +89,9 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsMv
             stateValue = intent.getStringExtra(Constants.STATEVALUE);
             itemCost = intent.getDoubleExtra(Constants.ORDERITEMPRICE,0
             );
+            if (intent.hasExtra(Constants.ORDERChARGE))
+                chargePrice = intent.getDoubleExtra(Constants.ORDERChARGE,0);
+            Log.e("chargePrice",chargePrice+"");
         }
 
 
@@ -111,7 +115,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsMv
 
     }
 
-    private void setData(List<OrderDetailsResponseModel.ResultEntity> responseList) {
+    private void setData(List<OrderDetailsResponseModel.ResultBean> responseList) {
         RecyclerView.Adapter adapter = new OrderDetailsAdapter(this, responseList);
         mOrderRecycle.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -132,7 +136,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsMv
 //            for (int i = 0; i < responseModel.getResult().size(); i++) {
 //                totalPrice = totalPrice + responseModel.getResult().get(i).getPiecePrice();
 //            }
-                            totalPrice = totalPrice + itemCost;
+                            totalPrice = totalPrice + itemCost +chargePrice;
 
             String currency;
             boolean isInEgypt = UtilitiesManager.getUserCountry(this).toLowerCase().equals("eg");

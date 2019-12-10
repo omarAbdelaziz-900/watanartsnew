@@ -17,6 +17,7 @@ public class PreferenceHelper {
     public static String TAG_NOTIFICATION_COUNT = "notification_count";
     public static String TAG_LOCALIZATION = "localization";
     public static String TAG_SAVE_PROFILE_INFO = "profile_info";
+    public static String TAG_SAVE_INDEX_ID = "index_id";
 
 
     public static void saveChildProfile(Context context, Object myObject) {
@@ -66,6 +67,14 @@ public class PreferenceHelper {
         return SharedPreferencesTool.getBoolean(context, TAG_LANGUAGE_SCREEN);
     }
 
+
+    public static void saveIndexID(Context context, int value) {
+        SharedPreferencesTool.setInt(context, TAG_SAVE_INDEX_ID, value);
+    }
+
+    public static int getIndexID(Context context) {
+        return SharedPreferencesTool.getInt(context, TAG_SAVE_INDEX_ID);
+    }
 
     public static String getUserId(Context context) {
         User user = getChildProfile(context);

@@ -117,8 +117,12 @@ public class RegisterActivity extends BaseActivity implements
     private ValidationTool validationTool;
 
     boolean cameFromShippingActivity = false;
+    boolean cameFromShippingMobileActivity = false;
+    boolean cameFromShippingFlashActivity = false;
 
     public static final String ShippingRegister = "came_from_shipping";
+    public static final String ShippingMobileRegister = "came_from_shipping_mobile";
+    public static final String ShippingFlashRegister = "came_from_shipping_flash";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +136,18 @@ public class RegisterActivity extends BaseActivity implements
 
         //indicate whether i came from login screen or from dialog in shipping presenter
         if (getIntent() != null && getIntent().hasExtra(ShippingRegister)) {
+            Log.e("ShippingRegister",ShippingRegister);
             cameFromShippingActivity = true;
+        }
+
+        if (getIntent() != null && getIntent().hasExtra(ShippingMobileRegister)) {
+            Log.e("ShippingMobileRegister",ShippingMobileRegister);
+            cameFromShippingMobileActivity = true;
+        }
+
+        if (getIntent() != null && getIntent().hasExtra(ShippingFlashRegister)) {
+            Log.e("ShippingFlashRegister",ShippingFlashRegister);
+            cameFromShippingFlashActivity = true;
         }
 
         ActivityComponent component = getActivityComponent();
@@ -277,17 +292,37 @@ public class RegisterActivity extends BaseActivity implements
 
     @Override
     public void openHomeActivity(String userId) {
-//        if (!TextUtils.isEmpty(userId)) {
-//            logUserRegisterEvent(this, userId);
-//        }
-        if (!cameFromShippingActivity) {
+
+        if (!cameFromShippingActivity && !cameFromShippingMobileActivity && !cameFromShippingFlashActivity){
             startActivity(new Intent(this, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             finish();
-        } else {
+            Log.e("hahahaha","hahahahah");
+        }
+//        else if (!cameFromShippingActivity && !cameFromShippingMobileActivity && !cameFromShippingFlashActivity){
+//            startActivity(new Intent(this, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//            finish();
+//            Log.e("hahahaha","hahahahah");
+//        }else if (!cameFromShippingActivity && !cameFromShippingMobileActivity && !cameFromShippingFlashActivity){
+//            startActivity(new Intent(this, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//            finish();
+//            Log.e("hahahaha","hahahahah");
+//        }
+        else {
+            Log.e("hahahaha2","hahahahah2");
             //back to shippingActivity
             setResult(RESULT_OK);
             finish();
         }
+
+//        if (!cameFromShippingActivity) {
+//            startActivity(new Intent(this, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//            finish();
+//        } else {
+//            //back to shippingActivity
+//            Log.e("hahahaha","hahahahah");
+//            setResult(RESULT_OK);
+//            finish();
+//        }
     }
 
     private void logUserRegisterEvent(Context context, String userID) {
@@ -409,7 +444,9 @@ public class RegisterActivity extends BaseActivity implements
     @Override
     public Boolean checkIfValid() {
         boolean validName = validationTool.validateRequiredField(mFullNameEditText, this.getString(R.string.enter_full_name));
-        boolean validPhone = validationTool.validatePhone(mPhoneEditText, this.getString(R.string.invalid_phone));
+//        boolean validPhone = validationTool.validatePhone(mPhoneEditText, this.getString(R.string.invalid_phone));
+        boolean validPhone = validationTool.validatePhone(this ,mPhoneEditText);
+
         boolean validPassword = validationTool.validatePassword(mPasswordEditText, this.getString(R.string.enter_password));
         boolean validMail = validationTool.validateEmail(mEmailEditText, this.getString(R.string.invalid_email));
         boolean validConfirmFieldPassword = validationTool.isPasswordMatch(mPasswordEditText.getText().toString(), mConfirmPasswordEditText, this.getString(R.string.invalid_confirm_password));
@@ -445,7 +482,15 @@ public class RegisterActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (!cameFromShippingActivity) {
+        if (!cameFromShippingActivity && cameFromShippingMobileActivity && cameFromShippingFlashActivity) {
+            startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            finish();
+        }else if (cameFromShippingActivity && !cameFromShippingMobileActivity && cameFromShippingFlashActivity) {
+            startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            finish();
+        }else if (cameFromShippingActivity && cameFromShippingMobileActivity && !cameFromShippingFlashActivity) {
             startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();

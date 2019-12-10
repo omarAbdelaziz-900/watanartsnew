@@ -55,6 +55,12 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/showImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
     <android.support.v7.widget.CardView
         app:layout_constraintTop_toBottomOf="@id/toolbar_holder"
@@ -104,6 +110,18 @@
         app:layout_constraintRight_toRightOf="parent"
         >
 
+        <ImageView
+            android:id="@+id/lowPixelsIv_front"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_reslution" />
+
         <View
             android:id="@+id/linear_container_front"
             android:layout_width="match_parent"
@@ -129,6 +147,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <ImageView
+            android:id="@+id/lowPixelsIv"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_reslution" />
+
     </com.WattanArt.artcomponent.ImageCaseComponent>
 
     <LinearLayout
@@ -146,31 +176,31 @@
             android:id="@+id/linear_img_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/_10sdp"
-            android:paddingStart="@dimen/_10sdp"
+
             >
 
             <ImageView
                 android:id="@+id/image_front"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/ic_front_flash"
                 />
 
         </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linear_img_back"
         android:layout_marginStart="@dimen/_6sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingStart="@dimen/_10sdp"
         >
 
         <ImageView
             android:id="@+id/image_back"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
+            android:src="@drawable/ic_back_flash"
             />
 
     </LinearLayout>

@@ -73,7 +73,8 @@ boolean isInEgypt;
         else
             currency = context.getString(R.string.dolar);
 
-        holder.priceTextView.setText(" "+String.valueOf(resultEntityList.get(position).getItemsCost())
+        holder.priceTextView.setText(" "+String.valueOf(resultEntityList.get(position).getItemsCost()+
+                resultEntityList.get(position).getChargePrice())
                 +" "+currency+" ");
 
         holder.mdetailsImageView.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +84,8 @@ boolean isInEgypt;
                 i.putExtra(Constants.ORDERID,resultEntityList.get(position).getID());
                 i.putExtra(Constants.STATEVALUE,resultEntityList.get(position).getStateValue());
                 i.putExtra(Constants.ORDERITEMPRICE,resultEntityList.get(position).getItemsCost());
+                i.putExtra(Constants.ORDERChARGE,resultEntityList.get(position).getChargePrice());
+                Log.e("khkhkhkhk",resultEntityList.get(position).getChargePrice()+"");
                 context.startActivity(i);
             }
         });

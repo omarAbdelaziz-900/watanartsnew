@@ -181,6 +181,7 @@ dependencies {
 //    implementation 'com.github.hoanganhtuan95ptit:TwoLineSeekBar:1.0'
 
 
+
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }

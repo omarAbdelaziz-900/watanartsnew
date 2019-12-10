@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -237,6 +238,9 @@ public class BitmapLoadTask extends AsyncTask<Void, Void, BitmapLoadTask.BitmapW
         }
 
         OkHttpClient client = new OkHttpClient();
+
+        client = new OkHttpClient().newBuilder().readTimeout(30,TimeUnit.SECONDS).connectTimeout(30,TimeUnit.SECONDS).writeTimeout(1, TimeUnit.MINUTES).build();
+
 
         BufferedSource source = null;
         Sink sink = null;

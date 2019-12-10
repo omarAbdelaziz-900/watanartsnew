@@ -46,6 +46,8 @@ import com.WattanArt.model.Response.SliderModel;
 import com.WattanArt.model.Response.TermsResposeModel;
 import com.WattanArt.model.Response.requestModel;
 import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
+import com.WattanArt.ui.ShippingForMobile.MobileOrderRequest;
+import com.WattanArt.ui.ShippingForMobile.MobileOrderResponse;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -240,4 +242,7 @@ public interface ApiService {
 
     @POST("api/SettingApi/TermsAndConditions")
     Observable<TermsResposeModel> getTerms(@Body LanguageRequestModel languageRequest);
+
+    @POST("api/OrderAPI/MakeNewOrder")
+    Observable<MobileOrderResponse> getSubmitOrderForMobile(@Body MobileOrderRequest mobileOrderRequest);
 }

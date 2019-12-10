@@ -182,34 +182,49 @@
                 >
 
 
-                <RelativeLayout
-                    android:layout_weight="0.69"
-                    android:layout_marginEnd="@dimen/_15sdp"
+                <FrameLayout
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:id="@+id/tablou_relativelayout"
+                    android:layout_weight="0.68"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_90sdp" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp">
 
-                    <ImageView
-                        android:id="@+id/myImageView"
+                    <RelativeLayout
+                        android:id="@+id/tablou_relativelayout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_90sdp"
-                        android:src="@drawable/tablou_pic"
-                        android:scaleType="fitXY"/>
+                        android:layout_height="@dimen/_90sdp" >
 
-                    <com.WattanArt.Utils.widgets.CustomeTextViewBold
+                        <ImageView
+                            android:id="@+id/myImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_90sdp"
+                            android:src="@drawable/tablou_pic"
+                            android:scaleType="fitXY"/>
+
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/background_degrady_green"
+                        android:alpha="0.7"
+                        android:visibility="visible" />
+
+                    <TextView
                         android:id="@+id/tablou_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/myImageView"
-                        android:layout_alignTop="@id/myImageView"
-                        android:layout_alignRight="@id/myImageView"
-                        android:layout_alignBottom="@id/myImageView"
                         android:gravity="center"
-                        android:text="Tablou"
-                        android:textColor="@color/white" />
+                        android:text="@string/tablou"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white_bold" />
 
-                </RelativeLayout>
+                </FrameLayout>
+
 
                 <!--<android.support.v7.widget.RecyclerView-->
                 <!--app:layout_constraintTop_toTopOf="parent"-->
@@ -227,7 +242,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:layout_weight="0.31"
+                    android:layout_weight="0.33"
                     >
 
                     <RelativeLayout
@@ -241,27 +256,28 @@
                             android:layout_height="@dimen/_90sdp"
                             android:scaleType="fitXY" />
 
-                        <com.WattanArt.Utils.widgets.CustomeTextViewBold
-                            android:id="@+id/myImageViewText_firstItem"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@id/myImageView_firstItem"
-                            android:layout_alignTop="@id/myImageView_firstItem"
-                            android:layout_alignRight="@id/myImageView_firstItem"
-                            android:layout_alignBottom="@id/myImageView_firstItem"
-                            android:gravity="center"
-                            android:text="Hello"
-                            android:textColor="@color/white" />
+
 
                     </RelativeLayout>
-
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="bottom"
                         android:background="@drawable/background_degrady_green"
+                        android:alpha="0.7"
                         android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/myImageViewText_firstItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Hellosssss"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/white_bold" />
 
                 </FrameLayout>
 

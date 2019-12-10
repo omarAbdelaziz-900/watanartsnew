@@ -72,6 +72,14 @@ public class ViewHelper {
     }
 
 
+    public static void hideProgressDialog() {
+        if (dialogFragment!=null){
+            dialogFragment.dismiss();
+        }
+        if (progressDialog != null && progressDialog.isShowing() && progressDialog.getWindow() != null) {
+            progressDialog.cancel();
+        }
+    }
     public static void showProgressFragment(Context context) {
         dialogFragment = ContentDialogView.newInstance("test");
         dialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), "mDialog");
@@ -88,14 +96,7 @@ public class ViewHelper {
     /**
      * Hide the Dialog by passing his reference ,
      */
-    public static void hideProgressDialog() {
-        if (dialogFragment!=null){
-            dialogFragment.dismiss();
-        }
-        if (progressDialog != null && progressDialog.isShowing() && progressDialog.getWindow() != null) {
-            progressDialog.cancel();
-        }
-    }
+
 
     public static void hideKeyboard(Activity context) {
         if (context.getCurrentFocus() != null) {

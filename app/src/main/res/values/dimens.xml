@@ -28,4 +28,16 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="thumb_width_">20dp</dimen>
     <dimen name="thumb_height_">20dp</dimen>
+
+
+    <dimen name="flash_width">@dimen/_300sdp</dimen>
+    <dimen name="flash_height">@dimen/_240sdp</dimen>
+    <dimen name="radius_flash">@dimen/_13sdp</dimen>
+
+    <dimen name="mobile_width">@dimen/_190sdp</dimen>
+    <dimen name="mobile_height">@dimen/_340sdp</dimen>
+    <dimen name="radius">@dimen/_20sdp</dimen>
+
+    <dimen name="tablet_width">@dimen/_270sdp</dimen>
+    <dimen name="tablet_height">@dimen/_340sdp</dimen>
 </resources>

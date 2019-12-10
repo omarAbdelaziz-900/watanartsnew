@@ -159,6 +159,7 @@
     <string name="name_hint">please type your name  </string>
     <string name="messeage_hint">please type your messeage </string>
     <string name="send_messege_fail">Failed to send message</string>
+
     <string name="send_messege_succsess">Message sent successfully</string>
 
     <string name="fail_login">Email or Password is Incorrect</string>
@@ -282,5 +283,22 @@
     <string name="category">Category</string>
     <string name="mobile_cover">Mobile Cover</string>
     <string name="flash_memory">Flash Memory</string>
+    <string name="code_verification_ok">The code was successfully confirmed</string>
+    <string name="code_verification_no">Please check the code</string>
+    <string name="tablou">Tablou</string>
 
+    <string name="android">Android</string>
+    <string name="iphone">Iphone</string>
+
+    <string name="done_succsess">done successfully</string>
+
+    <string name="invalid_phone_start">Phone number must start with 0 or 00 </string>
+    <string name="invalid_phone_egypt">Phone number must have 11 number </string>
+    <string name="invalid_phone_start_with_0">Phone number must start with 0  </string>
+    <string name="invalid_phone_start_with_00">Phone number must start with 00  </string>
+    <string name="invalid_phone_out">Phone number must have greater than 11 number </string>
+    <string name="invalid_phone_add">please add your phone number </string>
+
+    <string name="kind">kind :</string>
+    <string name="choose_bg">you should choose background</string>
 </resources>

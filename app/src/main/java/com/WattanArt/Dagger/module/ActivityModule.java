@@ -47,6 +47,9 @@ import com.WattanArt.ui.Setting.SettingPresenterImp;
 import com.WattanArt.ui.Shipping.ShippingMvpView;
 import com.WattanArt.ui.Shipping.ShippingPresenter;
 import com.WattanArt.ui.Shipping.ShippingPresenterMvp;
+import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryMvpPresenter;
+import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryMvpView;
+import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryPresenterImp;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileMvpPresenter;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileMvpView;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobilePresenterImp;
@@ -350,6 +353,13 @@ public class ActivityModule {
     @PerActivity
     ShippingMobileMvpPresenter<ShippingMobileMvpView> shippingMobileMvpViewMobilePresenterMvp(
             ShippingMobilePresenterImp<ShippingMobileMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    ShippingFlashMemoryMvpPresenter<ShippingFlashMemoryMvpView> shippingFlashMemoryMvpViewMobilePresenterMvp(
+            ShippingFlashMemoryPresenterImp<ShippingFlashMemoryMvpView> presenter) {
         return presenter;
     }
 }

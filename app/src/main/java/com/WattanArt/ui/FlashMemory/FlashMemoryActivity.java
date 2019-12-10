@@ -2,15 +2,18 @@ package com.WattanArt.ui.FlashMemory;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +48,7 @@ import com.WattanArt.artcomponent.ObjectView;
 import com.WattanArt.model.Response.ImageUploadResponseModel;
 import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
+import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryActivity;
 import com.WattanArt.ui.base.BaseActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.WattanArt.ui.mobileCase.MobileMvpPresenter;
@@ -104,9 +109,12 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     Bitmap currentBitmapFront, mobileBitmapFront;
     Bitmap currentBitmapBack, mobileBitmapBack;
 
+    ImageView showImage;
+
     @Inject
     FlashMemoryMvpPresenter<FlashMemoryMvpView> mPresenter;
 
+    public  static boolean backFromShipping=false;
     RelativeLayout styleBottomHolder;
     RelativeLayout rotateBottomHolder;
     RelativeLayout replaceBottomHolder;
@@ -118,12 +126,6 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     LinearLayout linear_img_front;
     LinearLayout linear_img_back;
-
-
-
-    double centreX ,centreY ,a;
-
-    String mobileImage ,mobileType;
     List<String> General_Style ,General_Color;
     ColorStyleFlashAdapter colorBgMobileAdapter;
     int colorOrStyleType;
@@ -134,18 +136,34 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     int colorPositionback=-1 ,stylePostionback=-1;
 
 
-    Intent intent;
-
     UserData userData;
-    int cateId=0;
     String imgFront ="http://23.236.154.106:8063/img/flashf.png";
     String imgBack ="http://23.236.154.106:8063/img/flashb.png";
+
+    String frontFilename , frontCoverFileName , backFileilename ,backCoverFileilename;
+    File fileForFront ,fileForCoverFront ,fileForback ,fileForcoverBack;
+    String styleNameFront,styleNameBack,colorNameFront,colorNameback;
+    Intent intent;
+    String prod_Id ,priceIn,priceOut;
+
+    int actW, actH;
+    float scaleX, scaleY;
+    Matrix mat;
+    float[] pts;
+    ImageView lowPixelsIv,lowPixelsIv_front;
+
+    boolean show=false;
+    double centreX, centreY;
+    float a;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash_memory);
+
         ButterKnife.bind(this);
+        showImage = findViewById(R.id.showImage);
+
         pick_from_gallery_tv = findViewById(R.id.pick_from_gallery_tv);
         complete_tv = findViewById(R.id.order_design_tv);
         image_front = findViewById(R.id.image_front);
@@ -159,6 +177,8 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         mToolbarBackImageView=findViewById(R.id.toolbar_image_view);
         mToolbarTitleTextView=findViewById(R.id.toolbar_tv_title);
         submit=findViewById(R.id.submit);
+        lowPixelsIv = findViewById(R.id.lowPixelsIv);
+        lowPixelsIv_front = findViewById(R.id.lowPixelsIv_front);
         linear_img_front=(LinearLayout)findViewById(R.id.linear_img_front);
         linear_img_back=(LinearLayout)findViewById(R.id.linear_img_back);
         componentView_back = findViewById(R.id.componentView_back);
@@ -178,7 +198,16 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         objectView_back.setBackgroundColor(Color.parseColor("#cf878787"));
         objectView_front.setBackgroundColor(Color.parseColor("#cf878787"));
         initView();
-
+        intent=getIntent();
+        if (intent.hasExtra("prod_Id")){
+            prod_Id=intent.getStringExtra("prod_Id");
+        }
+        if (intent.hasExtra("priceIn")){
+            priceIn=intent.getStringExtra("priceIn");
+        }
+        if (intent.hasExtra("priceOut")){
+            priceOut=intent.getStringExtra("priceOut");
+        }
     }
 
     @Override
@@ -195,7 +224,8 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             mPresenter.onAttach(this);
         }
 
-        loadImage(imgFront,image_front);
+//        loadImage(imgFront,image_front);
+        image_front.setImageResource(R.drawable.ic_front_flash);
         loadImage(imgBack,image_back);
 
         userData = new UserData();
@@ -211,6 +241,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         actionColorOrStyle();
         clickImageback();
         clickImageFront();
+        measureImageDimensions();
 //        if (flashType.equals("front")){
 //            initFrontView();
 //        }else if (flashType.equals("back")){
@@ -224,21 +255,42 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         mToolbarBackImageView.setOnClickListener(v -> {
             onBackPressed();
         });
+
+        lowPixelsIv.setOnClickListener(v -> {
+            Toast toast = Toast.makeText(this, getString(R.string.img_resoluyion), Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        });
+
+        lowPixelsIv_front.setOnClickListener(v -> {
+            Toast toast = Toast.makeText(this, getString(R.string.img_resoluyion), Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        });
     }
 
 
     void initFrontView() {
-            dimensionData_front = new DimensionData(900, 700, 890,
-                    700, 40, 900,
-                    700, 0, 0);
+        Log.e("hhhshhs",getResources().getDimension(R.dimen.flash_width)+"");
+            dimensionData_front = new DimensionData((int) getResources().getDimension(R.dimen.flash_width),
+                    (int)getResources().getDimension(R.dimen.flash_height),
+                    (int) getResources().getDimension(R.dimen.flash_width)-15,
+                    (int)getResources().getDimension(R.dimen.flash_height),
+                    (int) getResources().getDimension(R.dimen.radius_flash),
+                    (int) getResources().getDimension(R.dimen.flash_width),
+                    (int)getResources().getDimension(R.dimen.flash_height), 0, 0);
         componentView_front.initUrlData(dimensionData_front, new Pair<>( imgFront,imgFront));
 
     }
 
     void initBackView() {
-        dimensionData_back  = new DimensionData(900, 700, 890,
-                700, 40, 900,
-                700, 0, 0);
+        dimensionData_back  = new DimensionData((int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height),
+                (int) getResources().getDimension(R.dimen.flash_width)-15,
+                (int)getResources().getDimension(R.dimen.flash_height),
+                (int) getResources().getDimension(R.dimen.radius_flash),
+                (int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height), 0, 0);
         componentView_back.initUrlData(dimensionData_back, new Pair<>( imgBack,imgBack));
 
     }
@@ -322,6 +374,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 objectView_front.setBackgroundColor(Color.parseColor("#"+General_Color.get(position)));
                 colorPositionFront=position;
             }
+            colorNameFront=General_Color.get(position);
         }else if (flashType.equals("back")){
             objectView_back.setData(null);
             Log.e("position->>",position+"");
@@ -330,6 +383,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 objectView_back.setBackgroundColor(Color.parseColor("#"+General_Color.get(position)));
                 colorPositionback=position;
             }
+            colorNameback=General_Color.get(position);
         }
 
     }
@@ -345,6 +399,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 objectView_front.setData(imgName);
                 stylePostionFront=position;
             }
+            styleNameFront=General_Style.get(position);
         }else if (flashType.equals("back")){
             objectView_back.setBackgroundColor(0x00000000);
             String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
@@ -354,6 +409,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 objectView_back.setData(imgName);
                 stylePostionback=position;
             }
+            styleNameBack=General_Style.get(position);
         }
     }
 
@@ -385,7 +441,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
 
     public void replaceCOverImage(View view) {
-        color_recyclerview.setAdapter(null);
+//        color_recyclerview.setAdapter(null);
         styleBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
         colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
         replaceBottomHolder.setBackground(getDrawable(R.drawable.background_selected_bordered));
@@ -420,100 +476,77 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         }
     }
 
+    public void createFrontBitmaps(){
+        if (cover_front.getDrawable() != null) {
+            Bitmap bitmap = ((BitmapDrawable) cover_front.getDrawable()).getBitmap();
+
+            currentBitmapFront = Bitmap.createBitmap(bitmap,
+                    0, 0, bitmap.getWidth(),
+                    bitmap.getHeight(), cover_front.getImageMatrix(), true);
+
+            mobileBitmapFront = loadBitmapFromView(componentView_front,bitmap);
+            Log.e("FrontBitmaps",currentBitmapFront+"    "+mobileBitmapFront);
+
+            BitmapFlashHelper.getInstance().setBitmapFront(mobileBitmapFront);
+            BitmapFlashHelper.getInstance().setBitmapFrontCover(currentBitmapFront);
+        }
+    }
+    public void createBackBitmaps(){
+        if (cover_back.getDrawable() != null) {
+            Bitmap bitmap = ((BitmapDrawable) cover_back.getDrawable()).getBitmap();
+
+            currentBitmapBack = Bitmap.createBitmap(bitmap,
+                    0, 0, bitmap.getWidth(),
+                    bitmap.getHeight(), cover_back.getImageMatrix(), true);
+
+            mobileBitmapBack = loadBitmapFromView(componentView_back,bitmap);
+            Log.e("BackBitmaps",currentBitmapBack+"    "+mobileBitmapBack);
+            BitmapFlashHelper.getInstance().setBitmapBack(mobileBitmapBack);
+            BitmapFlashHelper.getInstance().setBitmapBackCover(currentBitmapBack);
+
+        }
+    }
+
+
     public void submit(View view) {
-        if (flashType.equals("front")){
-            if (cover_front.getDrawable() != null) {
-                Bitmap bitmap = ((BitmapDrawable) cover_front.getDrawable()).getBitmap();
-                currentBitmapFront = Bitmap.createBitmap(bitmap,
-                        0, 0, bitmap.getWidth(),
-                        bitmap.getHeight(), cover_front.getImageMatrix(), true);
-                mobileBitmapFront = loadBitmapFromView(componentView_front);
-                float rorationAngle = cover_front.getCurrentAngle();
-                float zoom = cover_front.getCurrentScale();
-                saveTempBitmap(BitmapUtils.scaleDown(mobileBitmapFront, 1000, true));
-                Log.i(TAG, String.format("Size (%d , %d) allMobile Size (%d , %d) current Rottion Angle %f and Zoom %f", currentBitmapFront.
-                                getWidth(), currentBitmapFront.getHeight()
-                        , mobileBitmapFront.getWidth(), mobileBitmapFront.getHeight(), rorationAngle, zoom));
+        if (!show){
+        if (cover_front.getDrawable() != null && cover_back.getDrawable() != null) {
 
-                if (photosFront != null && fileGetingFront != null) {
-                    mPresenter.returnUploadedImage(photosFront, fileGetingFront);
-                } else {
-                    Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
-            }
+            componentView_front.setVisibility(View.VISIBLE);
+            componentView_back.setVisibility(View.VISIBLE);
 
-    }else if (flashType.equals("back")){
-            if (cover_back.getDrawable() != null) {
-                Bitmap bitmap = ((BitmapDrawable) cover_back.getDrawable()).getBitmap();
-                currentBitmapBack = Bitmap.createBitmap(bitmap,
-                        0, 0, bitmap.getWidth(),
-                        bitmap.getHeight(), cover_back.getImageMatrix(), true);
-                mobileBitmapBack = loadBitmapFromView(componentView_back);
-                float rorationAngle = cover_back.getCurrentAngle();
-                float zoom = cover_back.getCurrentScale();
-                saveTempBitmap(BitmapUtils.scaleDown(mobileBitmapBack, 1000, true));
-                Log.i(TAG, String.format("Size (%d , %d) allMobile Size (%d , %d) current Rottion Angle %f and Zoom %f", currentBitmapBack.getWidth(), currentBitmapBack.getHeight()
-                        , mobileBitmapBack.getWidth(), mobileBitmapBack.getHeight(), rorationAngle, zoom));
+            createFrontBitmaps();
+            createBackBitmaps();
+            Log.e("BitmapFlashHelper1", BitmapFlashHelper.getInstance().getBitmapFront() + "");
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        createFrontBitmaps();
+//                        createBackBitmaps();
+//
+//                    if (mobileBitmapFront!=null && currentBitmapFront!=null && mobileBitmapBack!=null && currentBitmapBack!=null){
+//
+//
+//                    }
+//                    }
+//                }, 10);
 
-                if (photosBack != null && fileGetingBack != null) {
-                    mPresenter.returnUploadedImage(photosBack, fileGetingBack);
-                } else {
-                    Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
-    public  void saveTempBitmap(Bitmap bitmap) {
-        if (isExternalStorageWritable()) {
-            saveImage(bitmap);
-        }else{
-        }
-    }
-
-    public  File saveImage(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fname = "Shutta_"+ timeStamp +".jpg";
-
-        if (flashType.equals("front")){
-            fileGetingFront = new File(myDir, fname);
-            if (fileGetingFront.exists()) fileGetingFront.delete ();
-            try {
-                FileOutputStream out = new FileOutputStream(fileGetingFront);
-                finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                out.flush();
-                out.close();
-                Log.e("kljkjkjk",fileGetingFront+"");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return fileGetingFront;
-        }else {
-            fileGetingBack = new File(myDir, fname);
-            if (fileGetingBack.exists()) fileGetingBack.delete ();
-            try {
-                FileOutputStream out = new FileOutputStream(fileGetingBack);
-                finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                out.flush();
-                out.close();
-                Log.e("kljkjkjk",fileGetingBack+"");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return fileGetingBack;
+            sendBitmapImage();
+        } else {
+            hideLoaderDialog();
+            Toast.makeText(this, getString(R.string.choose_bg), Toast.LENGTH_SHORT).show();
         }
 
     }
+    }
+
+
+
+
+
+
 
     /* Checks if external storage is available for read and write */
     public static boolean isExternalStorageWritable() {
@@ -524,10 +557,14 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         return false;
     }
 
-    public static Bitmap loadBitmapFromView(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+
+
+    public static Bitmap loadBitmapFromView(View v,Bitmap bitmap) {
+//        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
         Canvas canvas = new Canvas(b);
-        canvas.drawColor(Color.TRANSPARENT);
+//        canvas.drawColor(Color.TRANSPARENT);
         v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
         v.draw(canvas);
         return b;
@@ -537,8 +574,11 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         image_front.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                linear_img_front.setBackground(getDrawable(R.drawable.background_with_big_border_selected));
-//                linear_img_back.setBackground(getDrawable(R.drawable.background_with_big_border_unselected));
+                image_front.setImageResource(R.drawable.ic_front_flash);
+                loadImage(imgBack,image_back);
+//                image_front.setBackground(getDrawable(R.drawable.background_with_big_border_selected));
+//                image_back.setBackground(getDrawable(R.drawable.background_with_big_border_unselected));
+//                createBackBitmaps();
                 flashType="front";
                 componentView_front.setVisibility(View.VISIBLE);
                 componentView_back.setVisibility(View.INVISIBLE);
@@ -550,8 +590,11 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                image_back.setImageResource(R.drawable.ic_back_flash);
+                loadImage(imgFront,image_front);
 //                linear_img_front.setBackground(getDrawable(R.drawable.background_with_big_border_unselected));
 //                linear_img_back.setBackground(getDrawable(R.drawable.background_with_big_border_selected));
+//                createFrontBitmaps();
                 flashType="back";
                 componentView_front.setVisibility(View.INVISIBLE);
                 componentView_back.setVisibility(View.VISIBLE);
@@ -567,7 +610,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
             General_Color = responseModel.getResult().get(0).getGeneral_Color();
 
-            color_recyclerview.setVisibility(View.GONE);
+            color_recyclerview.setVisibility(View.INVISIBLE);
         }else {
 
         }
@@ -603,6 +646,228 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 return true;
             }
         }).into(imageView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        if (backFromShipping){
+//            componentView_back.setVisibility(View.INVISIBLE);
+//            linear_img_front.setBackground(getDrawable(R.drawable.background_selected_bordered));
+//        }
+    }
+
+    public void sendBitmapImage() {
+        initColorRecyclerView();
+//        if (colorBgMobileAdapter != null) {
+//            color_recyclerview.setAdapter(colorBgMobileAdapter);
+//        }
+        if (flashType.equals("front")){
+            componentView_back.setVisibility(View.INVISIBLE);
+            componentView_front.setVisibility(View.VISIBLE);
+            image_front.setImageResource(R.drawable.ic_front_flash);
+            loadImage(imgBack,image_back);
+        }else {
+            componentView_back.setVisibility(View.VISIBLE);
+            componentView_front.setVisibility(View.INVISIBLE);
+            image_back.setImageResource(R.drawable.ic_back_flash);
+            loadImage(imgFront,image_front);
+
+        }
+
+        Intent intent = new Intent(this, ShippingFlashMemoryActivity.class);
+
+//        intent.putExtra("frontFilename", frontFilename+"");
+//        intent.putExtra("frontCoverFileName", frontCoverFileName+"");
+//        intent.putExtra("backFileilename", backFileilename+"");
+//        intent.putExtra("backCoverFileilename", backCoverFileilename+"");
+
+        intent.putExtra("styleNameFront", styleNameFront+"");
+        intent.putExtra("styleNameBack", styleNameBack+"");
+        intent.putExtra("colorNameFront", colorNameFront+"");
+        intent.putExtra("colorNameback", colorNameback+"");
+        intent.putExtra("photosFront", photosFront.get(0)+"");
+        intent.putExtra("photosBack", photosBack.get(0)+"");
+        intent.putExtra("prod_Id", prod_Id+"");
+        intent.putExtra("priceIn", priceIn+"");
+        intent.putExtra("priceOut", priceOut+"");
+        Log.e("photosFront",photosFront.get(0)+"");
+        Log.e("photosBack",photosBack.get(0)+"");
+        startActivity(intent);
+    }
+
+    public void measureImageDimensions() {
+        cover_front.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                float[] f = new float[9];
+                cover_front.getImageMatrix().getValues(f);
+
+                // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+
+                scaleX = f[Matrix.MSCALE_X];
+                scaleY = f[Matrix.MSCALE_Y];
+
+                final int coverWidth = cover_front.getMeasuredWidth();
+                final int coverHeight = cover_front.getMeasuredHeight();
+
+                // Calculate the actual dimensions
+                actW = Math.round(coverWidth * scaleX);
+                actH = Math.round(coverHeight * scaleY);
+
+                Log.e("DBG", "[" + coverWidth + "," + coverHeight + "] -> [" + actW + "," + actH + "] & scales: x=" + scaleX + " y=" + scaleY);
+
+                float wScale = (float) actW / (float) coverWidth;
+                float hScale = (float) actH / (float) coverHeight;
+                float scale = Math.min(wScale, hScale);
+
+                if (actH<0){
+                    actH=(actH*-1)+600;
+                }
+                if (actW<0){
+                    actW=(actW*-1+600);
+                }
+
+                zoomEffectFront();
+
+                Log.e("calculateScaleImage", "" + scale);
+
+
+                float aspect_ratio = (float) coverWidth / (float) coverHeight;
+                float aspect_ratio2 = (float) actW / (float) actH;
+
+                Log.e("calculateAspectRatio", "" + aspect_ratio + " && " + aspect_ratio2);
+
+
+                centreX = cover_front.getX() + cover_front.getWidth() / 2;
+                centreY = cover_front.getY() + cover_front.getHeight() / 2;
+
+                double tx = scaleX - centreX;
+                double ty = scaleY - centreY;
+
+                double t_length = Math.sqrt(tx * tx + ty * ty);
+                a = (float) Math.acos(ty / t_length);
+
+                Log.e("calculateRotate", "" + a);
+
+
+//                Bitmap bMap = BitmapFactory.decodeFile(selectedImagePath);
+//                cover.setImageBitmap(bMap);
+                mat = cover_front.getImageMatrix();
+
+//                RectF drawableRect = new RectF(0, 0, actW, actH);
+//                RectF viewRect = new RectF(0, 0, cover.getWidth(), cover.getHeight());
+//                mat.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL);
+                Log.e("matrixCalc", "" + mat);
+//                cover.setImageMatrix(mat);
+
+                pts = new float[]{event.getX(), event.getY()};
+                Log.e("ptspts", "" + pts);
+                return false;
+            }
+        });
+
+
+        cover_back.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                float[] f = new float[9];
+                cover_back.getImageMatrix().getValues(f);
+
+                // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+
+                scaleX = f[Matrix.MSCALE_X];
+                scaleY = f[Matrix.MSCALE_Y];
+
+                final int coverWidth = cover_back.getMeasuredWidth();
+                final int coverHeight = cover_back.getMeasuredHeight();
+
+                // Calculate the actual dimensions
+                actW = Math.round(coverWidth * scaleX);
+                actH = Math.round(coverHeight * scaleY);
+
+                Log.e("DBG", "[" + coverWidth + "," + coverHeight + "] -> [" + actW + "," + actH + "] & scales: x=" + scaleX + " y=" + scaleY);
+
+                float wScale = (float) actW / (float) coverWidth;
+                float hScale = (float) actH / (float) coverHeight;
+                float scale = Math.min(wScale, hScale);
+
+                if (actH<0){
+                    actH=(actH*-1)+600;
+                }
+                if (actW<0){
+                    actW=(actW*-1+600);
+                }
+
+                zoomEffectack();
+
+                Log.e("calculateScaleImage", "" + scale);
+
+
+                float aspect_ratio = (float) coverWidth / (float) coverHeight;
+                float aspect_ratio2 = (float) actW / (float) actH;
+
+                Log.e("calculateAspectRatio", "" + aspect_ratio + " && " + aspect_ratio2);
+
+
+                centreX = cover_back.getX() + cover_back.getWidth() / 2;
+                centreY = cover_back.getY() + cover_back.getHeight() / 2;
+
+                double tx = scaleX - centreX;
+                double ty = scaleY - centreY;
+
+                double t_length = Math.sqrt(tx * tx + ty * ty);
+                a = (float) Math.acos(ty / t_length);
+
+                Log.e("calculateRotate", "" + a);
+
+
+//                Bitmap bMap = BitmapFactory.decodeFile(selectedImagePath);
+//                cover.setImageBitmap(bMap);
+                mat = cover_back.getImageMatrix();
+
+//                RectF drawableRect = new RectF(0, 0, actW, actH);
+//                RectF viewRect = new RectF(0, 0, cover.getWidth(), cover.getHeight());
+//                mat.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL);
+                Log.e("matrixCalc", "" + mat);
+//                cover.setImageMatrix(mat);
+
+                pts = new float[]{event.getX(), event.getY()};
+                Log.e("ptspts", "" + pts);
+                return false;
+            }
+        });
+
+
+    }
+
+    public boolean zoomEffectFront(){
+        if (1200<actW && 1200<actH ){
+            lowPixelsIv_front.setVisibility(View.VISIBLE);
+            show=true;
+        }else if (actW<500 &&   actH<500){
+            lowPixelsIv_front.setVisibility(View.VISIBLE);
+            show=true;
+        }else {
+            lowPixelsIv_front.setVisibility(View.GONE);
+            show=false;
+        }
+        return show;
+    }
+    public boolean zoomEffectack(){
+        if (1200<actW && 1200<actH ){
+            lowPixelsIv.setVisibility(View.VISIBLE);
+            show=true;
+        }else if (actW<500 &&   actH<500){
+            lowPixelsIv.setVisibility(View.VISIBLE);
+            show=true;
+        }else {
+            lowPixelsIv.setVisibility(View.GONE);
+            show=false;
+        }
+        return show;
     }
 }
 

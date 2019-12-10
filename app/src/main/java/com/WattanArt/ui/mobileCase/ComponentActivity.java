@@ -6,13 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -21,18 +27,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
-import com.WattanArt.Utils.ViewHelper;
+import com.WattanArt.Utils.PictUtil;
 import com.WattanArt.Utils.config.Constants;
-import com.WattanArt.Utils.widgets.BitmapUtils;
 import com.WattanArt.Utils.widgets.CustomeTextView;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.artcomponent.AccessoriesView;
@@ -40,16 +48,27 @@ import com.WattanArt.artcomponent.CoverView;
 import com.WattanArt.artcomponent.DimensionData;
 import com.WattanArt.artcomponent.ImageCaseComponent;
 import com.WattanArt.artcomponent.ObjectView;
+import com.WattanArt.model.AppModels.ImageModel;
 import com.WattanArt.model.Response.ImageUploadResponseModel;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileActivity;
 import com.WattanArt.ui.base.BaseActivity;
+import com.yalantis.ucrop.callback.BitmapCropCallback;
+import com.yalantis.ucrop.model.CropParameters;
+import com.yalantis.ucrop.model.ExifInfo;
+import com.yalantis.ucrop.model.ImageState;
+import com.yalantis.ucrop.task.BitmapCropTask;
+import com.yalantis.ucrop.util.RectUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -76,7 +95,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     private String TAG = this.getClass().getSimpleName();
     ArrayList<String> photos;
     Bitmap currentBitmap, mobileBitmap;
-
+    Uri imageUri;
     @Inject
     MobileMvpPresenter<MobileMvpView> mPresenter;
 
@@ -108,9 +127,10 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     CustomeTextViewBold mToolbarTitleTextView;
 
 
-    double centreX, centreY, a;
+    double centreX, centreY;
+            float a;
 
-    String mobileImage, mobileType;
+    String mobileImage, mobileType,mobileId ,priceIn ,priceOut ;
     ArrayList<Object> General_Style, General_Color;
     ColorBgMobileAdapter colorBgMobileAdapter;
     int colorOrStyleType;
@@ -120,19 +140,27 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     int actW, actH;
     float scaleX, scaleY;
     Matrix mat;
+    float[] pts;
 
     int colorPosition = -1, stylePostion = -1;
 
-    float[] pts;
+
 
     String mobileImageUrl;
 
     Intent intent;
 
-    String filename, filename2;
+    String mobileFilename, coverFileilename;
 
     String mobileName, coverName;
 
+    String colorSend="";
+    String styleSend="";
+
+    String filenameMobile, filenameCover;
+    ImageView lowPixelsIv;
+
+    boolean show=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,7 +180,6 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
             mPresenter.onAttach(this);
         }
         initView();
-
         getData();
         actionColorOrStyle();
         pickFromGalleryAction();
@@ -163,6 +190,11 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
 
         mToolbarBackImageView.setOnClickListener(v -> {
             onBackPressed();
+        });
+        lowPixelsIv.setOnClickListener(v -> {
+            Toast toast = Toast.makeText(this, getString(R.string.img_resoluyion), Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         });
     }
 
@@ -176,11 +208,24 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         complete_tv = findViewById(R.id.order_design_tv);
         component = findViewById(R.id.componentView);
         view_image = findViewById(R.id.view_image);
+        lowPixelsIv = findViewById(R.id.lowPixelsIv);
 
         intent = getIntent();
         if (intent.hasExtra("mobileType")) {
             mobileType = intent.getStringExtra("mobileType");
             Log.e("mobileType", mobileType + "");
+        }
+        if (intent.hasExtra("mobileId")) {
+            mobileId = intent.getStringExtra("mobileId");
+            Log.e("mobileType", mobileType + "");
+        }
+        if (intent.hasExtra("priceIn")) {
+            priceIn = intent.getStringExtra("priceIn");
+            Log.e("priceIn", priceIn + "");
+        }
+        if (intent.hasExtra("priceOut")) {
+            priceOut = intent.getStringExtra("priceOut");
+            Log.e("priceOut", priceOut + "");
         }
         if (mobileType != null) {
             checkisMobileOrTablet();
@@ -192,21 +237,41 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         accessoriesView = (AccessoriesView) component.getComponentView(R.id.accessories);
 
         objectView = (ObjectView) component.getComponentView(R.id.component);
+
 //        accessoriesView.setData(R.drawable.huaweiy9_2);
     }
 
     public void checkisMobileOrTablet() {
 
         if (mobileType.equals(Constants.MOBLIE_TYPE)) {
-            dimensionData = new DimensionData(700, 1150, 690,
-                    1150, 60, 700,
-                    1150, 0, 0);
+
+            dimensionData = new DimensionData(
+                    (int) getResources().getDimension(R.dimen.mobile_width),
+                    (int) getResources().getDimension(R.dimen.mobile_height),
+                    (int) getResources().getDimension(R.dimen.mobile_width)-15,
+                    (int) getResources().getDimension(R.dimen.mobile_height),
+                    (int) getResources().getDimension(R.dimen.radius),
+                    (int) getResources().getDimension(R.dimen.mobile_width),
+                    (int) getResources().getDimension(R.dimen.mobile_height),
+                    0,
+                    0);
 
         } else if (mobileType.equals(Constants.TAbLET_TYPE)) {
-            dimensionData = new DimensionData(1000, 1000, 1000 - 10,
-                    1000, 60, 1000,
-                    1000, 0, 0);
+            dimensionData = new DimensionData((int) getResources().getDimension(R.dimen.tablet_width)
+                    , (int) getResources().getDimension(R.dimen.tablet_height),
+                    (int) getResources().getDimension(R.dimen.tablet_width)-15,
+                    (int) getResources().getDimension(R.dimen.tablet_height),
+                    (int) getResources().getDimension(R.dimen.radius),
+                    (int) getResources().getDimension(R.dimen.tablet_width),
+                    (int) getResources().getDimension(R.dimen.tablet_height),
+                    0,
+                    0);
         }
+
+    }
+
+    public static int dpToPx(float dp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
     public void pickFromGalleryAction() {
@@ -246,6 +311,11 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
                 if (photos == null || photos.isEmpty()) return;
                 cover.setData(photos.get(0));
 
+
+                File file = new File(photos.get(0));
+                imageUri = Uri.fromFile(file);
+                     Log.e("imageUri",imageUri+"");
+                     Log.e("imageUri",imageUri.getPath()+"");
             }
         }
     }
@@ -268,23 +338,31 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
 
     @Override
     public void returnUploadedImageForMobile(ImageUploadResponseModel imageUploadResponseModel) {
-        Log.e("imageNameFromMobile", imageUploadResponseModel.getFileName());
-        if (imageUploadResponseModel.getState() == 5) {
-//            ViewHelper.showProgressDialog(this);
-            mobileName = imageUploadResponseModel.getFileName();
-            mPresenter.returnUploadedImageForCover(photos, fileForCover);
-        }
+//        Log.e("imageNameFromMobile", imageUploadResponseModel.getFileName());
+//        if (imageUploadResponseModel.getState() == 5) {
+//            mobileName = imageUploadResponseModel.getFileName();
+//            mPresenter.returnUploadedImageForCover(photos, fileForCover);
+//        }
     }
 
     @Override
     public void returnUploadedImageForCover(ImageUploadResponseModel imageUploadResponseModel) {
-//        ViewHelper.hideProgressDialog();
-//        hideLoading();
-        Log.e("imageNameFromCover", imageUploadResponseModel.getFileName());
-        if (imageUploadResponseModel.getState() == 5) {
-            coverName = imageUploadResponseModel.getFileName();
-            sendBitmapImage();
-        }
+//        Log.e("imageNameFromCover", imageUploadResponseModel.getFileName());
+//        if (imageUploadResponseModel.getState() == 5) {
+//            coverName = imageUploadResponseModel.getFileName();
+//            sendBitmapImage();
+//        }
+    }
+
+    @Override
+    public void showLoadingInner() {
+        showLoaderDialog();
+//        showLoading();
+    }
+
+    @Override
+    public void hideLoadingInner() {
+        hideLoaderDialog();
     }
 
     @Override
@@ -297,6 +375,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
             objectView.setBackgroundColor(Color.parseColor("#" + General_Color.get(position)));
             colorPosition = position;
         }
+        if (General_Color.get(position)!=null)
+        colorSend=General_Color.get(position)+"";
     }
 
     @Override
@@ -311,6 +391,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
             objectView.setData(imgName);
             stylePostion = position;
         }
+        if (General_Style.get(position)!=null)
+            styleSend=General_Style.get(position)+"";
     }
 
 
@@ -371,6 +453,15 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
                 float hScale = (float) actH / (float) coverHeight;
                 float scale = Math.min(wScale, hScale);
 
+                if (actH<0){
+                    actH=(actH*-1)+400;
+                }
+                if (actW<0){
+                    actW=(actW*-1)+400;
+                }
+
+                zoomEffect();
+
                 Log.e("calculateScaleImage", "" + scale);
 
 
@@ -387,7 +478,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
                 double ty = scaleY - centreY;
 
                 double t_length = Math.sqrt(tx * tx + ty * ty);
-                a = Math.acos(ty / t_length);
+                 a = (float) Math.acos(ty / t_length);
 
                 Log.e("calculateRotate", "" + a);
 
@@ -460,6 +551,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         styleBottomHolder.setBackground(getDrawable(R.drawable.background_selected));
         colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
         replaceBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+
         if (colorBgMobileAdapter != null) {
             colorBgMobileAdapter.notifyDataSetChanged();
         }
@@ -471,167 +563,288 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     }
 
     public void submit(View view) {
+
+    if (!show){
         if (cover.getDrawable() != null) {
             Bitmap bitmap = ((BitmapDrawable) cover.getDrawable()).getBitmap();
+
             currentBitmap = Bitmap.createBitmap(bitmap,
                     0, 0, bitmap.getWidth(),
                     bitmap.getHeight(), cover.getImageMatrix(), true);
 
             mobileBitmap = loadBitmapFromView(component);
-            // this the cropped image from cover
-            Bitmap coverImageCroped = loadBitmapFromView(cover);
-
-            float rorationAngle = cover.getCurrentAngle();
-            float zoom = cover.getCurrentScale();
+//            Log.i(TAG, String.format("Size (%d , %d) allMobile Size (%d , %d) current Rottion Angle %f and Zoom %f", currentBitmap.getWidth(), currentBitmap.getHeight()
+//                    , mobileBitmap.getWidth(), mobileBitmap.getHeight()));
 
 
-//            saveTempBitmapForMobile(BitmapUtils.scaleDown(mobileBitmap, 1000, true));
-            saveTempBitmapForMobile(mobileBitmap);
-            saveTempBitmapForCover(currentBitmap);
+//            cropImage();
 
-            Log.i(TAG, String.format("Size (%d , %d) allMobile Size (%d , %d) current Rottion Angle %f and Zoom %f", currentBitmap.getWidth(), currentBitmap.getHeight()
-                    , mobileBitmap.getWidth(), mobileBitmap.getHeight(), rorationAngle, zoom));
-
-//            sendBitmapImage();
-
-            if (photos != null && fileForMobile != null) {
-                mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
-            } else {
-                Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
+            if (mobileBitmap != null && currentBitmap != null) {
+                BitmapMobileHelper.getInstance().setBitmapMobile(mobileBitmap);
+                BitmapMobileHelper.getInstance().setBitmapCover(currentBitmap);
             }
+
+            sendBitmapImage();
+//            cropImages(this);
         } else {
-            Toast.makeText(this, "قم باختيار الخلفيه", Toast.LENGTH_SHORT).show();
+            hideLoaderDialog();
+            Toast.makeText(this, getString(R.string.choose_bg), Toast.LENGTH_SHORT).show();
         }
     }
-
-
-    public void saveTempBitmapForMobile(Bitmap bitmap) {
-        if (isExternalStorageWritable()) {
-            saveImageForMobile(bitmap);
-        } else {
-            //prompt the user or do something
-        }
     }
 
-//    @Override
-//    public void showLoadingFragment() {
-//        super.showLoadingFragment();
-//    }
+    public static Bitmap loadBitmapFromView(View v) {
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        Canvas canvas = new Canvas(b);
+//        canvas.drawColor(Color.WHITE);
+        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+        v.draw(canvas);
+        return b;
+
+//        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(b);
+////        Paint q = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        canvas.drawColor(Color.TRANSPARENT);
+//        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+////        v.setLayerType(LAYER_TYPE_HARDWARE, q);
+//        v.draw(canvas);
+//        return b;
+    }
 
     @Override
     public void showLoading() {
-        super.showLoading();
+//        super.showLoading();
     }
 
     @Override
     public void hideLoading() {
-        super.hideLoading();
-    }
-
-    public void saveTempBitmapForCover(Bitmap bitmap) {
-        if (isExternalStorageWritable()) {
-            saveImageForCover(bitmap);
-        } else {
-            //prompt the user or do something
-        }
-    }
-
-    public File saveImageForMobile(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//         filename = "Shutta_"+ timeStamp +".jpg";
-        filename = timeStamp + ".jpg";
-
-        fileForMobile = new File(myDir, filename);
-
-        if (fileForMobile.exists()) fileForMobile.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(fileForMobile);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-            Log.e("fileGetting", fileForMobile + "");
-//            saveImageForMobileForSending(finalBitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fileForMobile;
-    }
-
-    public File saveImageForCover(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images2");
-        myDir.mkdirs();
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//         filename = "Shutta_"+ timeStamp +".jpg";
-        filename = timeStamp + ".jpg";
-
-        fileForCover = new File(myDir, filename);
-
-        if (fileForCover.exists()) fileForCover.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(fileForCover);
-//            FileOutputStream out = this.openFileOutput(filename , Context.MODE_PRIVATE);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-//            mobileBitmap.recycle();
-            Log.e("fileGetting", fileForCover + "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fileForCover;
+//        super.hideLoading();
     }
 
 
-    /* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
 
-    public static Bitmap loadBitmapFromView(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(b);
-//        Paint q = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        canvas.drawColor(Color.TRANSPARENT);
-        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-//        v.setLayerType(LAYER_TYPE_HARDWARE, q);
-        v.draw(canvas);
-        return b;
-    }
-
-    public void imageToSend() {
-        try {
-            FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
-            mobileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            stream.close();
-            mobileBitmap.recycle();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void sendBitmapImage() {
         initColorRecyclerView();
         if (colorBgMobileAdapter != null) {
             color_recyclerview.setAdapter(colorBgMobileAdapter);
         }
-        imageToSend();
         Intent intent = new Intent(this, ShippingMobileActivity.class);
-        intent.putExtra("image", filename);
-        intent.putExtra("mobileName", mobileName);
-        intent.putExtra("coverName", coverName);
+        intent.putExtra("color", colorSend+"");
+        intent.putExtra("style", styleSend+"");
+        intent.putExtra("photos", photos.get(0)+"");
+        intent.putExtra("mobileId", mobileId+"");
+        intent.putExtra("priceIn", priceIn+"");
+        intent.putExtra("priceOut", priceOut+"");
+        Log.e("photos",photos.get(0)+"");
         startActivity(intent);
+    }
+
+
+    public Bitmap cropImage(){
+//        HighlightView highlightView=new HighlightView(cover);
+//        highlightView.getCropRect();
+        Bitmap b = Bitmap.createBitmap(cover.getWidth(), cover.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(b);
+        canvas.drawColor(Color.TRANSPARENT);
+        cover.layout(0, 0, cover.getLayoutParams().width, cover.getLayoutParams().height);
+        cover.draw(canvas);
+        view_image.setVisibility(View.VISIBLE);
+        view_image.setImageBitmap(b);
+        return b;
+    }
+
+
+    public void cropImages(Context context) {
+        ImageModel imageModel=new ImageModel();
+        imageModel.setCurrentRotate(a);
+        imageModel.setUri(imageUri);
+
+
+        imageModel.setPath(imageUri.getPath());
+        imageModel.setMainImageWidth(actW);
+        imageModel.setMainImageHeight(actH);
+        imageModel.setFilteredBitmap(currentBitmap);
+        imageModel.setMatrix(mat);
+        int[] posXY = new int[2];
+        cover.getLocationOnScreen(posXY);
+        int x = posXY[0];
+        int y = posXY[1];
+        imageModel.setPositionX(x);
+        imageModel.setPositionY(y);
+        imageModel.setCurrentAngle(a);
+        imageModel.setCurrentScale(1f);
+        imageModel.setmCurrentImageCorners(cover.getMCurrentImageCorners());
+        imageModel.setmExifInfo(cover.getExifInfo());
+
+         double factorHeight = ((double) actH) / ((double) currentBitmap.getHeight());
+         double factorWidth = ((double) actW) / ((double) currentBitmap.getWidth());
+
+         imageModel.setFactorHeight(factorHeight);
+         imageModel.setFactorWidth(factorWidth);
+        RectF rect = new RectF();
+        rect.left=cover.getLeft();
+            imageModel.setmCropRect(rect);
+
+        List<ImageModel> imageModels =new ArrayList<>();
+        imageModels.add(imageModel);
+
+
+        PictUtil.saveToCacheFile(currentBitmap,
+                imageModel.getCurrentRotate(),
+                new File(imageModels.get(0).getPath()).getName(),
+                imageModels.get(0).getMainImageWidth(),
+                imageModels.get(0).getMainImageHeight(),
+                new PictUtil.saveBitmapCallback() {
+                    @Override
+                    public void onSuccess(String path) {
+
+                        Log.e("PathToNewFile", path + "");
+                        imageModels.get(0).setUri(Uri.fromFile(new File(path)));
+                        imageModels.get(0).setOutputUri(Uri.fromFile(new File(path)));
+                        imageModels.get(0).setmImageOutputPath(new File(path.replace("/.Cache", "")).getParent() + "/" + new File(imageModels.get(0).getPath())
+                                .getName());
+
+                        cropImage(
+                                imageModels.get(0).getFilteredBitmap(),
+                                imageModels.get(0).getMatrix(),
+                                (int) (imageModels.get(0).getPositionX() *
+                                        imageModels.get(0).getFactorWidth()),
+                                (int) (imageModels.get(0).getPositionY() *
+                                        imageModels.get(0).getFactorHeight()),
+                                imageModels.get(0).getOutputUri(),
+                                imageModels.get(0).getmExifInfo(),
+                                imageModels.get(0).getImageWidth(),
+                                imageModels.get(0).getImageHeight(),
+                                path,
+                                new File(path.replace("/.Cache", "")).getParent() + "/" + new File(imageModels.get(0).getPath())
+                                        .getName(),
+                                imageModels.get(0).getmCropRect(),
+                                imageModels.get(0).getmCurrentImageCorners(),
+                                imageModels.get(0).getCurrentScale(),
+                                imageModels.get(0).getCurrentAngle(),
+                                new BitmapCropCallback() {
+                                    @Override
+                                    public void onBitmapCropped(@io.reactivex.annotations.NonNull Uri resultUri, int offsetX, int offsetY, int imageWidth, int imageHeight) {
+
+//                                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+
+                                        try {
+                                            Bitmap bitmap = getThumbnail(imageUri);
+                                            view_image.setVisibility(View.VISIBLE);
+                                            view_image.setImageBitmap(bitmap);
+                                        } catch (IOException e) {
+                                            Log.e("failINnnnl","failINnnnl");
+                                            e.printStackTrace();
+                                        }
+
+                                        Log.e("goooooogd","goooooooogd");
+                                    }
+
+                                    @Override
+                                    public void onCropFailure(@io.reactivex.annotations.NonNull Throwable t) {
+                                        Log.e("failllll","failllll");
+                                        t.printStackTrace();
+                                    }
+                                });
+
+                    }
+
+                    @Override
+                    public void onFail(Exception e) {
+                        Toast.makeText(context, context.getString(R.string.some_error), Toast.LENGTH_SHORT).show();
+                        Log.e("ErrorInsaveFilterImage", "error saving filtered Bitmap ");
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    private void cropImage(Bitmap bitmap, Matrix matrix, int x, int y, Uri uri, ExifInfo mExifInfo, int mMaxResultImageSizeX,
+                           int mMaxResultImageSizeY, String mImageInputPath, String mImageOutputPath
+            , RectF mCropRect, float[] mCurrentImageCorners, float currentScale,
+                           float currentAngle, BitmapCropCallback cropCallback) {
+
+        Log.e("currentScale", currentScale + " - ");
+
+
+        //TODO: check this code later
+        //check this code later
+        if (mCurrentImageCorners == null) {
+            Log.e("mCurrentImageCorners", "mCurrentImageCorners == null");
+            //check tranformImageView
+            // private static final int RECT_CORNER_POINTS_COORDS = 8;
+            //protected final float[] mCurrentImageCorners = new float[RECT_CORNER_POINTS_COORDS];
+            //which has this code
+            /* 0------->1
+             * ^        |
+             * |        |
+             * |        v
+             * 3<-------2
+             */
+            mCurrentImageCorners = new float[8];
+        }
+        final ImageState imageState;
+
+        imageState = new ImageState(
+                mCropRect, RectUtils.trapToRect(mCurrentImageCorners),
+                currentScale, currentAngle);
+
+
+        final CropParameters cropParameters = new CropParameters(
+                mMaxResultImageSizeX, mMaxResultImageSizeY, x, y,
+                Bitmap.CompressFormat.JPEG, 90,
+                mImageInputPath, mImageOutputPath, mExifInfo);
+
+        new BitmapCropTask(bitmap, matrix, uri, imageState, cropParameters, cropCallback).execute();
+    }
+
+
+    public Bitmap getThumbnail(Uri uri) throws FileNotFoundException, IOException {
+        InputStream input = this.getContentResolver().openInputStream(uri);
+
+        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+        onlyBoundsOptions.inJustDecodeBounds = true;
+        onlyBoundsOptions.inDither=true;//optional
+        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+        input.close();
+
+        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
+            return null;
+        }
+
+        int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+
+        double ratio = (originalSize > 1000) ? (originalSize / 1000) : 1.0;
+
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
+        bitmapOptions.inDither = true; //optional
+        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//
+        input = this.getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+        input.close();
+        return bitmap;
+    }
+
+    private static int getPowerOfTwoForSampleRatio(double ratio){
+        int k = Integer.highestOneBit((int)Math.floor(ratio));
+        if(k==0) return 1;
+        else return k;
+    }
+
+    public boolean zoomEffect(){
+        if (1200<actW && 1200<actH ){
+            lowPixelsIv.setVisibility(View.VISIBLE);
+            show=true;
+        }else if (actW<500 &&   actH<500){
+            lowPixelsIv.setVisibility(View.VISIBLE);
+            show=true;
+        }else {
+            lowPixelsIv.setVisibility(View.GONE);
+            show=false;
+        }
+        return show;
     }
 }

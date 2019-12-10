@@ -5,11 +5,14 @@ import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.WattanArt.R;
 import com.WattanArt.Utils.config.Constants;
@@ -23,6 +26,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import butterknife.ButterKnife;
+
+import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
 public class CanvasPrintAdapter extends RecyclerView.Adapter<CanvasPrintAdapter.MyViewHolder> {
     private Context context;
@@ -50,7 +55,8 @@ public class CanvasPrintAdapter extends RecyclerView.Adapter<CanvasPrintAdapter.
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.mCanvasTitle.setText(responseModel.getResult().get(position).getIntroTitle());
         holder.mCanvasText.setText(responseModel.getResult().get(position).getIntroText());
-
+//        getHtmlText(responseModel.getResult().get(position).getIntroText(),holder.mCanvasText);
+//        holder.mCanvasText.setText(Html.fromHtml(responseModel.getResult().get(position).getIntroText()));
         if (responseModel.getResult().get(position).getImageList() != null &&
                 responseModel.getResult().get(position).getImageList().size() != 0) {
 
@@ -136,4 +142,22 @@ public class CanvasPrintAdapter extends RecyclerView.Adapter<CanvasPrintAdapter.
 
         }
     }
+
+    public static void getHtmlText(String text, TextView textView) {
+        String textStr = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            textView.setText(Html.fromHtml(text, FROM_HTML_MODE_LEGACY));
+//            textView.setText(Html.fromHtml(text));
+            Log.e("firstCondition","firstCondition");
+//            textStr = String.valueOf(sp);
+        } else {
+//            Spanned sp = Html.fromHtml(text);
+            Log.e("secondCondition","secondCondition");
+            textView.setText(Html.fromHtml(text));
+//            textStr = String.valueOf(sp);
+
+        }
+//        textView.setText(textStr);
+    }
+
 }

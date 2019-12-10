@@ -81,6 +81,8 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.WattanArt.ui.Register.RegisterActivity.ShippingFlashRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.ShippingMobileRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
 import static com.WattanArt.ui.Shipping.ShippingActivity.OPEN_REGISTERATION_CODE;
 import static com.WattanArt.ui.Shipping.ShippingActivity.REQUEST_STORAGE_READ_ACCESS_PERMISSION;
@@ -717,7 +719,8 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                                                                     userData.saveUserType(MyApplication.getAppContext(), responseModel.getResult().getObj().getRegisterType());
                                                                     userData.savePhone(MyApplication.getAppContext(), responseModel.getResult().getObj().getPhone());
                                                                     userData.setRemmemberMe(MyApplication.getAppContext(), true);
-                                                                    boolean hasMoreThan3Items = checkOrderQuantity(imageModels);
+//                                                                    boolean hasMoreThan3Items = checkOrderQuantity(imageModels);
+                                                                    boolean hasMoreThan3Items =true;
                                                                     if (hasMoreThan3Items) {
                                                                         cropImages(coontext, imageModels, address, phone, city, country, code, buyType);
                                                                     } else {
@@ -775,6 +778,8 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                 mDialog.dismiss();
                 Intent intent = new Intent(coontext, RegisterActivity.class);
                 intent.putExtra(ShippingRegister, true);
+                intent.putExtra(ShippingMobileRegister, false);
+                intent.putExtra(ShippingFlashRegister, false);
                 ((Activity) coontext).startActivityForResult(intent, OPEN_REGISTERATION_CODE);
 
 //                getMvpView().showMessage("This feature is under developement");
@@ -1345,7 +1350,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                             orderDetailsItems.setPatternID(imageModels.get(orderDetailsItemsIndex).getTypePatternId());
                             Log.e("patternIdFromPresenter",imageModels.get(orderDetailsItemsIndex).getTypePatternId()+"");
                             Log.e("ratioFromPresenter",imageModels.get(orderDetailsItemsIndex).getCurrentRatio()+"");
-                            orderDetailsItems.setQuantiy(imageModels.get(orderDetailsItemsIndex).getQuantity());
+                            orderDetailsItems.setQuantiy(imageModels.get(orderDetailsItemsIndex).getPatternAmount());
                             orderDetailsItemsList.add(orderDetailsItems);
                         } catch (Exception e) {
                             e.printStackTrace();

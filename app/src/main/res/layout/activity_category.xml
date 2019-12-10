@@ -31,31 +31,6 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/relative_iphone"
-                android:paddingTop="@dimen/_10sdp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <com.WattanArt.Utils.widgets.CustomeTextView
-                    android:id="@+id/iphone_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Iphone"
-                    android:gravity="center"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/black"/>
-
-                <View
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:id="@+id/view_iphone"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:background="@color/ms_gray3"
-                    android:layout_below="@id/iphone_txt"/>
-            </RelativeLayout>
-            <RelativeLayout
                 android:id="@+id/relative_android"
                 android:paddingTop="@dimen/_10sdp"
                 android:layout_width="0dp"
@@ -66,7 +41,7 @@
                     android:id="@+id/android_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Android"
+                    android:text="@string/android"
                     android:gravity="center"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_12sdp"
@@ -80,6 +55,34 @@
                     android:background="@color/ms_gray3"
                     android:layout_below="@id/android_txt"/>
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_iphone"
+                android:paddingTop="@dimen/_10sdp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.WattanArt.Utils.widgets.CustomeTextView
+                    android:id="@+id/iphone_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/iphone"
+                    android:gravity="center"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"/>
+
+                <View
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/view_iphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/ms_gray3"
+                    android:layout_below="@id/iphone_txt"/>
+            </RelativeLayout>
+
+
 
 
         </LinearLayout>
