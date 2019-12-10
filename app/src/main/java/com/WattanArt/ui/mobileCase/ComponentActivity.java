@@ -593,24 +593,6 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     }
     }
 
-    public static Bitmap loadBitmapFromView(View v) {
-        v.setDrawingCacheEnabled(true);
-        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
-        Canvas canvas = new Canvas(b);
-//        canvas.drawColor(Color.WHITE);
-        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-        v.draw(canvas);
-        return b;
-
-//        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(b);
-////        Paint q = new Paint(Paint.ANTI_ALIAS_FLAG);
-//        canvas.drawColor(Color.TRANSPARENT);
-//        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-////        v.setLayerType(LAYER_TYPE_HARDWARE, q);
-//        v.draw(canvas);
-//        return b;
-    }
 
     @Override
     public void showLoading() {
@@ -833,6 +815,26 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         if(k==0) return 1;
         else return k;
     }
+
+    public static Bitmap loadBitmapFromView(View v) {
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        Canvas canvas = new Canvas(b);
+//        canvas.drawColor(Color.WHITE);
+        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+        v.draw(canvas);
+        return b;
+
+//        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(b);
+////        Paint q = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        canvas.drawColor(Color.TRANSPARENT);
+//        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+////        v.setLayerType(LAYER_TYPE_HARDWARE, q);
+//        v.draw(canvas);
+//        return b;
+    }
+
 
     public boolean zoomEffect(){
         if (1200<actW && 1200<actH ){
