@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/_51sdp"
+    android:layout_height="@dimen/_46sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_relative"
     android:background="@drawable/transparent_background"
@@ -21,7 +21,7 @@
 
     <ImageView
         android:id="@+id/color_image"
-        android:layout_width="@dimen/_45sdp"
+        android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_45sdp"
         android:scaleType="fitXY"/>
 

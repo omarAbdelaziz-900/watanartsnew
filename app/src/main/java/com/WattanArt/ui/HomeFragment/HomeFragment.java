@@ -118,7 +118,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
 
     List< HomeIntroResponseModel.ResultBean.CategoryBean> arrayList;
     List< HomeIntroResponseModel.ResultBean.CategoryBean> finalArrayList;
-    List< HomeIntroResponseModel.ResultBean.CategoryBean.Item> itemsArrayList;
+    List< HomeIntroResponseModel.ResultBean.CategoryBean.ItemsBean> itemsArrayList;
 
     private String youtubeID = "";
     String link;
@@ -261,7 +261,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
 
         itemsArrayList=responseModel.getResult().getCategory().get(1).getItems();
 
-        Log.e("getProdID",responseModel.getResult().getCategory().get(1).getItems().get(0).getProdID()+"");
+        Log.e("getProdID",responseModel.getResult().getCategory().get(1).getItems().get(0).getProd_ID()+"");
 
 
 
@@ -274,7 +274,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             myImageViewText_firstItem.setText(arrayList.get(0).getName());
 
 
-            catID=arrayList.get(0).getCatID();
+            catID=arrayList.get(0).getCat_ID();
             arrayList.remove(0);
             finalArrayList=arrayList;
 

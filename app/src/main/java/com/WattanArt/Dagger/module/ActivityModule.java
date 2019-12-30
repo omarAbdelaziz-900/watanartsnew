@@ -15,6 +15,9 @@ import com.WattanArt.ui.CanvasPrint.CanvasPrintPresenterImp;
 import com.WattanArt.ui.Category.CategoryMvpPresenter;
 import com.WattanArt.ui.Category.CategoryMvpView;
 import com.WattanArt.ui.Category.CategoryPresenterImp;
+import com.WattanArt.ui.Coaster.CoasterMvpPresenter;
+import com.WattanArt.ui.Coaster.CoasterMvpView;
+import com.WattanArt.ui.Coaster.CoasterPresenterImp;
 import com.WattanArt.ui.ContactUs.ContactUsMvpView;
 import com.WattanArt.ui.ContactUs.ContactUsPresenterImp;
 import com.WattanArt.ui.ContactUs.ContactUsPresenterMvp;
@@ -38,6 +41,9 @@ import com.WattanArt.ui.Order.OrderDetails.OrderDetailsPresenterImp;
 import com.WattanArt.ui.Order.OrderHistory.OrderHistoryMvpPresenter;
 import com.WattanArt.ui.Order.OrderHistory.OrderHistoryMvpView;
 import com.WattanArt.ui.Order.OrderHistory.OrderHistoryPresenterImp;
+import com.WattanArt.ui.PublicShipping.PublicShippingMvpPresenter;
+import com.WattanArt.ui.PublicShipping.PublicShippingMvpView;
+import com.WattanArt.ui.PublicShipping.PublicShippingPresenterImp;
 import com.WattanArt.ui.Register.RegisterMvpPresenter;
 import com.WattanArt.ui.Register.RegisterMvpView;
 import com.WattanArt.ui.Register.RegisterPresenterImp;
@@ -47,12 +53,18 @@ import com.WattanArt.ui.Setting.SettingPresenterImp;
 import com.WattanArt.ui.Shipping.ShippingMvpView;
 import com.WattanArt.ui.Shipping.ShippingPresenter;
 import com.WattanArt.ui.Shipping.ShippingPresenterMvp;
+import com.WattanArt.ui.ShippingCoaster.ShippingCoasterMvpPresenter;
+import com.WattanArt.ui.ShippingCoaster.ShippingCoasterMvpView;
+import com.WattanArt.ui.ShippingCoaster.ShippingCoasterPresenterImp;
 import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryMvpPresenter;
 import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryMvpView;
 import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryPresenterImp;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileMvpPresenter;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileMvpView;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobilePresenterImp;
+import com.WattanArt.ui.ShippingT_Shirt.ShippingT_ShirtMvpPresenter;
+import com.WattanArt.ui.ShippingT_Shirt.ShippingT_ShirtMvpView;
+import com.WattanArt.ui.ShippingT_Shirt.ShippingT_ShirtPresenterImp;
 import com.WattanArt.ui.getFreeCredit.GetFreeCreditPresenter;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCredit;
 import com.WattanArt.ui.getFreeCredit.IGetFreeCreditPresenter;
@@ -362,4 +374,33 @@ public class ActivityModule {
             ShippingFlashMemoryPresenterImp<ShippingFlashMemoryMvpView> presenter) {
         return presenter;
     }
+
+    @Provides
+    @PerActivity
+    CoasterMvpPresenter<CoasterMvpView> coasterMvpViewCoasterMvpPresenter(
+            CoasterPresenterImp<CoasterMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    ShippingT_ShirtMvpPresenter<ShippingT_ShirtMvpView> shippingT_shirtMvpViewShippingT_shirtMvpPresenter(
+            ShippingT_ShirtPresenterImp<ShippingT_ShirtMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    ShippingCoasterMvpPresenter<ShippingCoasterMvpView> shippingCoasterMvpViewShippingCoasterMvpPresenter(
+            ShippingCoasterPresenterImp<ShippingCoasterMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    PublicShippingMvpPresenter<PublicShippingMvpView> shippingMvpViewPublicShippingMvpPresenter(
+            PublicShippingPresenterImp<PublicShippingMvpView> presenter) {
+        return presenter;
+    }
+
 }

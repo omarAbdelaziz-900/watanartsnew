@@ -138,87 +138,99 @@ public class EditImageActivity extends AppCompatActivity implements
     public static int typeOmar;
 
     int indexForPattern=0;
-//    float[] ratios = new float[]{1f, 8f / 12f, 12f / 8f, 24f / 8f, 24f / 12f, 36f / 8f, 12f / 12f, 12f / 16f, 12f / 20f};
-//
-//    Pair<Integer, Integer>[] pairDimens = new Pair[]{new Pair(600, 600), new Pair(1000, 1000), new Pair(1000, 1000),
-//            new Pair(1800, 600), new Pair(3000, 1000), new Pair(3000, 1000)};
+
 
 //    float[] ratios = new float[]{
-//            1f
-//            ,8f / 12f
-//            , 12f / 8f
-//            , 24f / 8f
-//            , 24f / 12f
-//            , 36f / 8f
+//            20f / 20f,
+//            20f / 30f,
+//            30f / 20f,
+//            60f / 20f,
+//            60f / 30f,
+//            90f / 20f,
 //
+//            30f / 30f,
 //
-//            ,1f
-//            ,12f/16f
-//            ,12f/20f
-//            ,4f/4f,
-//            6f/6f ,
-//            8f/8f
-//    };
+//            30f / 40f,
+//            30f / 50f,
+//
+//            40f / 40f,
+//            60f / 60f,
+//            80f / 80f};
 
     float[] ratios = new float[]{
             20f / 20f,
             20f / 30f,
             30f / 20f,
+            30f / 30f,
+            30f / 40f,
+            30f / 50f,
             60f / 20f,
             60f / 30f,
             90f / 20f,
-
-            30f / 30f,
-
-            30f / 40f,
-            30f / 50f,
-
             40f / 40f,
             60f / 60f,
             80f / 80f};
 
-    Pair<Integer, Integer>[] pairDimens = new Pair[]{
+//    Pair<Integer, Integer>[] pairDimens = new Pair[]{
+//
+//            //////// W     H
+//            new Pair(600, 600),20*20
+//            new Pair(600, 800),30*20
+//            new Pair(800, 600),20*30
+//            new Pair(1200, 600),20*60
+//            new Pair(1200, 800),30*60
+//            new Pair(1400, 600),20*90
+//            new Pair(800, 800),30*30
+//            new Pair(800, 1000),40*30
+//            new Pair(800, 1200),50*30
+//            new Pair(1000, 1000),40*40
+//            new Pair(1200, 1200),60*60
+//            new Pair(2000, 2000)};80*80
 
+    Pair<Integer, Integer>[] pairDimens = new Pair[]{
             //////// W     H
             new Pair(600, 600),
             new Pair(600, 800),
             new Pair(800, 600),
-
-            new Pair(1200, 600),
-
-            new Pair(1200, 800),
-
-            new Pair(1400, 600),
-
             new Pair(800, 800),
-
-//            new Pair(800, 1000),
             new Pair(800, 1000),
-
-//            new Pair(800, 1200),
             new Pair(800, 1200),
-
+            new Pair(1200, 600),
+            new Pair(1200, 800),
+            new Pair(1400, 600),
             new Pair(1000, 1000),
             new Pair(1200, 1200),
             new Pair(2000, 2000)};
 
+//    Pair<Integer, Integer>[] pairPieces = new Pair[]{
+//            new Pair(0, 0),20*20
+//            new Pair(0, 0),30*20
+//            new Pair(0, 0),20*30
+//            new Pair(2, 0),20*60
+//            new Pair(2, 0),30*60
+//            new Pair(2, 0),20*90
+//            new Pair(0, 0),30*30
+//            new Pair(0, 0),40*30
+//            new Pair(0, 0),50*30
+//            new Pair(1, 1),40*40
+//            new Pair(2, 2),60*60
+//            new Pair(3, 3)80*80
+//    };
+
     Pair<Integer, Integer>[] pairPieces = new Pair[]{
-            new Pair(0, 0),
-            new Pair(0, 0),
-            new Pair(0, 0),
-            new Pair(2, 0),
-            new Pair(2, 0),
-            new Pair(2, 0),
-
-            new Pair(0, 0),
-            new Pair(0, 0),
-            new Pair(0, 0),
-
-            new Pair(1, 1),
-            new Pair(2, 2),
-            new Pair(3, 3)
+            new Pair(0, 0),//20*20
+            new Pair(0, 0),//30*20
+            new Pair(0, 0),//20*30
+            new Pair(0, 0),//30*30
+            new Pair(0, 0),//40*30
+            new Pair(0, 0),//50*30
+            new Pair(2, 0),//20*60
+            new Pair(2, 0),//30*60
+            new Pair(2, 0),//20*90
+            new Pair(1, 1),//40*40
+            new Pair(2, 2),//60*60
+            new Pair(3, 3)//80*80
     };
-
 
 
     int patternId;
@@ -507,6 +519,7 @@ public class EditImageActivity extends AppCompatActivity implements
         this.hueSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 hue = (float) progress;
+
                 mGestureCropImageView.setImageBitmap(mGestureCropImageView.adjustHue(bitmap[0], hue));
             }
 
@@ -2201,33 +2214,59 @@ public class EditImageActivity extends AppCompatActivity implements
     }
 
 
+//    public void preparePatternID(int indexForPattern){
+//        if (indexForPattern==1){
+//            mainImageModel.setTypePatternId(1);20*20
+//        }else if (indexForPattern==2){
+//            mainImageModel.setTypePatternId(5);30*20
+//        }else if (indexForPattern==3){
+//            mainImageModel.setTypePatternId(2);20*30
+//        }else if (indexForPattern==4){
+//            mainImageModel.setTypePatternId(3);20*60
+//        }else if (indexForPattern==5){
+//            mainImageModel.setTypePatternId(6);30*60
+//        }else if (indexForPattern==6){
+//            mainImageModel.setTypePatternId(4);20*90
+//        }else if (indexForPattern==7){
+//            mainImageModel.setTypePatternId(7);30*30
+//        }else if (indexForPattern==8){
+//            mainImageModel.setTypePatternId(8);40*30
+//        }else if (indexForPattern==9){
+//            mainImageModel.setTypePatternId(9);50*30
+//        }else if (indexForPattern==10){
+//            mainImageModel.setTypePatternId(10);40*40
+//        }else if (indexForPattern==11){
+//            mainImageModel.setTypePatternId(11);60*60
+//        }else if (indexForPattern==12){
+//            mainImageModel.setTypePatternId(12);80*80
+//        }
+//    }
+
     public void preparePatternID(int indexForPattern){
         if (indexForPattern==1){
-            mainImageModel.setTypePatternId(1);
+            mainImageModel.setTypePatternId(1); //20*20
         }else if (indexForPattern==2){
-            mainImageModel.setTypePatternId(5);
+            mainImageModel.setTypePatternId(5); //30*20
         }else if (indexForPattern==3){
-            mainImageModel.setTypePatternId(2);
+            mainImageModel.setTypePatternId(2); //20*30
         }else if (indexForPattern==4){
-            mainImageModel.setTypePatternId(3);
+            mainImageModel.setTypePatternId(7); //30*30
         }else if (indexForPattern==5){
-            mainImageModel.setTypePatternId(6);
+            mainImageModel.setTypePatternId(8); //40*30
         }else if (indexForPattern==6){
-            mainImageModel.setTypePatternId(4);
+            mainImageModel.setTypePatternId(9); //50*30
         }else if (indexForPattern==7){
-            mainImageModel.setTypePatternId(7);
+            mainImageModel.setTypePatternId(3); //20*60
         }else if (indexForPattern==8){
-            mainImageModel.setTypePatternId(8);
+            mainImageModel.setTypePatternId(6); //30*60
         }else if (indexForPattern==9){
-            mainImageModel.setTypePatternId(9);
+            mainImageModel.setTypePatternId(4); //20*90
         }else if (indexForPattern==10){
-            mainImageModel.setTypePatternId(10);
+            mainImageModel.setTypePatternId(10); //40*40
         }else if (indexForPattern==11){
-            mainImageModel.setTypePatternId(11);
+            mainImageModel.setTypePatternId(11); //60*60
         }else if (indexForPattern==12){
-            mainImageModel.setTypePatternId(12);
+            mainImageModel.setTypePatternId(12); //80*80
         }
-//        mainImageModel.setCurrentRatio(currentRatioIndex);
     }
-
 }

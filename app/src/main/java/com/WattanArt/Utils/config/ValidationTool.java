@@ -169,6 +169,9 @@ public class ValidationTool {
                     editText.setError(context.getResources().getString(R.string.invalid_phone));
                     return false;
                 }
+            }else if (content.length()==1){
+                editText.setError(context.getResources().getString(R.string.invalid_phone));
+                return false;
             }
             }else {
             editText.setError(context.getResources().getString(R.string.invalid_phone_add));

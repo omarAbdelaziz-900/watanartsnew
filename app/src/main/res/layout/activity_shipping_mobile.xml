@@ -145,6 +145,7 @@
             </LinearLayout>
 
             <com.WattanArt.Utils.widgets.CustomeTextView
+                android:visibility="gone"
                 android:id="@+id/pieces_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,7 +170,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pieces_number" />
+                app:layout_constraintTop_toBottomOf="@id/linaer_adding_minus" />
 
             <LinearLayout
                 android:id="@+id/text_holder"
@@ -188,13 +189,13 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorPrimaryDark"
                     android:hint="@string/phone"
-                    android:inputType="phone"
                     android:imeOptions="actionNext"
-                    android:maxLines="1"
-                    android:textSize="@dimen/font_size_large"
+                    android:inputType="phone"
                     android:maxLength="15"
+                    android:maxLines="1"
                     android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey" />
+                    android:textColorHint="@color/dark_grey"
+                    android:textSize="@dimen/font_size_large" />
 
                 <com.WattanArt.Utils.widgets.CustomEditText
                     android:id="@+id/addressEditText"

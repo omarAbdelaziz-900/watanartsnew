@@ -108,6 +108,7 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
     CustomeTextView quantityTv, pieces_number, priceTextView;
     int quantity_Tv = 1;
     String priceIn, priceOut;
+    String text,textColor,textFont,textSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +222,6 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
             bitmap_image_view.setImageBitmap(BitmapMobileHelper.getInstance().getBitmapMobile());
         }
         if (BitmapMobileHelper.getInstance().getBitmapCover() != null) {
-//            bitmap_image_view.setImageBitmap(BitmapMobileHelper.getInstance().getBitmapCover());
             saveTempBitmapForCover(BitmapMobileHelper.getInstance().getBitmapCover());
         }
     }
@@ -250,6 +250,22 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
         if (getIntent().hasExtra("priceOut")) {
             priceOut = getIntent().getStringExtra("priceOut");
             Log.e("priceOut", priceOut);
+        }
+        if (getIntent().hasExtra("text")) {
+            text = getIntent().getStringExtra("text");
+            Log.e("text", text);
+        }
+        if (getIntent().hasExtra("textColor")) {
+            textColor = getIntent().getStringExtra("textColor");
+            Log.e("textColor", textColor);
+        }
+        if (getIntent().hasExtra("textSize")) {
+            textSize = getIntent().getStringExtra("textSize");
+            Log.e("textSize", textSize);
+        }
+        if (getIntent().hasExtra("textFont")) {
+            textFont = getIntent().getStringExtra("textFont");
+            Log.e("textFont", textFont);
         }
         if (isInEgypt){
             priceTextView.setText(priceIn);
@@ -446,6 +462,10 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
             }
             imagesBean.setStyle(style);
             imagesBean.setColor(color);
+            imagesBean.setText(text);
+            imagesBean.setText_color(textColor);
+            imagesBean.setText_font(textFont);
+            imagesBean.setText_size(textSize);
 //            images.add(imagesBean);
 //            mobileOrderRequest.setOrderDetils(orderDetilsBeanList);
             mPresenter.returnUploadedImageForCover(photos, fileForCover);
@@ -573,11 +593,11 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
 
         if (userData.getPhone(this).isEmpty()) {
             phoneEditText.setText("");
-            phoneEditText.setClickable(true);
+//            phoneEditText.setClickable(true);
         } else {
             phoneEditText.setText(userData.getPhone(this));
-            phoneEditText.setClickable(false);
-            phoneEditText.setFocusable(false);
+//            phoneEditText.setClickable(false);
+//            phoneEditText.setFocusable(false);
         }
     }
 
@@ -638,6 +658,11 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
         if (style != null) {
             imagesBean.setStyle(style);
         }
+        imagesBean.setText(text);
+        imagesBean.setText_color(textColor);
+        imagesBean.setText_font(textFont);
+        imagesBean.setText_size(textSize);
+
         imagesBean.setDesignerFlag(0);
         imagesBean.setDesignerID("0");
         images.add(imagesBean);

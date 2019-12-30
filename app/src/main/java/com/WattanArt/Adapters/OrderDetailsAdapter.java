@@ -76,20 +76,20 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         options.timeout(60000); //1M
         Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage());
         Glide.with(context)
-                .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage())
-                .apply(options).into(holder.mdetailsImageView);// {
+                .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getMainImage())
+                .apply(new RequestOptions().override(100, 100)).into(holder.mdetailsImageView);// {
 
-        if (responseList.get(position).getCat_ID()==9){
+        if (responseList.get(position).getCat_ID()==9 ||responseList.get(position).getCat_ID()==11){
 
             holder.detailsImage_iv2.setVisibility(View.VISIBLE);
-            Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage());
+            Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getMainImage());
             Glide.with(context)
-                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(0).getLowPrintscreenImg())
-                    .apply(options).into(holder.mdetailsImageView);// {
+                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(0).getPrintscreenImg())
+                    .apply(new RequestOptions().override(100, 100)).into(holder.mdetailsImageView);// {
 
             Glide.with(context)
-                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(1).getLowPrintscreenImg())
-                    .apply(options).into(holder.detailsImage_iv2);// {
+                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(1).getPrintscreenImg())
+                    .apply(new RequestOptions().override(100, 100)).into(holder.detailsImage_iv2);// {
         }else {
             holder.detailsImage_iv2.setVisibility(View.GONE);
         }

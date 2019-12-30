@@ -10,4 +10,5 @@ public interface MobileMvpView extends MvpView {
    void returnUploadedImageForCover(ImageUploadResponseModel imageUploadResponseModel);
    void showLoadingInner();
    void hideLoadingInner();
+
 }

@@ -84,7 +84,7 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        mToolbarBackImageView.setVisibility(View.VISIBLE);
-        mToolbarTitleTextView.setText(getString(R.string.category));
+        mToolbarTitleTextView.setText(getString(R.string.mobile_cover));
 
         ActivityComponent component = getActivityComponent();
         if (component != null) {
@@ -97,6 +97,7 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
             cateId=intent.getIntExtra("catId",0);
             Log.e("cateId",cateId+"");
         }
+
         userData = new UserData();
         if (isNetworkConnected()) {
             mPresenter.getSubCategory(userData.getLocalization(this),cateId);
@@ -227,7 +228,7 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
         if (responseModel.getResult()!=null) {
             if (responseModel.getResult().isEmpty()){
                 recycler_mobile_types.setVisibility(View.GONE);
-                nodata_txt.setText("no data");
+                nodata_txt.setText(getString(R.string.nodata_txt));
                 nodata_txt.setVisibility(View.VISIBLE);
             }else {
                 recycler_mobile_types.setVisibility(View.VISIBLE);
@@ -237,14 +238,14 @@ public class CategoryActivity extends BaseActivity implements CategoryMvpView,Ca
                 if (categoryItemModels.isEmpty()){
                     recycler_mobile_types.setVisibility(View.GONE);
                     nodata_txt.setVisibility(View.VISIBLE);
-                    nodata_txt.setText("no data");
+                    nodata_txt.setText(getString(R.string.nodata_txt));
                 }
                 Log.e("categmoddd", categoryItemModels + "\n" + categoryItemModels.size());
                 initItemsRecyclerView();
             }
         }else {
             recycler_mobile_types.setVisibility(View.GONE);
-            nodata_txt.setText("no data");
+            nodata_txt.setText(getString(R.string.nodata_txt));
             nodata_txt.setVisibility(View.VISIBLE);
         }
     }

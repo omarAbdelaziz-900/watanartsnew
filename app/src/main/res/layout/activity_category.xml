@@ -109,6 +109,6 @@
         android:layout_marginTop="@dimen/_160sdp"
         android:gravity="center"
         android:textColor="@color/black"
-        android:text="kkkkkkk"
+        android:text=""
         />
 </LinearLayout>

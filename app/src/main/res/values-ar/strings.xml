@@ -208,7 +208,15 @@
     <string name="android">اندرويد </string>
     <string name="iphone">ايفون </string>
 
-    <string name="done_succsess">تم بنجاح</string>
+    <string name="done_succsess">تم الطلب بنجاح</string>
     <string name="kind">القسم :</string>
-    <string name="choose_bg">قم باختيار الخلفيه</string>
+    <string name="choose_bg">قم باختيار صوره لخلفيه الموبايل</string>
+
+    <string name="choose_bg_front">قم باختيار خلفيه للامام</string>
+    <string name="choose_bg_back">فضلا ادخل الصوره في الامام والخلف</string>
+
+    <string name="invalid_size">الحجم غير مناسب</string>
+    <string name="coster"> كوستر</string>
+    <string name="edit_design">تعديل التصميم</string>
+    <string name="nodata_txt">غير متوفر الان</string>
 </resources>

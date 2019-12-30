@@ -77,18 +77,18 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageViewOmar, defStyle, 0);
 
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
-        mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
-        mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
+        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageViewOmar_civ_border_width, DEFAULT_BORDER_WIDTH);
+        mBorderColor = a.getColor(R.styleable.CircleImageViewOmar_civ_border_color, DEFAULT_BORDER_COLOR);
+        mBorderOverlay = a.getBoolean(R.styleable.CircleImageViewOmar_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
 
         // Look for deprecated civ_fill_color if civ_circle_background_color is not set
-        if (a.hasValue(R.styleable.CircleImageView_civ_circle_background_color)) {
-            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_circle_background_color,
+        if (a.hasValue(R.styleable.CircleImageViewOmar_civ_circle_background_color)) {
+            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageViewOmar_civ_circle_background_color,
                     DEFAULT_CIRCLE_BACKGROUND_COLOR);
-        } else if (a.hasValue(R.styleable.CircleImageView_civ_fill_color)) {
-            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_fill_color,
+        } else if (a.hasValue(R.styleable.CircleImageViewOmar_civ_fill_color)) {
+            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageViewOmar_civ_fill_color,
                     DEFAULT_CIRCLE_BACKGROUND_COLOR);
         }
 

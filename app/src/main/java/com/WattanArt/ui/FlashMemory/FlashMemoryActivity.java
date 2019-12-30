@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Environment;
@@ -28,19 +30,24 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
+import com.WattanArt.Utils.ViewHelper;
 import com.WattanArt.Utils.config.Constants;
 import com.WattanArt.Utils.widgets.BitmapUtils;
 import com.WattanArt.Utils.widgets.CustomeTextView;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
 import com.WattanArt.artcomponent.AccessoriesView;
+import com.WattanArt.artcomponent.ColorUtils;
 import com.WattanArt.artcomponent.CoverView;
 import com.WattanArt.artcomponent.DimensionData;
 import com.WattanArt.artcomponent.ImageCaseComponent;
@@ -48,9 +55,13 @@ import com.WattanArt.artcomponent.ObjectView;
 import com.WattanArt.model.Response.ImageUploadResponseModel;
 import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
+import com.WattanArt.ui.PublicShipping.PublicBitmapsModel;
+import com.WattanArt.ui.PublicShipping.PublicShippingActivity;
 import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryActivity;
 import com.WattanArt.ui.base.BaseActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
+import com.WattanArt.ui.mobileCase.FontTypeAdapter;
+import com.WattanArt.ui.mobileCase.FontTypeModel;
 import com.WattanArt.ui.mobileCase.MobileMvpPresenter;
 import com.WattanArt.ui.mobileCase.MobileMvpView;
 import com.bumptech.glide.Glide;
@@ -75,10 +86,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.iwf.photopicker.PhotoPicker;
 
-public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpView, ColorStyleFlashAdapter.ItemListenerOfItems{
+import static com.WattanArt.ui.PublicShipping.PublicShippingActivity.publicBitmapsModels;
+
+public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpView, ColorStyleFlashAdapter.ItemListenerOfItems,View.OnTouchListener,
+        FontTypeAdapter.ItemListener,FlashMemorySizeAdapter.ItemListenerOfFlashMemorSize{
 
 
-    CustomeTextViewBold pick_from_gallery_tv;
     CustomeTextViewBold complete_tv;
     final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 102;
 
@@ -120,14 +133,16 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     RelativeLayout replaceBottomHolder;
     RelativeLayout colorBottomHolder;
     RecyclerView color_recyclerview;
-    ImageView mToolbarBackImageView;
+
     CustomeTextView submit;
     CustomeTextViewBold mToolbarTitleTextView;
+    ImageView mToolbarBackImageView;
 
     LinearLayout linear_img_front;
     LinearLayout linear_img_back;
     List<String> General_Style ,General_Color;
     ColorStyleFlashAdapter colorBgMobileAdapter;
+    FlashMemorySizeAdapter flashMemorySizeAdapter;
     int colorOrStyleType;
     File fileGetingFront;
     File fileGetingBack;
@@ -150,11 +165,29 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     float scaleX, scaleY;
     Matrix mat;
     float[] pts;
-    ImageView lowPixelsIv,lowPixelsIv_front;
 
     boolean show=false;
     double centreX, centreY;
     float a;
+    int colorOrStyle=0;
+
+    EditText txt_back ,txt_front;
+    RelativeLayout relative_for_text,fontBottomHolder,sizeBottomHolder,colorsBottomHolder,above_bottom_linear,WritingBottomHolder;
+    LinearLayout bar_font_size_holder, bar_color_holder,bottom_linear;
+    LinearLayout linear_color_style;
+    SeekBar hueSeekBar,font_sizeSeekBar;
+    private int _xDelta;
+    private int _yDelta;
+    CoverView cover_view_text_front,cover_view_text_back;
+    RelativeLayout applyBottomHolder;
+    RelativeLayout textBottomHolder;
+    RelativeLayout SizeFlashBottomHolder;
+    RecyclerView font_recycler_view;
+    FontTypeAdapter fontTypeAdapter;
+    List< FontTypeModel> fontTypeModelList;
+    int seekbar_value,seekbar_color_value;
+
+    List<FlashMemorySizeModel>flashMemorySizeModelList=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -164,7 +197,9 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         ButterKnife.bind(this);
         showImage = findViewById(R.id.showImage);
 
-        pick_from_gallery_tv = findViewById(R.id.pick_from_gallery_tv);
+        fontTypeModelList = new ArrayList<>();
+        txt_front = findViewById(R.id.txt_front);
+        txt_back = findViewById(R.id.txt_back);
         complete_tv = findViewById(R.id.order_design_tv);
         image_front = findViewById(R.id.image_front);
         image_back = findViewById(R.id.image_back);
@@ -177,18 +212,38 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         mToolbarBackImageView=findViewById(R.id.toolbar_image_view);
         mToolbarTitleTextView=findViewById(R.id.toolbar_tv_title);
         submit=findViewById(R.id.submit);
-        lowPixelsIv = findViewById(R.id.lowPixelsIv);
-        lowPixelsIv_front = findViewById(R.id.lowPixelsIv_front);
         linear_img_front=(LinearLayout)findViewById(R.id.linear_img_front);
         linear_img_back=(LinearLayout)findViewById(R.id.linear_img_back);
         componentView_back = findViewById(R.id.componentView_back);
         accessoriesView_back = (AccessoriesView) componentView_back.getComponentView(R.id.accessories);
 
+        applyBottomHolder = findViewById(R.id.applyBottomHolder);
+        textBottomHolder = findViewById(R.id.textBottomHolder);
+        WritingBottomHolder = findViewById(R.id.WritingBottomHolder);
+        above_bottom_linear = findViewById(R.id.above_bottom_linear);
+        bottom_linear = findViewById(R.id.bottom_linear);
+        linear_color_style = findViewById(R.id.linear_color_style);
+        colorsBottomHolder = findViewById(R.id.colorsBottomHolder);
+        sizeBottomHolder = findViewById(R.id.sizeBottomHolder);
+        bar_color_holder = findViewById(R.id.bar_color_holder);
+        bar_font_size_holder = findViewById(R.id.bar_font_size_holder);
+        relative_for_text = findViewById(R.id.relative_for_text);
+        fontBottomHolder = findViewById(R.id.fontBottomHolder);
+        SizeFlashBottomHolder = findViewById(R.id.SizeFlashBottomHolder);
+        hueSeekBar = findViewById(R.id.hueSeekBar);
+        font_sizeSeekBar = findViewById(R.id.font_sizeSeekBar);
+
+        cover_view_text_front = findViewById(R.id.cover_view_text_front);
+        cover_view_text_back = findViewById(R.id.cover_view_text_back);
+        font_recycler_view = findViewById(R.id.font_recycler_view);
+
+        ViewHelper.hideKeyboard(FlashMemoryActivity.this);
+
 
         initFrontView();
-//        }else if (flashType.equals("back")){
         initBackView();
-//        componentView_back.initUrlData(dimensionData_front, new Pair<>( imgBack,imgBack));
+        txtProperties();
+        ViewHelper.hideKeyboard(FlashMemoryActivity.this);
         cover_front = (CoverView) componentView_front.getComponentView(R.id.cover);
         accessoriesView_front = (AccessoriesView) componentView_front.getComponentView(R.id.accessories);
         objectView_front = (ObjectView) componentView_front.getComponentView(R.id.component);
@@ -198,6 +253,33 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         objectView_back.setBackgroundColor(Color.parseColor("#cf878787"));
         objectView_front.setBackgroundColor(Color.parseColor("#cf878787"));
         initView();
+        getIntentData();
+
+        initFontRecyclerView();
+        writingOnCover();
+        clickOnTextBottomHolder();
+        clickCancelBottomHolder();
+        clickColorsBottomHolder();
+        clickFontsBottomHolder();
+        clickSizesBottomHolder();
+        clickFontBottomHolder();
+        font_sizeSeekBar.setProgress(12);
+        hueSeekBar.setProgress(0);
+        updateNow();
+        updateColorNow();
+        applyColorTextMethod();
+        applyFontSizeMethod();
+        clickSizeFlashmemory();
+    }
+
+    @Override
+    protected void setUpActivityOrFragmentRequirment() {
+
+
+    }
+
+
+   void getIntentData(){
         intent=getIntent();
         if (intent.hasExtra("prod_Id")){
             prod_Id=intent.getStringExtra("prod_Id");
@@ -208,15 +290,13 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         if (intent.hasExtra("priceOut")){
             priceOut=intent.getStringExtra("priceOut");
         }
+       if (intent.hasExtra("BUNDLE")){
+           Bundle args = intent.getBundleExtra("BUNDLE");
+           flashMemorySizeModelList = (ArrayList<FlashMemorySizeModel>) args.getSerializable("FlashMemoryArrayList");
+//           Log.e("flashMemorySizeModelListOmar",flashMemorySizeModelList+"");
+       }
+
     }
-
-    @Override
-    protected void setUpActivityOrFragmentRequirment() {
-
-
-    }
-
-
     public void initView(){
         ActivityComponent activityComponent = getActivityComponent();
         if (activityComponent != null) {
@@ -241,13 +321,12 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         actionColorOrStyle();
         clickImageback();
         clickImageFront();
-        measureImageDimensions();
+//        measureImageDimensions();
 //        if (flashType.equals("front")){
 //            initFrontView();
 //        }else if (flashType.equals("back")){
 //            initBackView();
 //        }
-        pickFromGalleryAction();
         mToolbarBackImageView.setVisibility(View.VISIBLE);
         mToolbarTitleTextView.setText(R.string.flash_memory);
         mToolbarTitleTextView.setVisibility(View.VISIBLE);
@@ -256,17 +335,6 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             onBackPressed();
         });
 
-        lowPixelsIv.setOnClickListener(v -> {
-            Toast toast = Toast.makeText(this, getString(R.string.img_resoluyion), Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        });
-
-        lowPixelsIv_front.setOnClickListener(v -> {
-            Toast toast = Toast.makeText(this, getString(R.string.img_resoluyion), Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        });
     }
 
 
@@ -295,9 +363,12 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     }
 
-
-    public void pickFromGalleryAction() {
-        pick_from_gallery_tv.setOnClickListener(v -> pickFromGallery());
+    public void txtProperties(){
+        txt_front.setVisibility(View.GONE);
+//        txt_back.setBackgroundColor(Color.TRANSPARENT);
+        ViewHelper.hideKeyboard(this);
+        txt_front.setOnTouchListener(this);
+        txt_back.setOnTouchListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -339,6 +410,19 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                     if (photosBack == null || photosBack.isEmpty()) return;
                     cover_back.setData(photosBack.get(0));
                 }
+                if (colorOrStyle==1){
+                    colorOrStyleType=1;
+                    styleBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+                    colorBottomHolder.setBackground(getDrawable(R.drawable.background_selected));
+                    replaceBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+                    initColorRecyclerView();
+                }else {
+                    colorOrStyleType=2;
+                    styleBottomHolder.setBackground(getDrawable(R.drawable.background_selected));
+                    colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+                    replaceBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+                    initColorRecyclerView();
+                }
             }
         }
     }
@@ -365,7 +449,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     @Override
     public void onColorItemsClickFromAdapter( int position) {
-
+         colorOrStyle=1;
         if (flashType.equals("front")) {
             objectView_front.setData(null);
             Log.e("position->>",position+"");
@@ -375,6 +459,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 colorPositionFront=position;
             }
             colorNameFront=General_Color.get(position);
+            styleNameFront="";
         }else if (flashType.equals("back")){
             objectView_back.setData(null);
             Log.e("position->>",position+"");
@@ -384,12 +469,14 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 colorPositionback=position;
             }
             colorNameback=General_Color.get(position);
+            styleNameBack="";
         }
 
     }
 
     @Override
     public void onStyleItemsClickFromAdapter(int position) {
+        colorOrStyle=2;
         if (flashType.equals("front")){
             objectView_front.setBackgroundColor(0x00000000);
             String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
@@ -398,6 +485,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             if (position!=stylePostionFront) {
                 objectView_front.setData(imgName);
                 stylePostionFront=position;
+                colorNameFront="";
             }
             styleNameFront=General_Style.get(position);
         }else if (flashType.equals("back")){
@@ -410,6 +498,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 stylePostionback=position;
             }
             styleNameBack=General_Style.get(position);
+            colorNameback="";
         }
     }
 
@@ -436,15 +525,19 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             if (!General_Style.isEmpty())
                 General_Style.clear();
         }
+        if (flashMemorySizeModelList!=null) {
+            if (!flashMemorySizeModelList.isEmpty())
+                flashMemorySizeModelList.clear();
+        }
+        ViewHelper.hideKeyboard(FlashMemoryActivity.this);
         finish();
     }
 
 
     public void replaceCOverImage(View view) {
-//        color_recyclerview.setAdapter(null);
-        styleBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
-        colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
-        replaceBottomHolder.setBackground(getDrawable(R.drawable.background_selected_bordered));
+//        styleBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+//        colorBottomHolder.setBackground(getDrawable(R.drawable.background_unselected));
+//        replaceBottomHolder.setBackground(getDrawable(R.drawable.background_selected_bordered));
         pickFromGallery();
     }
 
@@ -478,68 +571,87 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     public void createFrontBitmaps(){
         if (cover_front.getDrawable() != null) {
-            Bitmap bitmap = ((BitmapDrawable) cover_front.getDrawable()).getBitmap();
 
-            currentBitmapFront = Bitmap.createBitmap(bitmap,
-                    0, 0, bitmap.getWidth(),
-                    bitmap.getHeight(), cover_front.getImageMatrix(), true);
+//            Bitmap bitmap = ((BitmapDrawable) cover_front.getDrawable()).getBitmap();
+//            currentBitmapFront = Bitmap.createBitmap(bitmap,
+//                    0, 0, bitmap.getWidth(),
+//                    bitmap.getHeight(), cover_front.getImageMatrix(), true);
 
-            mobileBitmapFront = loadBitmapFromView(componentView_front,bitmap);
+            mobileBitmapFront = loadBitmapFromView(componentView_front);
+            currentBitmapFront=loadBitmapFromCover(cover_front);
             Log.e("FrontBitmaps",currentBitmapFront+"    "+mobileBitmapFront);
 
             BitmapFlashHelper.getInstance().setBitmapFront(mobileBitmapFront);
             BitmapFlashHelper.getInstance().setBitmapFrontCover(currentBitmapFront);
+
+            PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmapFront);
+            publicBitmapsModels.add(new PublicBitmapsModel(1+"",11+"",priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
+
+            HelperFlashRequest.getInstance().getIds().add(Integer.parseInt(prod_Id));
+            HelperFlashRequest.getInstance().getFlashCoverBitmapsFront().add(currentBitmapFront);
+            HelperFlashRequest.getInstance().getFlashscreenShootBitmapsFront().add(mobileBitmapFront);
+
+
+            for (int i=0;i<HelperFlashRequest.getInstance().getIds().size();i++){
+                Log.e("kkkdhdhdhdh", HelperFlashRequest.getInstance().getIds().get(i) + "");
+            }
+            for (int i=0;i<HelperFlashRequest.getInstance().getIds().size();i++){
+                Log.e("ssssssss", HelperFlashRequest.getInstance().getFlashCoverBitmapsFront().get(i) + "");
+            }
+
         }
     }
     public void createBackBitmaps(){
         if (cover_back.getDrawable() != null) {
-            Bitmap bitmap = ((BitmapDrawable) cover_back.getDrawable()).getBitmap();
 
-            currentBitmapBack = Bitmap.createBitmap(bitmap,
-                    0, 0, bitmap.getWidth(),
-                    bitmap.getHeight(), cover_back.getImageMatrix(), true);
+//            Bitmap bitmap = ((BitmapDrawable) cover_back.getDrawable()).getBitmap();
+//            currentBitmapBack = Bitmap.createBitmap(bitmap,
+//                    0, 0, bitmap.getWidth(),
+//                    bitmap.getHeight(), cover_back.getImageMatrix(), true);
 
-            mobileBitmapBack = loadBitmapFromView(componentView_back,bitmap);
+            mobileBitmapBack = loadBitmapFromView(componentView_back);
+            currentBitmapBack=loadBitmapFromCover(cover_back);
             Log.e("BackBitmaps",currentBitmapBack+"    "+mobileBitmapBack);
             BitmapFlashHelper.getInstance().setBitmapBack(mobileBitmapBack);
             BitmapFlashHelper.getInstance().setBitmapBackCover(currentBitmapBack);
 
+            HelperFlashRequest.getInstance().getFlashCoverBitmapsBack().add(currentBitmapBack);
+            HelperFlashRequest.getInstance().getFlashscreenShootBitmapsBack().add(mobileBitmapBack);
+
+
+            for (int i=0;i<HelperFlashRequest.getInstance().getFlashCoverBitmapsBack().size();i++){
+                Log.e("ssssssss", HelperFlashRequest.getInstance().getFlashCoverBitmapsBack().get(i) + "");
+            }
         }
     }
 
 
     public void submit(View view) {
-        if (!show){
-        if (cover_front.getDrawable() != null && cover_back.getDrawable() != null) {
+//        if (!show){
+        if (cover_front.getDrawable() != null ) {
 
-            componentView_front.setVisibility(View.VISIBLE);
+            if (cover_back.getDrawable() != null){
+                componentView_front.setVisibility(View.VISIBLE);
             componentView_back.setVisibility(View.VISIBLE);
 
             createFrontBitmaps();
             createBackBitmaps();
             Log.e("BitmapFlashHelper1", BitmapFlashHelper.getInstance().getBitmapFront() + "");
-//                final Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        createFrontBitmaps();
-//                        createBackBitmaps();
-//
-//                    if (mobileBitmapFront!=null && currentBitmapFront!=null && mobileBitmapBack!=null && currentBitmapBack!=null){
-//
-//
-//                    }
-//                    }
-//                }, 10);
+
 
             sendBitmapImage();
+        }else {
+                hideLoaderDialog();
+                Toast.makeText(this, getString(R.string.choose_bg_back), Toast.LENGTH_SHORT).show();
+            }
         } else {
             hideLoaderDialog();
-            Toast.makeText(this, getString(R.string.choose_bg), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.choose_bg_back), Toast.LENGTH_SHORT).show();
         }
-
-    }
+//    }
+//        else {
+//            Toast.makeText(this, getString(R.string.invalid_size), Toast.LENGTH_SHORT).show();
+//        }
     }
 
 
@@ -559,7 +671,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
 
 
-    public static Bitmap loadBitmapFromView(View v,Bitmap bitmap) {
+    public static Bitmap loadBitmapFromView(View v) {
 //        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
         v.setDrawingCacheEnabled(true);
         Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
@@ -569,35 +681,42 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         v.draw(canvas);
         return b;
     }
+    public static Bitmap loadBitmapFromCover(View v) {
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        return b;
+    }
 
     public void clickImageFront(){
         image_front.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                initColorRecyclerView();
                 image_front.setImageResource(R.drawable.ic_front_flash);
                 loadImage(imgBack,image_back);
-//                image_front.setBackground(getDrawable(R.drawable.background_with_big_border_selected));
-//                image_back.setBackground(getDrawable(R.drawable.background_with_big_border_unselected));
-//                createBackBitmaps();
                 flashType="front";
                 componentView_front.setVisibility(View.VISIBLE);
+                txt_front.setVisibility(View.VISIBLE);
                 componentView_back.setVisibility(View.INVISIBLE);
+                txt_back.setVisibility(View.INVISIBLE);
             }
         });
     }
 
     public void clickImageback(){
+
         image_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                initColorRecyclerView();
+
                 image_back.setImageResource(R.drawable.ic_back_flash);
                 loadImage(imgFront,image_front);
-//                linear_img_front.setBackground(getDrawable(R.drawable.background_with_big_border_unselected));
-//                linear_img_back.setBackground(getDrawable(R.drawable.background_with_big_border_selected));
-//                createFrontBitmaps();
                 flashType="back";
                 componentView_front.setVisibility(View.INVISIBLE);
+                txt_front.setVisibility(View.INVISIBLE);
                 componentView_back.setVisibility(View.VISIBLE);
+                txt_back.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -664,18 +783,23 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 //        }
         if (flashType.equals("front")){
             componentView_back.setVisibility(View.INVISIBLE);
+            txt_back.setVisibility(View.INVISIBLE);
             componentView_front.setVisibility(View.VISIBLE);
+            txt_front.setVisibility(View.VISIBLE);
             image_front.setImageResource(R.drawable.ic_front_flash);
             loadImage(imgBack,image_back);
         }else {
             componentView_back.setVisibility(View.VISIBLE);
+            txt_back.setVisibility(View.VISIBLE);
             componentView_front.setVisibility(View.INVISIBLE);
+            txt_front.setVisibility(View.INVISIBLE);
             image_back.setImageResource(R.drawable.ic_back_flash);
             loadImage(imgFront,image_front);
 
         }
 
         Intent intent = new Intent(this, ShippingFlashMemoryActivity.class);
+//        Intent intent = new Intent(this, PublicShippingActivity.class);
 
 //        intent.putExtra("frontFilename", frontFilename+"");
 //        intent.putExtra("frontCoverFileName", frontCoverFileName+"");
@@ -696,178 +820,290 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         startActivity(intent);
     }
 
-    public void measureImageDimensions() {
-        cover_front.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
 
-                float[] f = new float[9];
-                cover_front.getImageMatrix().getValues(f);
-
-                // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
-
-                scaleX = f[Matrix.MSCALE_X];
-                scaleY = f[Matrix.MSCALE_Y];
-
-                final int coverWidth = cover_front.getMeasuredWidth();
-                final int coverHeight = cover_front.getMeasuredHeight();
-
-                // Calculate the actual dimensions
-                actW = Math.round(coverWidth * scaleX);
-                actH = Math.round(coverHeight * scaleY);
-
-                Log.e("DBG", "[" + coverWidth + "," + coverHeight + "] -> [" + actW + "," + actH + "] & scales: x=" + scaleX + " y=" + scaleY);
-
-                float wScale = (float) actW / (float) coverWidth;
-                float hScale = (float) actH / (float) coverHeight;
-                float scale = Math.min(wScale, hScale);
-
-                if (actH<0){
-                    actH=(actH*-1)+600;
-                }
-                if (actW<0){
-                    actW=(actW*-1+600);
-                }
-
-                zoomEffectFront();
-
-                Log.e("calculateScaleImage", "" + scale);
-
-
-                float aspect_ratio = (float) coverWidth / (float) coverHeight;
-                float aspect_ratio2 = (float) actW / (float) actH;
-
-                Log.e("calculateAspectRatio", "" + aspect_ratio + " && " + aspect_ratio2);
-
-
-                centreX = cover_front.getX() + cover_front.getWidth() / 2;
-                centreY = cover_front.getY() + cover_front.getHeight() / 2;
-
-                double tx = scaleX - centreX;
-                double ty = scaleY - centreY;
-
-                double t_length = Math.sqrt(tx * tx + ty * ty);
-                a = (float) Math.acos(ty / t_length);
-
-                Log.e("calculateRotate", "" + a);
-
-
-//                Bitmap bMap = BitmapFactory.decodeFile(selectedImagePath);
-//                cover.setImageBitmap(bMap);
-                mat = cover_front.getImageMatrix();
-
-//                RectF drawableRect = new RectF(0, 0, actW, actH);
-//                RectF viewRect = new RectF(0, 0, cover.getWidth(), cover.getHeight());
-//                mat.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL);
-                Log.e("matrixCalc", "" + mat);
-//                cover.setImageMatrix(mat);
-
-                pts = new float[]{event.getX(), event.getY()};
-                Log.e("ptspts", "" + pts);
-                return false;
-            }
-        });
-
-
-        cover_back.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                float[] f = new float[9];
-                cover_back.getImageMatrix().getValues(f);
-
-                // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
-
-                scaleX = f[Matrix.MSCALE_X];
-                scaleY = f[Matrix.MSCALE_Y];
-
-                final int coverWidth = cover_back.getMeasuredWidth();
-                final int coverHeight = cover_back.getMeasuredHeight();
-
-                // Calculate the actual dimensions
-                actW = Math.round(coverWidth * scaleX);
-                actH = Math.round(coverHeight * scaleY);
-
-                Log.e("DBG", "[" + coverWidth + "," + coverHeight + "] -> [" + actW + "," + actH + "] & scales: x=" + scaleX + " y=" + scaleY);
-
-                float wScale = (float) actW / (float) coverWidth;
-                float hScale = (float) actH / (float) coverHeight;
-                float scale = Math.min(wScale, hScale);
-
-                if (actH<0){
-                    actH=(actH*-1)+600;
-                }
-                if (actW<0){
-                    actW=(actW*-1+600);
-                }
-
-                zoomEffectack();
-
-                Log.e("calculateScaleImage", "" + scale);
-
-
-                float aspect_ratio = (float) coverWidth / (float) coverHeight;
-                float aspect_ratio2 = (float) actW / (float) actH;
-
-                Log.e("calculateAspectRatio", "" + aspect_ratio + " && " + aspect_ratio2);
-
-
-                centreX = cover_back.getX() + cover_back.getWidth() / 2;
-                centreY = cover_back.getY() + cover_back.getHeight() / 2;
-
-                double tx = scaleX - centreX;
-                double ty = scaleY - centreY;
-
-                double t_length = Math.sqrt(tx * tx + ty * ty);
-                a = (float) Math.acos(ty / t_length);
-
-                Log.e("calculateRotate", "" + a);
-
-
-//                Bitmap bMap = BitmapFactory.decodeFile(selectedImagePath);
-//                cover.setImageBitmap(bMap);
-                mat = cover_back.getImageMatrix();
-
-//                RectF drawableRect = new RectF(0, 0, actW, actH);
-//                RectF viewRect = new RectF(0, 0, cover.getWidth(), cover.getHeight());
-//                mat.setRectToRect(drawableRect, viewRect, Matrix.ScaleToFit.FILL);
-                Log.e("matrixCalc", "" + mat);
-//                cover.setImageMatrix(mat);
-
-                pts = new float[]{event.getX(), event.getY()};
-                Log.e("ptspts", "" + pts);
-                return false;
-            }
-        });
-
-
+    void initFontRecyclerView(){
+        fontTypeModelList();
+        Log.e("fontTypeModelList",fontTypeModelList+" "+fontTypeModelList.size());
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        font_recycler_view.setLayoutManager(manager);
+        font_recycler_view.setItemAnimator(new DefaultItemAnimator());
+        font_recycler_view.setNestedScrollingEnabled(false);
+        font_recycler_view.setHasFixedSize(true);
+        font_recycler_view.scrollToPosition(0);
+        fontTypeAdapter = new FontTypeAdapter(this, fontTypeModelList, this);
+        font_recycler_view.setAdapter(fontTypeAdapter);
+    }
+    public List<FontTypeModel> fontTypeModelList(){
+        fontTypeModelList.add(new FontTypeModel("GOTHIC_2.TTF",R.drawable.ic_remove));
+        fontTypeModelList.add(new FontTypeModel("GOTHICB_1.TTF",R.drawable.ic_replace));
+        fontTypeModelList.add(new FontTypeModel("GOTHICBI_2.TTF",R.drawable.ic_refresh_black_24dp));
+        fontTypeModelList.add(new FontTypeModel("GOTHICI_2.TTF",R.drawable.ic_edit_profile));
+        fontTypeModelList.add(new FontTypeModel("android_insomnia_regular.ttf",R.drawable.ic_chekbox_active));
+        fontTypeModelList.add(new FontTypeModel("doridrobot.ttf",R.drawable.ic_chekbox_unactive));
+        return fontTypeModelList;
     }
 
-    public boolean zoomEffectFront(){
-        if (1200<actW && 1200<actH ){
-            lowPixelsIv_front.setVisibility(View.VISIBLE);
-            show=true;
-        }else if (actW<500 &&   actH<500){
-            lowPixelsIv_front.setVisibility(View.VISIBLE);
-            show=true;
-        }else {
-            lowPixelsIv_front.setVisibility(View.GONE);
-            show=false;
-        }
-        return show;
+
+    void applyFontSizeMethod(){
+        font_sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                updateNow();
+            }
+        });
     }
-    public boolean zoomEffectack(){
-        if (1200<actW && 1200<actH ){
-            lowPixelsIv.setVisibility(View.VISIBLE);
-            show=true;
-        }else if (actW<500 &&   actH<500){
-            lowPixelsIv.setVisibility(View.VISIBLE);
-            show=true;
+    public void updateNow(){
+        if (flashType.equals("front")) {
+            seekbar_value = font_sizeSeekBar.getProgress();
+            Log.e("seekbarff", seekbar_value + "");
+            txt_front.setTextSize(seekbar_value + 1);
+//            textSize = String.valueOf(seekbar_value + 1);
         }else {
-            lowPixelsIv.setVisibility(View.GONE);
-            show=false;
+            seekbar_value = font_sizeSeekBar.getProgress();
+            Log.e("seekbarff", seekbar_value + "");
+            txt_back.setTextSize(seekbar_value + 1);
+//            textSize = String.valueOf(seekbar_value + 1);
         }
-        return show;
+    }
+
+
+    void applyColorTextMethod(){
+        hueSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                updateColorNow();
+            }
+        });
+    }
+
+    public void updateColorNow(){
+        seekbar_color_value=hueSeekBar.getProgress();
+        if (flashType.equals("front")) {
+            for (int i = 0; i < ColorUtils.colorList().length; i++) {
+                Log.e("lengthh", ColorUtils.colorList().length + "\n");
+                if (seekbar_color_value == i) {
+                    Log.e("i", seekbar_color_value + "\n" + i);
+                    txt_front.setTextColor(Color.parseColor("#" + ColorUtils.colorList()[seekbar_color_value]));
+//                    textColor = ColorUtils.colorList()[seekbar_color_value];
+                    break;
+                }
+            }
+        }else {
+            for (int i = 0; i < ColorUtils.colorList().length; i++) {
+                Log.e("lengthh", ColorUtils.colorList().length + "\n");
+                if (seekbar_color_value == i) {
+                    Log.e("i", seekbar_color_value + "\n" + i);
+                    txt_back.setTextColor(Color.parseColor("#" + ColorUtils.colorList()[seekbar_color_value]));
+//                    textColor = ColorUtils.colorList()[seekbar_color_value];
+                    break;
+                }
+            }
+        }
+    }
+
+    public void clickOnTextBottomHolder() {
+        if (flashType.equals("front")) {
+        textBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linear_color_style.setVisibility(View.GONE);
+                above_bottom_linear.setVisibility(View.VISIBLE);
+                txt_front.setVisibility(View.VISIBLE);
+//                txt_front.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
+                cover_view_text_front.setVisibility(View.GONE);
+            }
+        });
+    }else {
+            textBottomHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    linear_color_style.setVisibility(View.GONE);
+                    above_bottom_linear.setVisibility(View.VISIBLE);
+                    txt_back.setVisibility(View.VISIBLE);
+//                    txt_back.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
+                    cover_view_text_back.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    public void clickCancelBottomHolder(){
+        if (flashType.equals("front")) {
+            applyBottomHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    txt_front.setVisibility(View.GONE);
+                    txt_front.setBackground(null);
+                    cover_view_text_front.setVisibility(View.VISIBLE);
+                    linear_color_style.setVisibility(View.VISIBLE);
+                    above_bottom_linear.setVisibility(View.GONE);
+                    txt_front.buildDrawingCache();
+                    cover_view_text_front.setImageBitmap(txt_front.getDrawingCache());
+                }
+            });
+        }else {
+            applyBottomHolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    txt_back.setVisibility(View.GONE);
+                    txt_back.setBackground(null);
+                    cover_view_text_back.setVisibility(View.VISIBLE);
+                    linear_color_style.setVisibility(View.VISIBLE);
+                    above_bottom_linear.setVisibility(View.GONE);
+                    txt_back.buildDrawingCache();
+                    cover_view_text_back.setImageBitmap(txt_back.getDrawingCache());
+                }
+            });
+        }
+    }
+    public void clickColorsBottomHolder(){
+        colorsBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bar_color_holder.setVisibility(View.VISIBLE);
+                bar_font_size_holder.setVisibility(View.GONE);
+            }
+        });
+    }
+    public void clickFontsBottomHolder(){
+        colorsBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bar_color_holder.setVisibility(View.VISIBLE);
+                bar_font_size_holder.setVisibility(View.GONE);
+                font_recycler_view.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void clickSizesBottomHolder(){
+        sizeBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bar_color_holder.setVisibility(View.GONE);
+                bar_font_size_holder.setVisibility(View.VISIBLE);
+                font_recycler_view.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void clickFontBottomHolder(){
+        fontBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                initFontRecyclerView();
+                bar_color_holder.setVisibility(View.GONE);
+                bar_font_size_holder.setVisibility(View.GONE);
+                font_recycler_view.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public boolean onTouch(View view, MotionEvent event) {
+        final int X = (int) event.getRawX();
+        final int Y = (int) event.getRawY();
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+                _xDelta = X - lParams.leftMargin;
+                _yDelta = Y - lParams.topMargin;
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+                layoutParams.leftMargin = X - _xDelta;
+                layoutParams.topMargin = Y - _yDelta;
+                layoutParams.rightMargin = -250;
+                layoutParams.bottomMargin = -250;
+                view.setLayoutParams(layoutParams);
+                break;
+        }
+        txt_front.invalidate();
+        txt_back.invalidate();
+        return true;
+    }
+
+    public void writingOnCover(){
+        WritingBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextClick();
+            }
+        });
+    }
+
+    public void editTextClick(){
+        if (flashType.equals("front")) {
+            txt_front.setFocusable(true);
+//            txt_front.setBackgroundColor(Color.TRANSPARENT);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(txt_front, InputMethodManager.SHOW_IMPLICIT);
+            txt_front.requestFocus();
+//            txt_front.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+        }else {
+            txt_back.setFocusable(true);
+//            txt_back.setBackgroundColor(Color.TRANSPARENT);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(txt_back, InputMethodManager.SHOW_IMPLICIT);
+            txt_back.requestFocus();
+//            txt_back.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+        }
+    }
+
+    @Override
+    public void onFontTypeItemClick(FontTypeModel item, int position) {
+        String path="fonts/"+item.getFontName();
+        Typeface face = Typeface.createFromAsset(getAssets(),
+                path);
+//        textFont=item.getFontName();
+        if (flashType.equals("front")) {
+            txt_front.setTypeface(face);
+        }else {
+            txt_back.setTypeface(face);
+        }
+    }
+
+    public void clickSizeFlashmemory(){
+        SizeFlashBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initSizeRecyclerView();
+            }
+        });
+    }
+    private void initSizeRecyclerView() {
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        color_recyclerview.setLayoutManager(manager);
+        color_recyclerview.setItemAnimator(new DefaultItemAnimator());
+        color_recyclerview.setNestedScrollingEnabled(false);
+        color_recyclerview.setHasFixedSize(true);
+        color_recyclerview.scrollToPosition(0);
+         flashMemorySizeAdapter = new FlashMemorySizeAdapter(this, flashMemorySizeModelList, this);
+        color_recyclerview.setAdapter(flashMemorySizeAdapter);
+    }
+
+    @Override
+    public void onSizeItemsClickFromAdapter(int position, String priceFlashIn, String priceFlashOut) {
+        Toast.makeText(this, position+"\n"+priceIn+"\n"+priceOut+"", Toast.LENGTH_SHORT).show();
+        priceIn=priceFlashIn;
+        priceOut=priceFlashOut;
     }
 }
 

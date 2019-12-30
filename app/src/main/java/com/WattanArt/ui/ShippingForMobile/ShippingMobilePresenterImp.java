@@ -355,7 +355,7 @@ public class ShippingMobilePresenterImp <V extends ShippingMobileMvpView> extend
 //        getMvpView().showLoading();
 
         getMvpView().showLoadingInner();
-        int index = serverUploadIndex + 1;
+         int index = serverUploadIndex + 1;
 
         filetoUploadForMobile = new File(listPaths.get(0));
         String thisFileName;
@@ -435,6 +435,7 @@ public class ShippingMobilePresenterImp <V extends ShippingMobileMvpView> extend
                 Log.e("TEST", "-->" + new Gson().toJson(call.request().body()));
                 Log.e("TEST", "-->" + new Gson().toJson(call.request()));
 
+//                serverUploadIndex++;
                 ThrowableModel model = new Gson().fromJson(new Gson().toJson(call.request().body()), ThrowableModel.class);
                 t.printStackTrace();
                 Toast.makeText(MyApplication.getAppContext(),
@@ -535,6 +536,7 @@ public class ShippingMobilePresenterImp <V extends ShippingMobileMvpView> extend
                 Log.e("TEST", "-->" + new Gson().toJson(call.request().body()));
                 Log.e("TEST", "-->" + new Gson().toJson(call.request()));
 
+//                list.clear();
                 ThrowableModel model = new Gson().fromJson(new Gson().toJson(call.request().body()), ThrowableModel.class);
                 t.printStackTrace();
                 Toast.makeText(MyApplication.getAppContext(),

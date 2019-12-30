@@ -4,16 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="@dimen/_16sdp"
-    android:layout_marginStart="@dimen/_16sdp"
     tools:context="com.WattanArt.ui.EditDesign.EditDesignActivity">
 
 
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/yellow"
+        android:id="@+id/toolbar_holder"
+        android:clickable="true"
+        >
+
+        <com.WattanArt.Utils.widgets.CustomeTextViewBold
+            android:id="@+id/toolbar_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_xxxlarge" />
+
+        <ImageView
+            android:id="@+id/toolbar_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@null"
+            android:padding="16dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back" />
+
+        <com.WattanArt.Utils.widgets.CustomeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/view_submit"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:onClick="submit"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:id="@+id/submit"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:id="@+id/tshirt_layout"
+        android:layout_below="@id/toolbar_holder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_250sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:padding="@dimen/_12sdp"
+        android:orientation="vertical"
+        android:background="@drawable/edit_design_border_background">
+
+        <com.WattanArt.artcomponent.ImageCaseComponent
+            android:id="@+id/componentView_front"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Hello World!"
+            app:layout_constraintTop_toBottomOf="@id/card_view_parent"
+            app:layout_constraintBottom_toTopOf="@id/linear_imgs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/lowPixelsIv_front"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_reslution" />
+
+            <View
+                android:id="@+id/linear_container_front"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.WattanArt.artcomponent.ImageCaseComponent>
+
+        <com.WattanArt.artcomponent.ImageCaseComponent
+            android:visibility="gone"
+            android:id="@+id/componentView_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Hello World!"
+            app:layout_constraintTop_toBottomOf="@id/card_view_parent"
+            app:layout_constraintBottom_toTopOf="@id/linear_imgs"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <View
+                android:id="@+id/linear_container_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/lowPixelsIv"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_reslution" />
+
+        </com.WattanArt.artcomponent.ImageCaseComponent>
+
+    </LinearLayout>
+
     <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_below="@id/tshirt_layout"
         android:scrollbars="none"
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_above="@id/order_design_card"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,24 +145,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_250sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:padding="@dimen/_12sdp"
-                android:background="@drawable/edit_design_border_background">
-
-                <ImageView
-                    android:id="@+id/t_shirt_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/test"
-                    android:scaleType="fitXY"
-                    />
-
-            </LinearLayout>
 
 
             <LinearLayout
@@ -63,6 +169,7 @@
 
 
                         <android.support.v7.widget.CardView
+                            android:id="@+id/image_front"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="@dimen/_6sdp"
@@ -76,17 +183,21 @@
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_60sdp"
-                                android:src="@drawable/test"
+                                android:src="@drawable/tshirt_test"
                                 android:adjustViewBounds="true"
                                 android:scaleType="fitXY"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:layout_marginBottom="@dimen/_2sdp"
                                 />
                         </android.support.v7.widget.CardView>
 
                         <android.support.v7.widget.CardView
+                            android:id="@+id/image_back"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="@dimen/_6sdp"
                             android:backgroundTint="@color/gray_bg"
+
                             >
 
                             <ImageView
@@ -94,9 +205,11 @@
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_60sdp"
-                                android:src="@drawable/test"
+                                android:src="@drawable/tshirt_test"
                                 android:adjustViewBounds="true"
                                 android:scaleType="fitXY"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:layout_marginBottom="@dimen/_2sdp"
                                 />
                         </android.support.v7.widget.CardView>
 
@@ -192,7 +305,7 @@
         android:layout_height="wrap_content"
         android:text="@string/order_design"
         android:textSize="14sp"
-        android:padding="@dimen/_10sdp"
+        android:padding="@dimen/_6sdp"
         android:gravity="center"
         android:textColor="@color/white"
         android:id="@+id/order_design_tv"/>

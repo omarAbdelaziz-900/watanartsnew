@@ -19,6 +19,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import io.fabric.sdk.android.Fabric;
+import io.paperdb.Paper;
 
 
 public class MyApplication extends MultiDexApplication {
@@ -32,7 +33,7 @@ public class MyApplication extends MultiDexApplication {
         super.onCreate();
         printHashKey();
         Fabric.with(this, new Crashlytics());
-
+//        Paper.init(context);
 
 //        StrictMode.ThreadPolicy policy = new
 //                StrictMode.ThreadPolicy.Builder().permitAll().build();

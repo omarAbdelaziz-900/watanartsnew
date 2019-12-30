@@ -106,6 +106,7 @@ public class ImageCaseComponent extends FrameLayout {
         getObjectComponent().setData(t);
         getAccessoriesComponent().setData(x);
         getCoverComponent().setData(v);
+
     }
 
     public <T> void initData(DimensionData dimensionData, Pair<T, T> t) {

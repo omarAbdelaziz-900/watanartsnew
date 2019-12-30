@@ -631,11 +631,11 @@ public class ShippingFlashMemoryActivity extends BaseActivity implements Shippin
 
         if (userData.getPhone(this).isEmpty()){
             phoneEditText.setText("");
-            phoneEditText.setClickable(true);
+//            phoneEditText.setClickable(true);
         }else {
             phoneEditText.setText(userData.getPhone(this));
-            phoneEditText.setClickable(false);
-            phoneEditText.setFocusable(false);
+//            phoneEditText.setClickable(false);
+//            phoneEditText.setFocusable(false);
         }
     }
 

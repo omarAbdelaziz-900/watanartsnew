@@ -290,7 +290,7 @@
     <string name="android">Android</string>
     <string name="iphone">Iphone</string>
 
-    <string name="done_succsess">done successfully</string>
+    <string name="done_succsess">request done successfully</string>
 
     <string name="invalid_phone_start">Phone number must start with 0 or 00 </string>
     <string name="invalid_phone_egypt">Phone number must have 11 number </string>
@@ -300,5 +300,11 @@
     <string name="invalid_phone_add">please add your phone number </string>
 
     <string name="kind">kind :</string>
-    <string name="choose_bg">you should choose background</string>
+    <string name="choose_bg">you should choose photo for mobile background</string>
+    <string name="choose_bg_front">you should choose background for front</string>
+    <string name="choose_bg_back">you should choose background for front and back</string>
+    <string name="invalid_size">size not good</string>
+    <string name="coster">Coaster</string>
+    <string name="edit_design">Edit design</string>
+    <string name="nodata_txt">not available now</string>
 </resources>

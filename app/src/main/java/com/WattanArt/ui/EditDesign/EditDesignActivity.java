@@ -2,42 +2,38 @@ package com.WattanArt.ui.EditDesign;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+import android.graphics.Canvas;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.WattanArt.R;
+import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
+import com.WattanArt.artcomponent.AccessoriesView;
+import com.WattanArt.artcomponent.CoverView;
+import com.WattanArt.artcomponent.DimensionData;
+import com.WattanArt.artcomponent.ImageCaseComponent;
+import com.WattanArt.artcomponent.ObjectView;
+import com.WattanArt.ui.ShippingT_Shirt.ShippingT_ShirtActivity;
 import com.WattanArt.ui.base.BaseActivity;
-import com.WattanArt.ui.mobileCase.ComponentActivity;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.yalantis.ucrop.callback.BitmapLoadCallback;
-import com.yalantis.ucrop.model.ExifInfo;
-import com.yalantis.ucrop.util.BitmapLoadUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -55,8 +51,6 @@ public class EditDesignActivity extends BaseActivity implements T_ShirtAdapter.I
     @BindView(R.id.pick_from_gallery_tv)
     CustomeTextViewBold pick_from_gallery_tv;
 
-    @BindView(R.id.t_shirt_img)
-    ImageView t_shirt_img;
 
     final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 102;
 
@@ -66,12 +60,36 @@ public class EditDesignActivity extends BaseActivity implements T_ShirtAdapter.I
     T_ShirtColorAdapter t_shirtColorAdapter;
     ArrayList<T_ShirtModel> t_shirtColorModels;
 
-    ArrayList<String> photos;
-    String path;
-    //    String[] photos;
-    File file;
-//    public static List<ImageModel> imageModelList = new ArrayList<>();
-    ProgressDialog progressDialog;
+    //    Front//
+    CoverView cover_front;
+    ImageCaseComponent componentView_front;
+    ObjectView objectView_front;
+    DimensionData dimensionData_front;
+    AccessoriesView accessoriesView_front;
+
+    //    back//
+    CoverView cover_back;
+    ImageCaseComponent componentView_back;
+    ObjectView objectView_back;
+    DimensionData dimensionData_back;
+    AccessoriesView accessoriesView_back;
+
+    UserData userData;
+//    String imgFront ="http://23.236.154.106:8063/img/flashf.png";
+//    String imgBack ="http://23.236.154.106:8063/img/flashb.png";
+    String imgFront ="";
+    String imgBack ="";
+    String t_ShirtType;
+    ArrayList<String> photosFront,photosBack;
+    CardView image_front;
+    CardView image_back;
+    CustomeTextViewBold mToolbarTitleTextView;
+    ImageView mToolbarBackImageView;
+
+    ScrollView scrollview;
+
+    Bitmap currentBitmapFront, mobileBitmapFront;
+    Bitmap currentBitmapBack, mobileBitmapBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +101,106 @@ public class EditDesignActivity extends BaseActivity implements T_ShirtAdapter.I
         initColorRecyclerView();
 
         pickFromGalleryAction();
+
+        mToolbarBackImageView=findViewById(R.id.toolbar_image_view);
+        mToolbarTitleTextView=findViewById(R.id.toolbar_tv_title);
+        scrollview = findViewById(R.id.scrollview);
+        image_front = findViewById(R.id.image_front);
+        image_back = findViewById(R.id.image_back);
+        componentView_back = findViewById(R.id.componentView_back);
+        accessoriesView_back = (AccessoriesView) componentView_back.getComponentView(R.id.accessories);
+        cover_back = (CoverView) componentView_back.getComponentView(R.id.cover);
+        objectView_back = (ObjectView) componentView_back.getComponentView(R.id.component);
+
+        componentView_front = findViewById(R.id.componentView_front);
+        accessoriesView_front = (AccessoriesView) componentView_front.getComponentView(R.id.accessories);
+        cover_front = (CoverView) componentView_front.getComponentView(R.id.cover);
+        objectView_front = (ObjectView) componentView_front.getComponentView(R.id.component);
+
+        componentView_front.setVisibility(View.VISIBLE);
+        componentView_back.setVisibility(View.GONE);
+
+        mToolbarBackImageView.setVisibility(View.VISIBLE);
+        mToolbarTitleTextView.setText(R.string.edit_design);
+        mToolbarTitleTextView.setVisibility(View.VISIBLE);
+
+        mToolbarBackImageView.setOnClickListener(v -> {
+            onBackPressed();
+        });
+
+        objectView_back.setBackgroundResource(R.drawable.tshirt_test);
+        objectView_front.setBackgroundResource(R.drawable.tshirt_test);
+//        objectView_front.setBackgroundColor(Color.parseColor("#cf878787"));
+
+        t_ShirtType="front";
+        initFrontView();
+        initBackView();
+        clickImageFront();
+        clickImageback();
+
+        scrollview.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        scrollview.setFocusable(true);
+        scrollview.setFocusableInTouchMode(true);
+        scrollview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.requestFocusFromTouch();
+                return false;
+            }
+        });
     }
+
+    void initFrontView() {
+        Log.e("hhhshhs",getResources().getDimension(R.dimen.flash_width)+"");
+        dimensionData_front = new DimensionData(
+                (int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height),
+                (int) getResources().getDimension(R.dimen.t_shirt_width)-15,
+                (int)getResources().getDimension(R.dimen.t_shirt_height),
+                (int) getResources().getDimension(R.dimen.radius_flash),
+                (int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height), 0, 0);
+        componentView_front.initUrlData(dimensionData_front, new Pair<>( imgFront,imgFront));
+
+    }
+
+    void initBackView() {
+        dimensionData_back  = new DimensionData((int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height),
+                (int) getResources().getDimension(R.dimen.t_shirt_width)-15,
+                (int)getResources().getDimension(R.dimen.t_shirt_height),
+                (int) getResources().getDimension(R.dimen.radius_flash),
+                (int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height), 0, 0);
+        componentView_back.initUrlData(dimensionData_back, new Pair<>( imgBack,imgBack));
+
+    }
+
+    public void clickImageFront(){
+        image_front.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initColorRecyclerView();
+                t_ShirtType="front";
+                componentView_front.setVisibility(View.VISIBLE);
+                componentView_back.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void clickImageback(){
+
+        image_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initColorRecyclerView();
+                t_ShirtType="back";
+                componentView_front.setVisibility(View.GONE);
+                componentView_back.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
 
     @Override
     protected void setUpActivityOrFragmentRequirment() {
@@ -112,12 +229,6 @@ public class EditDesignActivity extends BaseActivity implements T_ShirtAdapter.I
 
     private void initColorRecyclerView() {
         t_shirtColorModels =new ArrayList<>();
-//        t_shirtColorModels.add(new T_ShirtModel(R.color.yellow));
-//        t_shirtColorModels.add(new T_ShirtModel(R.color.black));
-//        t_shirtColorModels.add(new T_ShirtModel(R.color.white));
-//        t_shirtColorModels.add(new T_ShirtModel(R.color.red_color_picker));
-//        t_shirtColorModels.add(new T_ShirtModel(R.color.green_color_picker));
-//        t_shirtColorModels.add(new T_ShirtModel(R.color.blue));
 
         int[] colors = getResources().getIntArray(R.array.colors);
 
@@ -188,149 +299,94 @@ public class EditDesignActivity extends BaseActivity implements T_ShirtAdapter.I
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == PhotoPicker.REQUEST_CODE) {
-                Uri uri = data.getData();
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                    // Log.d(TAG, String.valueOf(bitmap));
-//                    t_shirt_img.setImageBitmap(bitmap);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+                if (t_ShirtType.equals("front")) {
+                    photosFront = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    if (photosFront == null || photosFront.isEmpty()) return;
+                    cover_front.setData(photosFront.get(0));
+                }else if (t_ShirtType.equals("back")){
+                    photosBack = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    if (photosBack == null || photosBack.isEmpty()) return;
+                    cover_back.setData(photosBack.get(0));
+                }
             }
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
-    public void getPhoto(){
-        showLoadingcustom(EditDesignActivity.this);
+        finish();
+    }
+    public void submit(View view) {
+        if (cover_front.getDrawable() != null ) {
+            if (cover_back.getDrawable() != null){
+                componentView_front.setVisibility(View.VISIBLE);
+                componentView_back.setVisibility(View.VISIBLE);
 
-        for (int i=0;i<photos.size();i++){
-            path=photos.get(0);
+                createFrontBitmaps();
+                createBackBitmaps();
+                Log.e("T_ShirtBitmapHelper", T_ShirtBitmapHelper.getInstance().getBitmapFront() + "");
+                sendBitmapImage();
+            }else {
+                hideLoaderDialog();
+                Toast.makeText(this, getString(R.string.choose_bg_back), Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            hideLoaderDialog();
+            Toast.makeText(this, getString(R.string.choose_bg_back), Toast.LENGTH_SHORT).show();
         }
-
-        file = new File(path);
-//        ImageModel imageModel = new ImageModel(Uri.fromFile(file), 0f);
-        Glide.with(EditDesignActivity.this)
-                .asBitmap()
-                .load(path)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap bitmap,
-                                                Transition<? super Bitmap> transition) {
-//                        int imageWidth = bitmap.getWidth();
-//                        int imageHeight = bitmap.getHeight();
-//
-//                        Log.e("ImageAttrShipping", "-->" + path + "       width = " + imageWidth + "       height = " + imageHeight);
-//
-//                        imageModel.setCurrentScale(1f);
-//                        imageModel.setCurrentAngle(0f);
-//                        imageModel.setMainImageHeight(imageHeight);
-//                        imageModel.setMainImageWidth(imageWidth);
-//                        imageModel.setImageHeight(imageHeight);
-//                        imageModel.setImageWidth(imageWidth);
-//                        imageModel.setQuantity(1);
-//                        imageModel.setSegmented(false);
-//                        imageModel.setPath(path);
-//                        imageModelList.add(imageModel);
-//
-//                        try {
-//                            int finalPosition =0;
-//
-//                            BitmapLoadUtils.decodeBitmapInBackground(EditDesignActivity.this,
-//                                    imageModelList.get(finalPosition).getUri(),
-//                                    imageModelList.get(finalPosition).getUri(),
-//                                    BitmapLoadUtils.calculateMaxBitmapSize(EditDesignActivity.this)
-//                                    , BitmapLoadUtils.calculateMaxBitmapSize(EditDesignActivity.this),
-//                                    new BitmapLoadCallback() {
-//
-//                                        @Override
-//                                        public void onBitmapLoaded(@NonNull Bitmap bitmap, @NonNull ExifInfo exifInfo,
-//                                                                   @NonNull String imageInputPath,
-//                                                                   @Nullable String imageOutputPath) {
-//
-//                                            final double factorHeight = ((double) imageModelList.get(finalPosition).getMainImageHeight()) / ((double) bitmap.getHeight());
-//                                            final double factorWidth = ((double) imageModelList.get(finalPosition).getMainImageWidth()) / ((double) bitmap.getWidth());
-//
-//                                            ComponentActivity.imageModelList.get(finalPosition).setFactorWidth(factorWidth);
-//                                            ComponentActivity.imageModelList.get(finalPosition).setFactorHeight(factorHeight);
-//
-//                                            ComponentActivity.imageModelList.get(finalPosition).setBitmap(bitmap);
-//                                            ComponentActivity.imageModelList.get(finalPosition).setFilteredBitmap(bitmap);
-//                                            ComponentActivity.imageModelList.get(finalPosition).setScreenShotImage(bitmap);
-//                                            Log.e("fsfsfsffff",imageModelList.get(0).getScreenShotImage()+"\n");
-//
-//
-////                                                        Bitmap bitmap1 = getRoundedCornerBitmap(imageModelList.get(0).getScreenShotImage(),1000);
-//                                            cover.setBitmapData(imageModelList.get(0).getScreenShotImage());
-//
-////                                                        cover.setImageBitmap(imageModelList.get(0).getScreenShotImage());
-//                                            cover.setMaxZoom(12f);
-//
-//                                            Log.e("uriiiiii",imageModelList.get(0).getUri()+"\n");
-//
-//                                            ComponentActivity.imageModelList.get(finalPosition).setmExifInfo(exifInfo);
-//                                            ComponentActivity.imageModelList.get(finalPosition).
-//                                                    setmCropRect(new RectF(0, 0, imageModelList.get(finalPosition).getMainImageWidth(),
-//                                                            imageModelList.get(finalPosition).getMainImageHeight()));
-//                                            if (ComponentActivity.imageModelList.get(finalPosition).getMainImageHeight()
-//                                                    == ComponentActivity.imageModelList.get(finalPosition).getMainImageWidth()) {
-//
-//                                                ComponentActivity.imageModelList.get(finalPosition).setCurrentRatio(1f);
-//
-//                                            } else if (ComponentActivity.imageModelList.get(finalPosition).getMainImageHeight() >
-//                                                    ComponentActivity.imageModelList.get(finalPosition).getMainImageWidth()) {
-//
-//                                                if (ComponentActivity.imageModelList.get(finalPosition).getMainImageHeight() >= 1000 &&
-//                                                        ComponentActivity.imageModelList.get(finalPosition).getMainImageWidth() >= 1000 &&
-//                                                        (((float) ComponentActivity.imageModelList.get(finalPosition).getMainImageHeight()) / 1.5f) >= 1000) {
-//                                                    ComponentActivity.imageModelList.get(finalPosition).setCurrentRatio(8f / 12);
-//                                                } else {
-//                                                    ComponentActivity.imageModelList.get(finalPosition).setCurrentRatio(1f);
-//                                                }
-//                                            } else if (ComponentActivity.imageModelList.get(finalPosition).getMainImageHeight()
-//                                                    < ComponentActivity.imageModelList.get(finalPosition).getMainImageWidth()) {
-//                                                if (ComponentActivity.imageModelList.get(finalPosition).getMainImageHeight() >= 1000 &&
-//                                                        ComponentActivity.imageModelList.get(finalPosition).getMainImageWidth() >= 1000 &&
-//                                                        (((float) ComponentActivity.imageModelList.get(finalPosition).getMainImageWidth()) / 1.5f) >= 1000
-//                                                ) {
-//                                                    ComponentActivity.imageModelList.get(finalPosition).setCurrentRatio(12f / 8f);
-//                                                } else {
-//                                                    ComponentActivity.imageModelList.get(finalPosition).setCurrentRatio(1f);
-//                                                }
-//                                            }
-//
-//                                            progressDialog.dismiss();
-//                                        }
-//
-//
-//                                        @Override
-//                                        public void onFailure(@NonNull Exception bitmapWorkerException) {
-//                                            Log.e("setImageUriSecond", "onFailure: setImageUri", bitmapWorkerException);
-//                                        }
-//
-//                                        @Override
-//                                        public void afterLoadComplete() {
-//
-//                                        }
-//                                    });
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-
-                    }
-                });
     }
 
-    ProgressDialog showLoadingcustom(Context context) {
-        progressDialog = new ProgressDialog(context);
-        progressDialog.show();
-        if (progressDialog.getWindow() != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    public void createFrontBitmaps(){
+        if (cover_front.getDrawable() != null) {
+            mobileBitmapFront = loadBitmapFromView(componentView_front);
+            currentBitmapFront=loadBitmapFromCover(cover_front);
+            Log.e("FrontBitmaps",currentBitmapFront+"    "+mobileBitmapFront);
+            T_ShirtBitmapHelper.getInstance().setBitmapFront(mobileBitmapFront);
+            T_ShirtBitmapHelper.getInstance().setBitmapFrontCover(currentBitmapFront);
         }
-        progressDialog.setContentView(R.layout.layout_dialog_loading);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        return progressDialog;
+    }
+    public void createBackBitmaps(){
+        if (cover_back.getDrawable() != null) {
+            mobileBitmapBack = loadBitmapFromView(componentView_back);
+            currentBitmapBack=loadBitmapFromCover(cover_back);
+            Log.e("BackBitmaps",currentBitmapBack+"    "+mobileBitmapBack);
+            T_ShirtBitmapHelper.getInstance().setBitmapBack(mobileBitmapBack);
+            T_ShirtBitmapHelper.getInstance().setBitmapBackCover(currentBitmapBack);
+        }
+    }
+
+
+    public static Bitmap loadBitmapFromView(View v) {
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+//        Canvas canvas = new Canvas(b);
+////        canvas.drawColor(Color.WHITE);
+//        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+//        v.draw(canvas);
+        return b;
+    }
+
+    public static Bitmap loadBitmapFromCover(View v) {
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        return b;
+    }
+
+    public void sendBitmapImage() {
+//        if (flashType.equals("front")){
+//            componentView_back.setVisibility(View.INVISIBLE);
+//            componentView_front.setVisibility(View.VISIBLE);
+//            image_front.setImageResource(R.drawable.ic_front_flash);
+//            loadImage(imgBack,image_back);
+//        }else {
+//            componentView_back.setVisibility(View.VISIBLE);
+//            componentView_front.setVisibility(View.INVISIBLE);
+//            image_back.setImageResource(R.drawable.ic_back_flash);
+//            loadImage(imgFront,image_front);
+//        }
+        Intent intent = new Intent(this, ShippingT_ShirtActivity.class);
+        startActivity(intent);
     }
 }

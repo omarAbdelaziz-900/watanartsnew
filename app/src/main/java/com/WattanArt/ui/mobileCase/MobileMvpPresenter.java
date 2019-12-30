@@ -15,4 +15,5 @@ import java.util.List;
 public interface MobileMvpPresenter<V extends MobileMvpView> extends MvpPresenter<V> {
     void returnUploadedImageForMobile(List<String>list , File filePath);
     void returnUploadedImageForCover(List<String>list , File filePath);
+
 }

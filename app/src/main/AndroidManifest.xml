@@ -18,23 +18,48 @@
         android:icon="@mipmap/ic_launcher"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.ShippingForFlashMemory.ShippingFlashMemoryActivity"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.PublicShipping.PublicShippingActivity"
             android:configChanges="locale|touchscreen|orientation|screenLayout|screenSize|keyboardHidden|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
+            android:name=".ui.ShippingT_Shirt.ShippingT_ShirtActivity"
+            android:configChanges="locale|touchscreen|orientation|screenLayout|screenSize|keyboardHidden|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.ShippingCoaster.ShippingCoasterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.Coaster.CoasterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar" />
+        <activity
+            android:name=".ui.ShippingForFlashMemory.ShippingFlashMemoryActivity"
+            android:configChanges="locale|touchscreen|orientation|screenLayout|screenSize|keyboardHidden|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.ShippingForMobile.ShippingMobileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.FlashMemory.FlashMemoryActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.EditDesign.EditDesignActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar" />
-        <activity android:name=".ui.EditDesign.EditDesignActivity" />
         <activity
             android:name=".ui.Category.CategoryActivity"
             android:screenOrientation="portrait"
@@ -74,7 +99,9 @@
         <activity
             android:name=".ui.mobileCase.ComponentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme_NoTitlebar" />
+            android:theme="@style/AppTheme_NoTitlebar"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            />
         <activity
             android:name=".ui.Home.HomeActivity"
             android:screenOrientation="portrait"
@@ -171,8 +198,6 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
         -->
-
-
         <service
             android:name=".Services.firebase.FirebaseIDService"
             android:stopWithTask="false">

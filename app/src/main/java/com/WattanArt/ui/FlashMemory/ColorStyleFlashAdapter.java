@@ -32,6 +32,7 @@ public class ColorStyleFlashAdapter extends RecyclerView.Adapter<ColorStyleFlash
     int colorOrStyleType;
     int row_index=-1;
 
+    int pos;
     public ColorStyleFlashAdapter(int colorOrStyleType,Context context, List<String> colorItemModels, ItemListenerOfItems itemListener){
 
         mContext=context;
@@ -151,4 +152,6 @@ public class ColorStyleFlashAdapter extends RecyclerView.Adapter<ColorStyleFlash
         void onColorItemsClickFromAdapter(int position);
         void onStyleItemsClickFromAdapter(int position);
     }
+
+
 }

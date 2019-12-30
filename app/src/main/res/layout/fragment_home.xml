@@ -139,6 +139,7 @@
 
 
         <com.WattanArt.Utils.widgets.CustomeButtonBold
+            android:visibility="gone"
             android:id="@+id/create_btn"
             android:layout_width="230dp"
             android:layout_height="35dp"
@@ -274,7 +275,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="Hellosssss"
+                        android:text=""
                         android:textStyle="bold"
                         android:textSize="@dimen/_12sdp"
                         android:textColor="@color/white_bold" />

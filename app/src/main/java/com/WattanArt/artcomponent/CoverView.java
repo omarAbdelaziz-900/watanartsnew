@@ -29,6 +29,7 @@ public class CoverView extends CoverTemplate<String> {
 
     @Override
     public void setData(String data) {
+
         Glide.with(this)
                 .load(data)
                 .into(this);
@@ -41,6 +42,8 @@ public class CoverView extends CoverTemplate<String> {
     public boolean isTouchable() {
         return true;
     }
+
+
 
     @Override
     int getDimenWidth() {

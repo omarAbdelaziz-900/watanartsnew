@@ -22,9 +22,13 @@ import com.WattanArt.Dagger.module.ActivityModule;
 //import com.WattanArt.ui.OldPackages.NewsTicker.NewsTickerFragment;
 //import com.WattanArt.ui.OldPackages.Slides.SlidesFragment;
 import com.WattanArt.ui.Category.CategoryActivity;
+import com.WattanArt.ui.Coaster.CoasterActivity;
 import com.WattanArt.ui.FlashMemory.FlashMemoryActivity;
+import com.WattanArt.ui.PublicShipping.PublicShippingActivity;
+import com.WattanArt.ui.ShippingCoaster.ShippingCoasterActivity;
 import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryActivity;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileActivity;
+import com.WattanArt.ui.ShippingT_Shirt.ShippingT_ShirtActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.WattanArt.ui.About.AboutActivity;
 import com.WattanArt.ui.ContactUs.ContactInnerFragment;
@@ -73,4 +77,8 @@ public interface ActivityComponent {
     void inject(FlashMemoryActivity flashMemoryActivity);
     void inject(ShippingMobileActivity shippingMobileActivity);
     void inject(ShippingFlashMemoryActivity shippingFlashMemoryActivity);
+    void inject(CoasterActivity coasterActivity);
+    void inject(ShippingT_ShirtActivity shippingT_shirtActivity);
+    void inject(ShippingCoasterActivity shippingCoasterActivity);
+    void inject(PublicShippingActivity publicShippingActivity);
 }

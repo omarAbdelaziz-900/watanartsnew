@@ -117,69 +117,32 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
     List<ImageModel> imageModels;
 
 //    float[] ratios = new float[]{
-//            1f
-//            ,8f / 12f
-//            , 12f / 8f
-//            , 24f / 8f
-//            , 24f / 12f
-//            , 36f / 8f
+//            20f / 20f,
+//            20f / 30f,
+//            30f / 20f,
+//            60f / 20f,
+//            60f / 30f,
+//            90f / 20f,
 //
+//            30f / 30f,
 //
-//            ,1f
-//            ,12f/16f
-//            ,12f/20f
-//            ,1f,
-//            1f ,
-//            1f
-//    };
-
-//    float[] ratios = new float[]{
-//            1f
-//            ,8f / 12f
-//            , 12f / 8f
-//            , 24f / 8f
-//            , 24f / 12f
-//            , 36f / 8f
+//            40f / 30f,
+//            50f / 30f,
 //
-//
-//            ,1f
-//            ,12f/16f
-//            ,12f/20f
-//            ,4f/4f,
-//            6f/6f ,
-//            8f/8f
-//    };
-
-//    float[] ratios = new float[]{
-//            20f / 20f,//0
-//            20f / 30f,//1
-//            30f / 20f,//2
-//
-//            60f / 20f,//3
-//            60f / 30f,//4
-//            90f / 20f,//5
-//
-//            30f / 30f,//6
-//            40f / 30f,//7
-//            50f / 30f,//8
-//
-//            40f / 40f,//9
-//            60f / 60f,//10
-//            80f / 80f};//11
+//            40f / 40f,
+//            60f / 60f,
+//            80f / 80f};
 
     float[] ratios = new float[]{
             20f / 20f,
             20f / 30f,
             30f / 20f,
+            30f / 30f,
+            30f / 40f,
+            30f / 50f,
             60f / 20f,
             60f / 30f,
             90f / 20f,
-
-            30f / 30f,
-
-            40f / 30f,
-            50f / 30f,
-
             40f / 40f,
             60f / 60f,
             80f / 80f};
