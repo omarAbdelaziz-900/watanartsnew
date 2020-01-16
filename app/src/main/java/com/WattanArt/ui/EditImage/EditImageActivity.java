@@ -329,6 +329,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
         if (getIntent().hasExtra(Constants.EXTRA_ASPECT_RATIO_OPTIONS)) {
            patternId = (getIntent().getIntExtra(Constants.EXTRA_ASPECT_RATIO_OPTIONS, 0));
+           Log.e("patternIdpatternId",patternId+"");
         }
 
 
@@ -407,9 +408,9 @@ public class EditImageActivity extends AppCompatActivity implements
         if (ratio == ratios[0]
                 || ratio == ratios[1]
                 || ratio == ratios[2]
-                || ratio == ratios[6]
-                || ratio == ratios[7]
-                || ratio == ratios[8]) {
+                || ratio == ratios[3]
+                || ratio == ratios[4]
+                || ratio == ratios[5]) {
             isSegmented = false;
 //            moOverlayView.setCropGridColumnCount(0);
         } else {
@@ -1752,15 +1753,15 @@ public class EditImageActivity extends AppCompatActivity implements
         }
 
         if (patternId==3){
-            ratio_holder.getChildAt(3).setBackground(getDrawable(R.drawable.background_selected_bordered));
+            ratio_holder.getChildAt(6).setBackground(getDrawable(R.drawable.background_selected_bordered));
         }else{
-            ratio_holder.getChildAt(3).setBackground(getDrawable(R.drawable.background_selected));
+            ratio_holder.getChildAt(6).setBackground(getDrawable(R.drawable.background_selected));
         }
 
         if (patternId==4){
-            ratio_holder.getChildAt(5).setBackground(getDrawable(R.drawable.background_selected_bordered));
+            ratio_holder.getChildAt(8).setBackground(getDrawable(R.drawable.background_selected_bordered));
         }else {
-            ratio_holder.getChildAt(5).setBackground(getDrawable(R.drawable.background_selected));
+            ratio_holder.getChildAt(8).setBackground(getDrawable(R.drawable.background_selected));
         }
 
         if (patternId==5){
@@ -1770,27 +1771,27 @@ public class EditImageActivity extends AppCompatActivity implements
         }
 
         if (patternId==6){
-            ratio_holder.getChildAt(4).setBackground(getDrawable(R.drawable.background_selected_bordered));
-        }else {
-            ratio_holder.getChildAt(4).setBackground(getDrawable(R.drawable.background_selected));
-        }
-
-        if (patternId==7){
-            ratio_holder.getChildAt(6).setBackground(getDrawable(R.drawable.background_selected_bordered));
-        }else{
-            ratio_holder.getChildAt(6).setBackground(getDrawable(R.drawable.background_selected));
-        }
-
-        if (patternId==8){
             ratio_holder.getChildAt(7).setBackground(getDrawable(R.drawable.background_selected_bordered));
-        }else{
+        }else {
             ratio_holder.getChildAt(7).setBackground(getDrawable(R.drawable.background_selected));
         }
 
-        if (patternId==9){
-            ratio_holder.getChildAt(8).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        if (patternId==7){
+            ratio_holder.getChildAt(3).setBackground(getDrawable(R.drawable.background_selected_bordered));
         }else{
-            ratio_holder.getChildAt(8).setBackground(getDrawable(R.drawable.background_selected));
+            ratio_holder.getChildAt(3).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==8){
+            ratio_holder.getChildAt(4).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(4).setBackground(getDrawable(R.drawable.background_selected));
+        }
+
+        if (patternId==9){
+            ratio_holder.getChildAt(5).setBackground(getDrawable(R.drawable.background_selected_bordered));
+        }else{
+            ratio_holder.getChildAt(5).setBackground(getDrawable(R.drawable.background_selected));
         }
 
         if (patternId==10){
@@ -2031,7 +2032,7 @@ public class EditImageActivity extends AppCompatActivity implements
 
 
                         if (finalIndex == 0 || finalIndex == 1 || finalIndex == 2
-                                || finalIndex == 6 || finalIndex == 7 || finalIndex == 8) {
+                                || finalIndex == 3 || finalIndex == 4 || finalIndex == 5) {
 //                            moOverlayView.setCropGridColumnCount(0);
                             isSegmented = false;
                             mainImageModel.setSegmented(false);
@@ -2243,6 +2244,7 @@ public class EditImageActivity extends AppCompatActivity implements
 //    }
 
     public void preparePatternID(int indexForPattern){
+        Log.e("indexForPatternII",indexForPattern+"");
         if (indexForPattern==1){
             mainImageModel.setTypePatternId(1); //20*20
         }else if (indexForPattern==2){

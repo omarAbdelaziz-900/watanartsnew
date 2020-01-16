@@ -53,6 +53,7 @@ import retrofit2.Callback;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingFlashRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingMobileRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.publicShipping;
 import static com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryActivity.OPEN_REGISTERATION_CODE_FROM_SHOPPING_FLASH;
 
 public class ShippingFlashMemoryPresenterImp <V extends ShippingFlashMemoryMvpView> extends BasePresenter<V> implements ShippingFlashMemoryMvpPresenter<V>  {
@@ -341,6 +342,8 @@ public class ShippingFlashMemoryPresenterImp <V extends ShippingFlashMemoryMvpVi
                 intent.putExtra(ShippingFlashRegister, true);
                 intent.putExtra(ShippingRegister, false);
                 intent.putExtra(ShippingMobileRegister, false);
+                intent.putExtra(publicShipping, false);
+
                 ((Activity) coontext).startActivityForResult(intent, OPEN_REGISTERATION_CODE_FROM_SHOPPING_FLASH);
 
 //                getMvpView().showMessage("This feature is under developement");

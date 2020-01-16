@@ -56,6 +56,10 @@ public class PublicShippingAdapter extends RecyclerView.Adapter<PublicShippingAd
 
 
 
+//        if (calculatePriceListener != null) {
+//            calculatePriceListener.onCalculatePriceClick(mValues,position);
+//        }
+
         holder.shippingImageItem.setImageBitmap(item.getBitmapFront());
 
         holder.plusIV.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +82,14 @@ public class PublicShippingAdapter extends RecyclerView.Adapter<PublicShippingAd
             }
         });
 
+        holder.deleteOneImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (calculatePriceListener!=null){
+                    calculatePriceListener.onItemRemoved(position);
+                }
+            }
+        });
     }
 
 
@@ -119,6 +131,7 @@ public class PublicShippingAdapter extends RecyclerView.Adapter<PublicShippingAd
     }
     public interface calculatePriceListener {
         void onCalculatePriceClick(List<PublicBitmapsModel> mValues,int position);
+        void onItemRemoved(int position);
     }
 
     public void plusImg(int itemPosition,TextView quantityTv) {

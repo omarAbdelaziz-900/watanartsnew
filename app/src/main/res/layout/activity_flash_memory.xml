@@ -93,13 +93,14 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:id="@+id/txt_front"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/txt_flash_width"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners_white_transparent_50"
                 android:hint="Enter your text"
                 android:padding="@dimen/_12sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
+                android:inputType="textMultiLine"
                 android:textSize="@dimen/_12sdp"/>
 
         <com.WattanArt.artcomponent.CoverView
@@ -139,12 +140,13 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:id="@+id/txt_back"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/txt_flash_width"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners_white_transparent_50"
                 android:hint="Enter your text"
                 android:padding="@dimen/_12sdp"
                 android:textColor="@color/black"
+                android:inputType="textMultiLine"
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/_12sdp"/>
 
@@ -444,6 +446,34 @@
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="Text"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sampleMokupBottomHolder"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:background="@drawable/background_unselected">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_text" />
+
+            <TextView
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="Sample"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 

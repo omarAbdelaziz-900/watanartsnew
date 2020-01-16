@@ -82,14 +82,24 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         if (responseList.get(position).getCat_ID()==9 ||responseList.get(position).getCat_ID()==11){
 
             holder.detailsImage_iv2.setVisibility(View.VISIBLE);
-            Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getMainImage());
-            Glide.with(context)
-                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(0).getPrintscreenImg())
-                    .apply(new RequestOptions().override(100, 100)).into(holder.mdetailsImageView);// {
+            Log.e("LowResoltionImage", "->" + Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage());
+            if (!responseList.get(position).getImages().isEmpty()) {
+                Glide.with(context)
+                        .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(0).getLowPrintscreenImg())
+                        .apply(new RequestOptions().override(100, 100)).into(holder.mdetailsImageView);// {
 
-            Glide.with(context)
-                    .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(1).getPrintscreenImg())
-                    .apply(new RequestOptions().override(100, 100)).into(holder.detailsImage_iv2);// {
+                Glide.with(context)
+                        .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getImages().get(1).getLowPrintscreenImg())
+                        .apply(new RequestOptions().override(100, 100)).into(holder.detailsImage_iv2);// {
+            }else {
+                Glide.with(context)
+                        .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage())
+                        .apply(new RequestOptions().override(100, 100)).into(holder.mdetailsImageView);// {
+
+                Glide.with(context)
+                        .load(Constants.BASE_URL + Constants.UPLOAD + responseList.get(position).getLowResultionImage())
+                        .apply(new RequestOptions().override(100, 100)).into(holder.detailsImage_iv2);// {
+            }
         }else {
             holder.detailsImage_iv2.setVisibility(View.GONE);
         }

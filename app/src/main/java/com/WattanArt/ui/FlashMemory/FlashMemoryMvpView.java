@@ -7,4 +7,12 @@ import com.WattanArt.ui.base.MvpView;
 public interface FlashMemoryMvpView extends MvpView {
     void returnUploadedImage(ImageUploadResponseModel imageUploadResponseModel);
     void returnSubCategory(CategoryMobileRsponseModel responseModel);
+
+    void returnUploadedImageForFront(ImageUploadResponseModel imageUploadResponseModel);
+    void returnUploadedImageForCoverFront(ImageUploadResponseModel imageUploadResponseModel);
+    void returnUploadedImageForBack(ImageUploadResponseModel imageUploadResponseModel);
+    void returnUploadedImageForCoverBack(ImageUploadResponseModel imageUploadResponseModel);
+
+    void showLoadingInner();
+    void hideLoadingInner();
 }

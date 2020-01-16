@@ -1,9 +1,12 @@
 package com.WattanArt.ui.PublicShipping;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -14,10 +17,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -54,6 +61,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.WattanArt.ui.FlashMemory.FlashMemoryActivity.txt_back;
+import static com.WattanArt.ui.FlashMemory.FlashMemoryActivity.txt_front;
 
 public class PublicShippingActivity extends BaseActivity implements PublicShippingMvpView,PublicShippingAdapter.calculatePriceListener,PublicShippingAdapter.plusItemListener, PublicShippingAdapter.minusItemListener {
 
@@ -74,7 +83,6 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     RadioButton onlineRadioButton;
     RadioButton cashRadioButton;
     CustomeTextView priceTextView;
-    CustomeTextView submit;
     ImageView bitmap_image_view;
     Bitmap bmpMobile, bmpCover;
     String mobileName, coverName;
@@ -103,8 +111,7 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     String color, style;
 
     Intent intentforData;
-    public static final int OPEN_REGISTERATION_CODE_FROM_SHOPPING_MOBILE = 102;
-
+    public static final int OPEN_REGISTERATION_CODE_FROM_PUBLIC_SHOPPING= 103;
     String filename, filename2;
     File fileForMobile, fileForCover;
 
@@ -116,7 +123,7 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     CustomeTextView quantityTv, pieces_number;
     int quantity_Tv = 1;
     String priceIn, priceOut;
-
+    LinearLayout delete_all_holder;
 
 
     @Override
@@ -126,14 +133,16 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
 
         initViews();
         initColorRecyclerView();
-        calculateInPriceOnCreatte(publicBitmapsModels);
+
         isInEgyptOrNo();
         ViewHelper.hideKeyboard(this);
         checkPaymentMethod();
         initToolbar();
         getData();
-        returnBitmapFromHelper();
-        orderDetilsBean.setQuantiy(1);
+        calculateInPriceOnCreatte(publicBitmapsModels);
+        deleteAllProducts();
+//        returnBitmapFromHelper();
+//        orderDetilsBean.setQuantiy(1);
     }
 
     @Override
@@ -167,9 +176,7 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
         recycler_view.setNestedScrollingEnabled(false);
         recycler_view.setHasFixedSize(true);
         recycler_view.scrollToPosition(0);
-
-            publicShippingAdapter = new PublicShippingAdapter(this, PublicBitmapsModel.getInstance().getBitmapList(),this,this,this);
-
+        publicShippingAdapter = new PublicShippingAdapter(this, PublicBitmapsModel.getInstance().getBitmapList(),this,this,this);
         recycler_view.setAdapter(publicShippingAdapter);
     }
 
@@ -187,6 +194,117 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     public void onCalculatePriceClick(List<PublicBitmapsModel> mValues,int position) {
 
         calculateInPriceOnCreatte(mValues);
+    }
+
+    @Override
+    public void onItemRemoved(int position) {
+        showDeleteDialog(PublicShippingActivity.this,position);
+
+    }
+
+    private void showDeleteDialog(Context context, int position) {
+        Dialog mDialog = new Dialog(context);
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mDialog.getWindow().setGravity(Gravity.CENTER);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mDialog.setContentView(R.layout.delete_popup);
+        mDialog.setCancelable(false);
+
+        CustomeTextViewBold customeTextViewBold=mDialog.findViewById(R.id.customeTextViewBold);
+        CustomeTextViewBold customeTextViewBold2=mDialog.findViewById(R.id.customeTextViewBold2);
+        customeTextViewBold.setText(getString(R.string.confirm_delete_product));
+        customeTextViewBold2.setText(getString(R.string.delete_product));
+        mDialog.findViewById(R.id.ok_btn).setOnClickListener(v -> {
+            try {
+
+                publicBitmapsModels.remove(position);
+                MobileOrderRequest.getInstance().getOrderDetils().remove(position);
+                Log.e("getOrderDetilsSize",MobileOrderRequest.getInstance().getOrderDetils().size()+"");
+                Log.e("publicBitmapsModelsSize",publicBitmapsModels.size()+"");
+                recycler_view.removeViewAt(position);
+                publicShippingAdapter.notifyItemRemoved(position);
+                publicShippingAdapter.notifyItemRangeChanged(position, publicBitmapsModels.size());
+
+                calculateInPriceOnCreatte(publicBitmapsModels);
+
+                if (publicBitmapsModels!=null && MobileOrderRequest.getInstance().getOrderDetils()!=null){
+                    if (publicBitmapsModels.isEmpty() && MobileOrderRequest.getInstance().getOrderDetils().isEmpty()) {
+                        Log.e("publicBitmapsModels", publicBitmapsModels + "");
+                        Log.e("getOrderDetils", MobileOrderRequest.getInstance().getOrderDetils() + "");
+                        finishAffinity();
+                        Intent intent = new Intent(PublicShippingActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                }else {
+                    Log.e("publicBitmapsModels",publicBitmapsModels+"");
+                    Log.e("getOrderDetils",MobileOrderRequest.getInstance().getOrderDetils()+"");
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.cancel_btn).setOnClickListener(v -> {
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.close_popup).setOnClickListener(view -> {
+            mDialog.dismiss();
+        });
+        mDialog.show();
+    }
+
+    private void showDeleteDialogForAllProducts(Context context) {
+        Dialog mDialog = new Dialog(context);
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mDialog.getWindow().setGravity(Gravity.CENTER);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mDialog.setContentView(R.layout.delete_popup);
+        mDialog.setCancelable(false);
+
+        CustomeTextViewBold customeTextViewBold=mDialog.findViewById(R.id.customeTextViewBold);
+        CustomeTextViewBold customeTextViewBold2=mDialog.findViewById(R.id.customeTextViewBold2);
+        customeTextViewBold.setText(getString(R.string.confirm_delete_product));
+        customeTextViewBold2.setText(getString(R.string.delete_product));
+        mDialog.findViewById(R.id.ok_btn).setOnClickListener(v -> {
+            try {
+
+                publicBitmapsModels.clear();
+                if (MobileOrderRequest.getInstance().getOrderDetils()!=null){
+                    MobileOrderRequest.getInstance().getOrderDetils().clear();
+                }
+
+                if (publicBitmapsModels!=null && MobileOrderRequest.getInstance().getOrderDetils()!=null){
+                if (publicBitmapsModels.isEmpty() && MobileOrderRequest.getInstance().getOrderDetils().isEmpty()) {
+                    Log.e("publicBitmapsModels", publicBitmapsModels + "");
+                    Log.e("getOrderDetils", MobileOrderRequest.getInstance().getOrderDetils() + "");
+                    finishAffinity();
+                    Intent intent = new Intent(PublicShippingActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+                }else {
+                    Log.e("publicBitmapsModels",publicBitmapsModels+"");
+                    Log.e("getOrderDetils",MobileOrderRequest.getInstance().getOrderDetils()+"");
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.cancel_btn).setOnClickListener(v -> {
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.close_popup).setOnClickListener(view -> {
+            mDialog.dismiss();
+        });
+        mDialog.show();
     }
 
     public void CalculatePrice(List<PublicBitmapsModel> mValues,int position){
@@ -208,11 +326,16 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
         for (int i=0;i<mValues.size();i++){
             if (isInEgypt) {
                 price = price + (mValues.get(i).getQuantitty() * Double.parseDouble(mValues.get(i).getPrice_In()));
+                MobileOrderRequest.getInstance().getOrderDetils().get(i).setQuantiy(mValues.get(i).getQuantitty());
+                Log.e("priceINN",price+"");
             }else {
                 price = price + (mValues.get(i).getQuantitty() * Double.parseDouble(mValues.get(i).getPrice_Out()));
+                MobileOrderRequest.getInstance().getOrderDetils().get(i).setQuantiy(mValues.get(i).getQuantitty());
+                Log.e("priceOUT",price+"");
             }
         }
 
+        Log.e("priceTextView",price+"");
         priceTextView.setText(price+" "+currency);
     }
 
@@ -231,6 +354,7 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
         orderDetilsBean = new MobileOrderRequest.OrderDetilsBean();
         images = new ArrayList<>();
         orderDetilsBeanList = new ArrayList<>();
+        delete_all_holder = findViewById(R.id.delete_all_holder);
         onlineRadioButton = findViewById(R.id.onlineRadioButton);
         cashRadioButton = findViewById(R.id.cashRadioButton);
         addressEditText = findViewById(R.id.addressEditText);
@@ -249,7 +373,6 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
         mValues=new ArrayList<>();
         mToolbarBackImageView = findViewById(R.id.toolbar_image_view);
         mToolbarTitleTextView = findViewById(R.id.toolbar_tv_title);
-        submit = findViewById(R.id.submit);
         bitmap_image_view = findViewById(R.id.bitmap_image_view);
         country_spinner = findViewById(R.id.country_spinner);
         city_spinner = findViewById(R.id.city_spinner);
@@ -318,8 +441,18 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        finish();
+        ViewHelper.hideKeyboard(this);
+        if (txt_back !=null && txt_front!=null) {
+            if (!txt_back.getText().toString().isEmpty()) {
+                txt_back.setVisibility(View.VISIBLE);
+            }
+            if (!txt_front.getText().toString().isEmpty()) {
+                txt_front.setVisibility(View.VISIBLE);
+            }
+        }
+          finishAffinity();
+            Intent intent = new Intent(PublicShippingActivity.this, HomeActivity.class);
+            startActivity(intent);
     }
 
     void getCountryList(SelectCountryCitiyListsResponseModel.Result responseList) {
@@ -360,7 +493,8 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
                         cashRadioButton.setChecked(true);
                         onlineRadioButton.setChecked(false);
                         type = 1;
-                        calculateInPriceOnCreatte(mValues);
+//                        calculateInPriceOnCreatte(mValues);
+                        calculateInPriceOnCreatte(publicBitmapsModels);
                         shippingPrice.setText(getString(R.string.delivery_price) + " " + responseList.getCountryCitiesLst().get(i - 1).getCountryObj().getChargePrice()+" "+currency);
 
                     }else {
@@ -373,7 +507,8 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
                         onlineRadioButton.setChecked(true);
                         cashRadioButton.setChecked(false);
                         type = 2;
-                        calculateInPriceOnCreatte(mValues);
+//                        calculateInPriceOnCreatte(mValues);
+                        calculateInPriceOnCreatte(publicBitmapsModels);
                         shippingPrice.setText(getString(R.string.delivery_price) + " " + responseList.getCountryCitiesLst().get(i - 1).getCountryObj().getChargePrice()+" "+currency);
                     }
 
@@ -381,7 +516,7 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
                     if (country_spinner.getSelectedItemPosition() == 0) {
                         deliveryTime.setVisibility(View.GONE);
                         shippingPrice.setVisibility(View.GONE);
-                        calculateInPriceOnCreatte(mValues);
+//                        calculateInPriceOnCreatte(mValues);
                     }
                     countryId = 0;
                     citylist.clear();
@@ -551,13 +686,16 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
 
                     if (couponEditText.getText().toString().isEmpty()) {
                         // no copoun code used
-                        if (mobileOrderRequest != null) {
-                            mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
+                        if (orderBean != null) {
+//                            mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
+
+                            mPresenter.getOrderSubmit(MobileOrderRequest.getInstance());
                         }
                     } else if (!hasCouponChecked) {
                         Toast.makeText(this, getString(R.string.check_code), Toast.LENGTH_LONG).show();
                     } else {
-                        mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
+//                        mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
+                        mPresenter.getOrderSubmit(MobileOrderRequest.getInstance());
                     }
                 }
             }
@@ -644,8 +782,10 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
             intent.putExtra("From", " shipping order");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            clearData();
             startActivity(intent);
         } else {
+            clearData();
             Intent intent = new Intent(this, WebviewActivity.class);
             intent.putExtra("id", orderId);
             startActivity(intent);
@@ -653,9 +793,20 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     }
 
 
+    public void clearData(){
+        if (MobileOrderRequest.getInstance()!=null){
+            MobileOrderRequest.getInstance().clearInstance();
+        }
+        if (PublicBitmapsModel.getInstance()!=null){
+            PublicBitmapsModel.getInstance().clearInstance();
+        }
+        if (publicBitmapsModels!=null){
+            publicBitmapsModels.clear();
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == OPEN_REGISTERATION_CODE_FROM_SHOPPING_MOBILE && resultCode == RESULT_OK) {
+        if (requestCode == OPEN_REGISTERATION_CODE_FROM_PUBLIC_SHOPPING && resultCode == RESULT_OK) {
 
             if (couponEditText.getText().toString().isEmpty()) {
                 hasCouponChecked = true;
@@ -671,8 +822,6 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     }
 
     public void fillOrderRequest() {
-
-
         orderBean.setAddress1(addressEditText.getText().toString());
         orderBean.setPhoneNumber(phoneEditText.getText().toString());
         orderBean.setBuytype(type);
@@ -683,26 +832,27 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
         orderBean.setOrderType(1);
         orderBean.setCityID(cityId);
         orderBean.setCountryID(countryId);
-        mobileOrderRequest.setOrder(orderBean);
+//        mobileOrderRequest.setOrder(orderBean);
 
-        if (mobileId != null)
-            orderDetilsBean.setProductID(Integer.parseInt(mobileId));
+//        if (mobileId != null)
+//            orderDetilsBean.setProductID(Integer.parseInt(mobileId));
+//
+//
+//        if (color != null) {
+//            imagesBean.setColor(color);
+//        }
+//        if (style != null) {
+//            imagesBean.setStyle(style);
+//        }
+//        imagesBean.setDesignerFlag(0);
+//        imagesBean.setDesignerID("0");
+//        images.add(imagesBean);
+//        orderDetilsBean.setImages(images);
 
+//        orderDetilsBeanList.add(orderDetilsBean);
+//        mobileOrderRequest.setOrderDetils(orderDetilsBeanList);
 
-        if (color != null) {
-            imagesBean.setColor(color);
-        }
-        if (style != null) {
-            imagesBean.setStyle(style);
-        }
-        imagesBean.setDesignerFlag(0);
-        imagesBean.setDesignerID("0");
-        images.add(imagesBean);
-        orderDetilsBean.setImages(images);
-
-
-        orderDetilsBeanList.add(orderDetilsBean);
-        mobileOrderRequest.setOrderDetils(orderDetilsBeanList);
+        MobileOrderRequest.getInstance().setOrder(orderBean);
 
     }
 
@@ -784,5 +934,14 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
             e.printStackTrace();
         }
         return fileForCover;
+    }
+
+    void deleteAllProducts(){
+        delete_all_holder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteDialogForAllProducts(PublicShippingActivity.this);
+            }
+        });
     }
 }

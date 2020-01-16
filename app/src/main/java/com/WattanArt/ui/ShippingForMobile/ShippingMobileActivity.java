@@ -38,6 +38,7 @@ import com.WattanArt.ui.Home.HomeActivity;
 import com.WattanArt.ui.Payment.WebviewActivity;
 import com.WattanArt.ui.base.BaseActivity;
 import com.WattanArt.ui.mobileCase.BitmapMobileHelper;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -115,6 +116,12 @@ public class ShippingMobileActivity extends BaseActivity implements ShippingMobi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipping_mobile);
         ButterKnife.bind(this);
+
+        Gson gson = new Gson();
+
+        MobileOrderRequest mobileOrderRequest=MobileOrderRequest.getInstance();
+        String json = gson.toJson(mobileOrderRequest);
+        Log.e("json",json+"");
 
         photos = new ArrayList<>();
         userData = new UserData();

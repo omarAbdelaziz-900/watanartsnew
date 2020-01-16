@@ -119,10 +119,12 @@ public class RegisterActivity extends BaseActivity implements
     boolean cameFromShippingActivity = false;
     boolean cameFromShippingMobileActivity = false;
     boolean cameFromShippingFlashActivity = false;
+    boolean cameFromPublicShipping = false;
 
     public static final String ShippingRegister = "came_from_shipping";
     public static final String ShippingMobileRegister = "came_from_shipping_mobile";
     public static final String ShippingFlashRegister = "came_from_shipping_flash";
+    public static final String publicShipping = "came_from_public_shipping";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +140,11 @@ public class RegisterActivity extends BaseActivity implements
         if (getIntent() != null && getIntent().hasExtra(ShippingRegister)) {
             Log.e("ShippingRegister",ShippingRegister);
             cameFromShippingActivity = true;
+        }
+
+        if (getIntent() != null && getIntent().hasExtra(publicShipping)) {
+            Log.e("publicShipping",publicShipping);
+            cameFromPublicShipping = true;
         }
 
         if (getIntent() != null && getIntent().hasExtra(ShippingMobileRegister)) {
@@ -293,7 +300,7 @@ public class RegisterActivity extends BaseActivity implements
     @Override
     public void openHomeActivity(String userId) {
 
-        if (!cameFromShippingActivity && !cameFromShippingMobileActivity && !cameFromShippingFlashActivity){
+        if (!cameFromShippingActivity && !cameFromShippingMobileActivity && !cameFromShippingFlashActivity && !cameFromPublicShipping){
             startActivity(new Intent(this, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             finish();
             Log.e("hahahaha","hahahahah");
@@ -482,15 +489,19 @@ public class RegisterActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (!cameFromShippingActivity && cameFromShippingMobileActivity && cameFromShippingFlashActivity) {
+        if (!cameFromShippingActivity && cameFromShippingMobileActivity && cameFromShippingFlashActivity && cameFromPublicShipping) {
             startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
-        }else if (cameFromShippingActivity && !cameFromShippingMobileActivity && cameFromShippingFlashActivity) {
+        }else if (cameFromShippingActivity && !cameFromShippingMobileActivity && cameFromShippingFlashActivity && cameFromPublicShipping) {
             startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
-        }else if (cameFromShippingActivity && cameFromShippingMobileActivity && !cameFromShippingFlashActivity) {
+        }else if (cameFromShippingActivity && cameFromShippingMobileActivity && !cameFromShippingFlashActivity && cameFromPublicShipping) {
+            startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            finish();
+        } else if (cameFromShippingActivity && cameFromShippingMobileActivity && cameFromShippingFlashActivity && !cameFromPublicShipping) {
             startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
@@ -499,8 +510,6 @@ public class RegisterActivity extends BaseActivity implements
             setResult(RESULT_OK);
             finish();
         }
-
-
     }
 
     @Override

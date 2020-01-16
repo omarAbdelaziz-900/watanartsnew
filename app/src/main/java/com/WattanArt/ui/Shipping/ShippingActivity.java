@@ -1287,6 +1287,10 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
     @Override
     public void itemClicked(int position) {
 
+//        country_spinner.setSelection(0);
+//        city_spinner.setSelection(0);
+//        deliveryTime.setVisibility(View.GONE);
+//        shippingPrice.setVisibility(View.GONE);
         try {
             Intent intent = new Intent(this, EditImageActivity.class);
 

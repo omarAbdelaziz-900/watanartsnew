@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_margin="@dimen/_16sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_240sdp"
+    android:layout_height="@dimen/_130sdp"
+    android:elevation="@dimen/_3sdp">
+
+    <ImageView
+        android:id="@+id/mokup_img"
+        android:layout_width="@dimen/_240sdp"
+        android:layout_height="@dimen/_130sdp"
+        android:scaleType="fitXY"/>
+</RelativeLayout>

@@ -113,6 +113,9 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
                     Log.e("priceIn",priceIn+"");
                     intent.putExtra("priceOut", priceOut+"");
                     Log.e("priceOut",priceOut+"");
+                    if (flashMemorySizeModelList!=null){
+                        flashMemorySizeModelList.clear();
+                    }
                     for (int i=0 ; i<mValues.get(0).getItems().size();i++){
                         Log.e("itemsArrayListddd",item.getItems().size()+"");
                         prod_Id =mValues.get(0).getItems().get(i).getProd_ID();

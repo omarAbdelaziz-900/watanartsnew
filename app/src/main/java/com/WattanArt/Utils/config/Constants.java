@@ -10,6 +10,7 @@ public class Constants {
 //    public static final String BASE_URL = "http://23.236.154.106:8083/"; // for Client
 
 //    public static final String BASE_URL = "http://138.128.65.98/"; // for Client
+
     public static final String BASE_URL = "http://23.236.154.106:8063/"; // for Test
 //    public static final String BASE_URL = "https://www.watanarts.com/"; // for Client
 

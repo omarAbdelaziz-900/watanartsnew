@@ -79,7 +79,8 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
         if (throwable instanceof SocketTimeoutException)
             getMvpView().showMessage(R.string.slow_connection);
         else if (throwable.getMessage()!=null && !throwable.getMessage().isEmpty())
-            getMvpView().showMessage(throwable.getMessage());
+//            getMvpView().showMessage(throwable.getMessage());
+        Log.e("Throwable" , "-->"+throwable.getMessage());
         else
             getMvpView().showMessage(R.string.some_error);
 

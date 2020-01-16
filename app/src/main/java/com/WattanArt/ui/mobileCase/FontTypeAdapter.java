@@ -84,6 +84,7 @@ public class FontTypeAdapter extends RecyclerView.Adapter<FontTypeAdapter.MyView
 
     public interface ItemListener {
         void onFontTypeItemClick(FontTypeModel item,int position);
+
     }
 }
 

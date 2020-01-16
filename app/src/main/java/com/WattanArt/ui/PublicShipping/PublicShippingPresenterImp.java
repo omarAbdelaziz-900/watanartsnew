@@ -50,6 +50,12 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.WattanArt.ui.PublicShipping.PublicShippingActivity.OPEN_REGISTERATION_CODE_FROM_PUBLIC_SHOPPING;
+import static com.WattanArt.ui.Register.RegisterActivity.ShippingFlashRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.ShippingMobileRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.publicShipping;
+
 public class PublicShippingPresenterImp <V extends PublicShippingMvpView> extends BasePresenter<V> implements PublicShippingMvpPresenter<V>  {
 
     List<SelectCountryCitiyListsResponseModel.Result.PatternTypeBean> patternTypeEntityList;
@@ -331,12 +337,13 @@ public class PublicShippingPresenterImp <V extends PublicShippingMvpView> extend
             @Override
             public void onClick(View v) {
 //
-//                mDialog.dismiss();
-//                Intent intent = new Intent(coontext, RegisterActivity.class);
-//                intent.putExtra(ShippingMobileRegister, true);
-//                intent.putExtra(ShippingRegister, false);
-//                intent.putExtra(ShippingFlashRegister, false);
-//                ((Activity) coontext).startActivityForResult(intent, OPEN_REGISTERATION_CODE_FROM_SHOPPING_MOBILE);
+                mDialog.dismiss();
+                Intent intent = new Intent(coontext, RegisterActivity.class);
+                intent.putExtra(ShippingMobileRegister, false);
+                intent.putExtra(ShippingRegister, false);
+                intent.putExtra(publicShipping, true);
+                intent.putExtra(ShippingFlashRegister, false);
+                ((Activity) coontext).startActivityForResult(intent, OPEN_REGISTERATION_CODE_FROM_PUBLIC_SHOPPING);
 
             }
         });

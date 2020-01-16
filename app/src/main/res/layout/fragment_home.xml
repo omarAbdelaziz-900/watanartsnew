@@ -182,6 +182,7 @@
                 android:weightSum="1"
                 >
 
+<!--                android:layout_weight="0.68"-->
 
                 <FrameLayout
                     android:layout_marginTop="@dimen/_2sdp"

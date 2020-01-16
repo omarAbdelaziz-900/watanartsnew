@@ -39,6 +39,7 @@ import com.WattanArt.ui.Payment.WebviewActivity;
 import com.WattanArt.ui.ShippingForMobile.MobileOrderRequest;
 import com.WattanArt.ui.ShippingForMobile.MobileOrderResponse;
 import com.WattanArt.ui.base.BaseActivity;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -91,6 +92,7 @@ public class ShippingFlashMemoryActivity extends BaseActivity implements Shippin
     File fileForFront, fileForCoverFront ,fileForBack ,fileForCoverBack;
     ArrayList<String> photosFront,photosBack;
     String photoFront,photoBack;
+
     @Inject
     ShippingFlashMemoryMvpPresenter<ShippingFlashMemoryMvpView> mPresenter;
 
@@ -116,6 +118,11 @@ public class ShippingFlashMemoryActivity extends BaseActivity implements Shippin
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shipping_flash_memory);
         ButterKnife.bind(this);
+
+        Gson gson = new Gson();
+        MobileOrderRequest mobileOrderRequest=MobileOrderRequest.getInstance();
+        String json = gson.toJson(mobileOrderRequest);
+        Log.e("json",json+"");
 
 
         photosFront=new ArrayList<>();
@@ -286,6 +293,7 @@ public class ShippingFlashMemoryActivity extends BaseActivity implements Shippin
     public void onBackPressed() {
         super.onBackPressed();
         backFromShipping=true;
+        ViewHelper.hideKeyboard(ShippingFlashMemoryActivity.this);
         finish();
     }
 

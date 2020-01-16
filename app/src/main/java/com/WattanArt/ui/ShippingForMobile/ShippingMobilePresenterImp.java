@@ -53,6 +53,7 @@ import retrofit2.Callback;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingFlashRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingMobileRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.publicShipping;
 import static com.WattanArt.ui.ShippingForMobile.ShippingMobileActivity.OPEN_REGISTERATION_CODE_FROM_SHOPPING_MOBILE;
 
 public class ShippingMobilePresenterImp <V extends ShippingMobileMvpView> extends BasePresenter<V> implements ShippingMobileMvpPresenter<V>  {
@@ -341,6 +342,7 @@ public class ShippingMobilePresenterImp <V extends ShippingMobileMvpView> extend
                 intent.putExtra(ShippingMobileRegister, true);
                 intent.putExtra(ShippingRegister, false);
                 intent.putExtra(ShippingFlashRegister, false);
+                intent.putExtra(publicShipping, false);
                 ((Activity) coontext).startActivityForResult(intent, OPEN_REGISTERATION_CODE_FROM_SHOPPING_MOBILE);
 
 //                getMvpView().showMessage("This feature is under developement");

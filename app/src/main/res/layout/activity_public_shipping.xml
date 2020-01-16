@@ -39,20 +39,6 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_back" />
 
-        <com.WattanArt.Utils.widgets.CustomeTextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/view_submit"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            android:layout_gravity="end"
-            android:layout_alignParentEnd="true"
-            android:onClick="submit"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:id="@+id/submit"/>
-
     </RelativeLayout>
 
     <ScrollView
@@ -89,6 +75,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -403,6 +390,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="12sp"
+                    android:onClick="completeOrder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/radioGroupPayment" />

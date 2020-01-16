@@ -65,36 +65,27 @@
 
 
 
+    <ImageView
+        android:id="@+id/show_img"
+        android:layout_centerInParent="true"
+        android:layout_width="@dimen/_180sdp"
+        android:background="@drawable/square_image_crop"
+        android:visibility="gone"
+        android:scaleType="fitXY"
+        android:layout_height="@dimen/_200sdp"/>
 
     <com.WattanArt.artcomponent.ImageCaseComponent
         android:layout_above="@id/scroll_view"
         android:layout_below="@id/toolbar_holder"
         android:id="@+id/componentView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_16sdp"
         android:text="Hello World!"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         >
 
-        <View
-            android:id="@+id/linear_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <ImageView
-            android:id="@+id/lowPixelsIv"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:visibility="invisible"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_reslution" />
 
 
         <LinearLayout
@@ -122,19 +113,23 @@
 
         <com.WattanArt.artcomponent.MyEditText
             android:id="@+id/txt_mobile"
-            android:layout_width="@dimen/mobile_width"
+            android:layout_width="@dimen/txt_mobile_width"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Enter your text"
+            android:textAllCaps="false"
             android:layout_gravity="center"
             android:paddingStart="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:background="@drawable/rounded_corners_white_transparent_50"
             android:paddingEnd="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:text=""
-            android:maxLines="10"
             />
 
 
@@ -374,6 +369,35 @@
                 android:textSize="12sp" />
 
         </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/sampleMokupBottomHolder"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:background="@drawable/background_unselected">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_text" />
+
+                <TextView
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="Sample"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

@@ -141,15 +141,32 @@ public class ShippingAdapter extends RecyclerView.Adapter<ShippingAdapter.MyView
         ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));//20*20
         ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));//30*20
         ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));//20*30
-        ratioDimensions.add(new RatioDimensions(ratios[6], 400, 400));//30*30
-        ratioDimensions.add(new RatioDimensions(ratios[7], 400, 300));//40*30
-        ratioDimensions.add(new RatioDimensions(ratios[8], 450, 300));//50*30
-        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));//20*60
-        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));//30*60
-        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));//20*90
+        ratioDimensions.add(new RatioDimensions(ratios[3], 400, 400));//30*30
+
+        ratioDimensions.add(new RatioDimensions(ratios[4], 400, 300));//40*30
+
+        ratioDimensions.add(new RatioDimensions(ratios[5], 450, 300));//50*30
+        ratioDimensions.add(new RatioDimensions(ratios[6], 200, 600));//20*60
+        ratioDimensions.add(new RatioDimensions(ratios[7], 280, 560));//30*60
+        ratioDimensions.add(new RatioDimensions(ratios[8], 133, 600));//20*90
         ratioDimensions.add(new RatioDimensions(ratios[9], 400, 400));//40*40
         ratioDimensions.add(new RatioDimensions(ratios[10], 400, 400));//60*60
         ratioDimensions.add(new RatioDimensions(ratios[11], 400, 400));//80*80
+
+        // ratioDimensions.add(new RatioDimensions(ratios[0], 400, 400));//20*20
+//        ratioDimensions.add(new RatioDimensions(ratios[1], 400, 266));//30*20
+//        ratioDimensions.add(new RatioDimensions(ratios[2], 266, 400));//20*30
+//        ratioDimensions.add(new RatioDimensions(ratios[6], 400, 400));//30*30
+//
+//        ratioDimensions.add(new RatioDimensions(ratios[7], 400, 300));//40*30
+//
+//        ratioDimensions.add(new RatioDimensions(ratios[8], 450, 300));//50*30
+//        ratioDimensions.add(new RatioDimensions(ratios[3], 200, 600));//20*60
+//        ratioDimensions.add(new RatioDimensions(ratios[4], 280, 560));//30*60
+//        ratioDimensions.add(new RatioDimensions(ratios[5], 133, 600));//20*90
+//        ratioDimensions.add(new RatioDimensions(ratios[9], 400, 400));//40*40
+//        ratioDimensions.add(new RatioDimensions(ratios[10], 400, 400));//60*60
+//        ratioDimensions.add(new RatioDimensions(ratios[11], 400, 400));//80*80
     }
 
 

@@ -245,6 +245,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
     @Override
     public void returnIntroData(HomeIntroResponseModel responseModel) {
         link = responseModel.getResult().getIntroVideo();
+        Log.e("linkUrl",link);
 //        link = "https://www.youtube.com/watch?v=hmFBwTl6M-k";
 //        link = "https://www.youtube.com/watch?v=7mOfNQTGCi0";
 //        link = "https://www.youtube.com/watch?v=djh0mkjoaUY";
@@ -259,9 +260,14 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             loadImage(responseModel, 2, mThirdPreviewImageView);
         }
 
-        itemsArrayList=responseModel.getResult().getCategory().get(1).getItems();
+        if (responseModel.getResult().getCategory()!=null) {
+            if (!responseModel.getResult().getCategory().isEmpty()) {
+                itemsArrayList = responseModel.getResult().getCategory().get(1).getItems();
+                Log.e("getProdID", responseModel.getResult().getCategory().get(1).getItems().get(0).getProd_ID() + "");
+            }
+        }
 
-        Log.e("getProdID",responseModel.getResult().getCategory().get(1).getItems().get(0).getProd_ID()+"");
+
 
 
 

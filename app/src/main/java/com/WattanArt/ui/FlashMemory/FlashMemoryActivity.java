@@ -2,6 +2,8 @@ package com.WattanArt.ui.FlashMemory;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -24,12 +27,16 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,14 +45,17 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.WattanArt.AndroidDialogTools;
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
+import com.WattanArt.Utils.RoundedBitmapClass;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.ViewHelper;
 import com.WattanArt.Utils.config.Constants;
 import com.WattanArt.Utils.widgets.BitmapUtils;
 import com.WattanArt.Utils.widgets.CustomeTextView;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
+import com.WattanArt.VerifyDialogInterfaceForText;
 import com.WattanArt.artcomponent.AccessoriesView;
 import com.WattanArt.artcomponent.ColorUtils;
 import com.WattanArt.artcomponent.CoverView;
@@ -53,11 +63,13 @@ import com.WattanArt.artcomponent.DimensionData;
 import com.WattanArt.artcomponent.ImageCaseComponent;
 import com.WattanArt.artcomponent.ObjectView;
 import com.WattanArt.model.Response.ImageUploadResponseModel;
+import com.WattanArt.model.SampleMokupItems;
 import com.WattanArt.ui.Category.CategoryMobileRsponseModel;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
 import com.WattanArt.ui.PublicShipping.PublicBitmapsModel;
 import com.WattanArt.ui.PublicShipping.PublicShippingActivity;
 import com.WattanArt.ui.ShippingForFlashMemory.ShippingFlashMemoryActivity;
+import com.WattanArt.ui.ShippingForMobile.MobileOrderRequest;
 import com.WattanArt.ui.base.BaseActivity;
 import com.WattanArt.ui.mobileCase.ComponentActivity;
 import com.WattanArt.ui.mobileCase.FontTypeAdapter;
@@ -95,7 +107,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     CustomeTextViewBold complete_tv;
     final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 102;
 
-//    Front//
+    //    Front//
     CoverView cover_front;
     ImageCaseComponent componentView_front;
     ObjectView objectView_front;
@@ -156,7 +168,6 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     String imgBack ="http://23.236.154.106:8063/img/flashb.png";
 
     String frontFilename , frontCoverFileName , backFileilename ,backCoverFileilename;
-    File fileForFront ,fileForCoverFront ,fileForback ,fileForcoverBack;
     String styleNameFront,styleNameBack,colorNameFront,colorNameback;
     Intent intent;
     String prod_Id ,priceIn,priceOut;
@@ -171,7 +182,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     float a;
     int colorOrStyle=0;
 
-    EditText txt_back ,txt_front;
+    public static EditText txt_back ,txt_front;
     RelativeLayout relative_for_text,fontBottomHolder,sizeBottomHolder,colorsBottomHolder,above_bottom_linear,WritingBottomHolder;
     LinearLayout bar_font_size_holder, bar_color_holder,bottom_linear;
     LinearLayout linear_color_style;
@@ -189,6 +200,17 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     List<FlashMemorySizeModel>flashMemorySizeModelList=new ArrayList<>();
 
+    MobileOrderRequest mobileOrderRequest;
+    MobileOrderRequest.OrderBean orderBean;
+    MobileOrderRequest.OrderDetilsBean orderDetilsBean;
+    List<MobileOrderRequest.OrderDetilsBean> orderDetilsBeanList;
+    List<MobileOrderRequest.OrderDetilsBean.ImagesBean> images;
+    MobileOrderRequest.OrderDetilsBean.ImagesBean imagesBean,imagesBean2;
+    File fileForFront, fileForCoverFront ,fileForBack ,fileForCoverBack;
+    String filename, filename2,filename3,filename4;
+    int btnConfirmType=0;
+    RelativeLayout sampleMokupBottomHolder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,7 +219,16 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         ButterKnife.bind(this);
         showImage = findViewById(R.id.showImage);
 
+        mobileOrderRequest=new MobileOrderRequest();
+        orderBean=new MobileOrderRequest.OrderBean();
+        orderDetilsBean=new MobileOrderRequest.OrderDetilsBean();
+        images=new ArrayList<>();
+        orderDetilsBeanList=new ArrayList<>();
+        imagesBean=new MobileOrderRequest.OrderDetilsBean.ImagesBean();
+        imagesBean2=new MobileOrderRequest.OrderDetilsBean.ImagesBean();
+
         fontTypeModelList = new ArrayList<>();
+        sampleMokupBottomHolder = findViewById(R.id.sampleMokupBottomHolder);
         txt_front = findViewById(R.id.txt_front);
         txt_back = findViewById(R.id.txt_back);
         complete_tv = findViewById(R.id.order_design_tv);
@@ -237,6 +268,12 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         cover_view_text_back = findViewById(R.id.cover_view_text_back);
         font_recycler_view = findViewById(R.id.font_recycler_view);
 
+        txt_front.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        txt_front.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
+        txt_back.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        txt_back.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
         ViewHelper.hideKeyboard(FlashMemoryActivity.this);
 
 
@@ -270,6 +307,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         applyColorTextMethod();
         applyFontSizeMethod();
         clickSizeFlashmemory();
+        showMokupData();
     }
 
     @Override
@@ -279,7 +317,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     }
 
 
-   void getIntentData(){
+    void getIntentData(){
         intent=getIntent();
         if (intent.hasExtra("prod_Id")){
             prod_Id=intent.getStringExtra("prod_Id");
@@ -290,11 +328,11 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         if (intent.hasExtra("priceOut")){
             priceOut=intent.getStringExtra("priceOut");
         }
-       if (intent.hasExtra("BUNDLE")){
-           Bundle args = intent.getBundleExtra("BUNDLE");
-           flashMemorySizeModelList = (ArrayList<FlashMemorySizeModel>) args.getSerializable("FlashMemoryArrayList");
+        if (intent.hasExtra("BUNDLE")){
+            Bundle args = intent.getBundleExtra("BUNDLE");
+            flashMemorySizeModelList = (ArrayList<FlashMemorySizeModel>) args.getSerializable("FlashMemoryArrayList");
 //           Log.e("flashMemorySizeModelListOmar",flashMemorySizeModelList+"");
-       }
+        }
 
     }
     public void initView(){
@@ -340,13 +378,13 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     void initFrontView() {
         Log.e("hhhshhs",getResources().getDimension(R.dimen.flash_width)+"");
-            dimensionData_front = new DimensionData((int) getResources().getDimension(R.dimen.flash_width),
-                    (int)getResources().getDimension(R.dimen.flash_height),
-                    (int) getResources().getDimension(R.dimen.flash_width)-15,
-                    (int)getResources().getDimension(R.dimen.flash_height),
-                    (int) getResources().getDimension(R.dimen.radius_flash),
-                    (int) getResources().getDimension(R.dimen.flash_width),
-                    (int)getResources().getDimension(R.dimen.flash_height), 0, 0);
+        dimensionData_front = new DimensionData((int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height),
+                (int) getResources().getDimension(R.dimen.flash_width)-15,
+                (int)getResources().getDimension(R.dimen.flash_height),
+                (int) getResources().getDimension(R.dimen.radius_flash),
+                (int) getResources().getDimension(R.dimen.flash_width),
+                (int)getResources().getDimension(R.dimen.flash_height), 0, 0);
         componentView_front.initUrlData(dimensionData_front, new Pair<>( imgFront,imgFront));
 
     }
@@ -365,6 +403,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     public void txtProperties(){
         txt_front.setVisibility(View.GONE);
+        txt_back.setVisibility(View.GONE);
 //        txt_back.setBackgroundColor(Color.TRANSPARENT);
         ViewHelper.hideKeyboard(this);
         txt_front.setOnTouchListener(this);
@@ -449,7 +488,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     @Override
     public void onColorItemsClickFromAdapter( int position) {
-         colorOrStyle=1;
+        colorOrStyle=1;
         if (flashType.equals("front")) {
             objectView_front.setData(null);
             Log.e("position->>",position+"");
@@ -529,6 +568,14 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             if (!flashMemorySizeModelList.isEmpty())
                 flashMemorySizeModelList.clear();
         }
+
+//        if (publicBitmapsModels!=null){
+//            publicBitmapsModels.clear();
+//        }
+//        if (MobileOrderRequest.getInstance().getOrderDetils()!=null){
+//            MobileOrderRequest.getInstance().getOrderDetils().clear();
+//        }
+
         ViewHelper.hideKeyboard(FlashMemoryActivity.this);
         finish();
     }
@@ -572,75 +619,68 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     public void createFrontBitmaps(){
         if (cover_front.getDrawable() != null) {
 
-//            Bitmap bitmap = ((BitmapDrawable) cover_front.getDrawable()).getBitmap();
-//            currentBitmapFront = Bitmap.createBitmap(bitmap,
-//                    0, 0, bitmap.getWidth(),
-//                    bitmap.getHeight(), cover_front.getImageMatrix(), true);
 
             mobileBitmapFront = loadBitmapFromView(componentView_front);
             currentBitmapFront=loadBitmapFromCover(cover_front);
+
+            mobileBitmapFront = RoundedBitmapClass.getRoundedCornerBitmap(mobileBitmapFront,(int) getResources().getDimension(R.dimen.radius_flash));
             Log.e("FrontBitmaps",currentBitmapFront+"    "+mobileBitmapFront);
+
+            if (mobileBitmapFront!=null){
+                saveTempBitmapForFront(mobileBitmapFront);
+            }
+            if (currentBitmapFront!=null){
+                saveTempBitmapForCoverFront(currentBitmapFront);
+            }
 
             BitmapFlashHelper.getInstance().setBitmapFront(mobileBitmapFront);
             BitmapFlashHelper.getInstance().setBitmapFrontCover(currentBitmapFront);
 
-            PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmapFront);
-            publicBitmapsModels.add(new PublicBitmapsModel(1+"",11+"",priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
+//            PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmapFront);
+//
+//            publicBitmapsModels.add(new PublicBitmapsModel(1+"",prod_Id+"",priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
 
             HelperFlashRequest.getInstance().getIds().add(Integer.parseInt(prod_Id));
             HelperFlashRequest.getInstance().getFlashCoverBitmapsFront().add(currentBitmapFront);
             HelperFlashRequest.getInstance().getFlashscreenShootBitmapsFront().add(mobileBitmapFront);
-
-
-            for (int i=0;i<HelperFlashRequest.getInstance().getIds().size();i++){
-                Log.e("kkkdhdhdhdh", HelperFlashRequest.getInstance().getIds().get(i) + "");
+            if (!txt_front.getText().toString().isEmpty()) {
+                txt_front.setVisibility(View.VISIBLE);
             }
-            for (int i=0;i<HelperFlashRequest.getInstance().getIds().size();i++){
-                Log.e("ssssssss", HelperFlashRequest.getInstance().getFlashCoverBitmapsFront().get(i) + "");
-            }
-
         }
     }
     public void createBackBitmaps(){
         if (cover_back.getDrawable() != null) {
-
-//            Bitmap bitmap = ((BitmapDrawable) cover_back.getDrawable()).getBitmap();
-//            currentBitmapBack = Bitmap.createBitmap(bitmap,
-//                    0, 0, bitmap.getWidth(),
-//                    bitmap.getHeight(), cover_back.getImageMatrix(), true);
-
             mobileBitmapBack = loadBitmapFromView(componentView_back);
             currentBitmapBack=loadBitmapFromCover(cover_back);
+            mobileBitmapBack = RoundedBitmapClass.getRoundedCornerBitmap(mobileBitmapBack,(int) getResources().getDimension(R.dimen.radius_flash));
             Log.e("BackBitmaps",currentBitmapBack+"    "+mobileBitmapBack);
+
+            if (mobileBitmapBack!=null){
+                saveTempBitmapForBack(mobileBitmapBack);
+            }
+            if (currentBitmapBack!=null){
+                saveTempBitmapForBackCover(currentBitmapBack);
+            }
+
             BitmapFlashHelper.getInstance().setBitmapBack(mobileBitmapBack);
             BitmapFlashHelper.getInstance().setBitmapBackCover(currentBitmapBack);
-
             HelperFlashRequest.getInstance().getFlashCoverBitmapsBack().add(currentBitmapBack);
             HelperFlashRequest.getInstance().getFlashscreenShootBitmapsBack().add(mobileBitmapBack);
 
-
-            for (int i=0;i<HelperFlashRequest.getInstance().getFlashCoverBitmapsBack().size();i++){
-                Log.e("ssssssss", HelperFlashRequest.getInstance().getFlashCoverBitmapsBack().get(i) + "");
+            if (!txt_back.getText().toString().isEmpty()) {
+                txt_back.setVisibility(View.VISIBLE);
             }
         }
     }
 
 
     public void submit(View view) {
-//        if (!show){
         if (cover_front.getDrawable() != null ) {
-
             if (cover_back.getDrawable() != null){
-                componentView_front.setVisibility(View.VISIBLE);
-            componentView_back.setVisibility(View.VISIBLE);
 
-            createFrontBitmaps();
-            createBackBitmaps();
-            Log.e("BitmapFlashHelper1", BitmapFlashHelper.getInstance().getBitmapFront() + "");
+                showConfirmationDialog(FlashMemoryActivity.this);
 
-
-            sendBitmapImage();
-        }else {
+            }else {
                 hideLoaderDialog();
                 Toast.makeText(this, getString(R.string.choose_bg_back), Toast.LENGTH_SHORT).show();
             }
@@ -648,19 +688,10 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             hideLoaderDialog();
             Toast.makeText(this, getString(R.string.choose_bg_back), Toast.LENGTH_SHORT).show();
         }
-//    }
-//        else {
-//            Toast.makeText(this, getString(R.string.invalid_size), Toast.LENGTH_SHORT).show();
-//        }
     }
 
 
 
-
-
-
-
-    /* Checks if external storage is available for read and write */
     public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -672,11 +703,9 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
 
     public static Bitmap loadBitmapFromView(View v) {
-//        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
         v.setDrawingCacheEnabled(true);
         Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
         Canvas canvas = new Canvas(b);
-//        canvas.drawColor(Color.TRANSPARENT);
         v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
         v.draw(canvas);
         return b;
@@ -696,9 +725,12 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 loadImage(imgBack,image_back);
                 flashType="front";
                 componentView_front.setVisibility(View.VISIBLE);
-                txt_front.setVisibility(View.VISIBLE);
+//                txt_front.setVisibility(View.INVISIBLE);
                 componentView_back.setVisibility(View.INVISIBLE);
-                txt_back.setVisibility(View.INVISIBLE);
+                linear_color_style.setVisibility(View.VISIBLE);
+                above_bottom_linear.setVisibility(View.GONE);
+                Log.e("flashType",flashType);
+//                txt_back.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -714,9 +746,12 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 loadImage(imgFront,image_front);
                 flashType="back";
                 componentView_front.setVisibility(View.INVISIBLE);
-                txt_front.setVisibility(View.INVISIBLE);
+//                txt_front.setVisibility(View.INVISIBLE);
                 componentView_back.setVisibility(View.VISIBLE);
-                txt_back.setVisibility(View.VISIBLE);
+//                txt_back.setVisibility(View.INVISIBLE);
+                linear_color_style.setVisibility(View.VISIBLE);
+                above_bottom_linear.setVisibility(View.GONE);
+                Log.e("flashType",flashType);
             }
         });
     }
@@ -737,8 +772,6 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         initColorRecyclerView();
         color_recyclerview.setVisibility(View.VISIBLE);
         styleBottomHolder.setBackground(getDrawable(R.drawable.background_selected_bordered));
-//        linear_img_front.setBackground(getDrawable(R.drawable.background_with_big_border_selected));
-//        linear_img_back.setBackground(getDrawable(R.drawable.background_with_big_border_unselected));
     }
 
     public void loadImage(String image, ImageView imageView) {
@@ -770,54 +803,98 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     @Override
     protected void onResume() {
         super.onResume();
-//        if (backFromShipping){
-//            componentView_back.setVisibility(View.INVISIBLE);
-//            linear_img_front.setBackground(getDrawable(R.drawable.background_selected_bordered));
-//        }
     }
 
     public void sendBitmapImage() {
-        initColorRecyclerView();
-//        if (colorBgMobileAdapter != null) {
-//            color_recyclerview.setAdapter(colorBgMobileAdapter);
-//        }
+        //                txt_front.setFocusable(false);
+//                txt_back.setFocusable(false);
+
+        txt_front.setBackground(null);
+        txt_back.setBackground(null);
+
+        if (flashType.equals("back")){
+//                    txt_back.setVisibility(View.VISIBLE);
+//                    txt_front.setVisibility(View.VISIBLE);
+//                    componentView_back.setVisibility(View.VISIBLE);
+//                    componentView_front.setVisibility(View.VISIBLE);
+            createBackBitmaps();
+            createFrontBitmaps();
+        }else {
+//                    txt_front.setVisibility(View.VISIBLE);
+//                    txt_back.setVisibility(View.VISIBLE);
+//                    componentView_front.setVisibility(View.VISIBLE);
+//                    componentView_back.setVisibility(View.VISIBLE);
+            createFrontBitmaps();
+            createBackBitmaps();
+        }
+
+        Log.e("BitmapFlashHelper1", BitmapFlashHelper.getInstance().getBitmapFront() + "");
+
+
+        if (colorOrStyleType==1) {
+            colorBgMobileAdapter = new ColorStyleFlashAdapter(colorOrStyleType, this, General_Color, this);
+        }else {
+            colorBgMobileAdapter = new ColorStyleFlashAdapter(colorOrStyleType, this, General_Style, this);
+        }
+        color_recyclerview.setAdapter(colorBgMobileAdapter);
+
+        if (fileForFront!=null) {
+            mPresenter.returnUploadedImageForFront(photosFront, fileForFront);
+        }
+    }
+
+    void navigateTo(){
         if (flashType.equals("front")){
             componentView_back.setVisibility(View.INVISIBLE);
-            txt_back.setVisibility(View.INVISIBLE);
+//            txt_back.setVisibility(View.INVISIBLE);
             componentView_front.setVisibility(View.VISIBLE);
-            txt_front.setVisibility(View.VISIBLE);
+//            txt_front.setVisibility(View.VISIBLE);
             image_front.setImageResource(R.drawable.ic_front_flash);
             loadImage(imgBack,image_back);
         }else {
             componentView_back.setVisibility(View.VISIBLE);
-            txt_back.setVisibility(View.VISIBLE);
+//            txt_back.setVisibility(View.VISIBLE);
             componentView_front.setVisibility(View.INVISIBLE);
-            txt_front.setVisibility(View.INVISIBLE);
+//            txt_front.setVisibility(View.INVISIBLE);
             image_back.setImageResource(R.drawable.ic_back_flash);
             loadImage(imgFront,image_front);
 
         }
+        linear_color_style.setVisibility(View.VISIBLE);
+        above_bottom_linear.setVisibility(View.GONE);
+        if (colorBgMobileAdapter!=null) {
+            color_recyclerview.setAdapter(colorBgMobileAdapter);
+        }
 
-        Intent intent = new Intent(this, ShippingFlashMemoryActivity.class);
-//        Intent intent = new Intent(this, PublicShippingActivity.class);
+        MobileOrderRequest.getInstance().getOrderDetils().add(orderDetilsBean);
+        PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmapFront);
+        publicBitmapsModels.add(new PublicBitmapsModel(1+"",prod_Id+"",priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
+
+        if (btnConfirmType==1) {
+//        Intent intent = new Intent(this, ShippingFlashMemoryActivity.class);
+            Intent intent = new Intent(this, PublicShippingActivity.class);
 
 //        intent.putExtra("frontFilename", frontFilename+"");
 //        intent.putExtra("frontCoverFileName", frontCoverFileName+"");
 //        intent.putExtra("backFileilename", backFileilename+"");
 //        intent.putExtra("backCoverFileilename", backCoverFileilename+"");
 
-        intent.putExtra("styleNameFront", styleNameFront+"");
-        intent.putExtra("styleNameBack", styleNameBack+"");
-        intent.putExtra("colorNameFront", colorNameFront+"");
-        intent.putExtra("colorNameback", colorNameback+"");
-        intent.putExtra("photosFront", photosFront.get(0)+"");
-        intent.putExtra("photosBack", photosBack.get(0)+"");
-        intent.putExtra("prod_Id", prod_Id+"");
-        intent.putExtra("priceIn", priceIn+"");
-        intent.putExtra("priceOut", priceOut+"");
-        Log.e("photosFront",photosFront.get(0)+"");
-        Log.e("photosBack",photosBack.get(0)+"");
-        startActivity(intent);
+            intent.putExtra("styleNameFront", styleNameFront + "");
+            intent.putExtra("styleNameBack", styleNameBack + "");
+            intent.putExtra("colorNameFront", colorNameFront + "");
+            intent.putExtra("colorNameback", colorNameback + "");
+            intent.putExtra("photosFront", photosFront.get(0) + "");
+            intent.putExtra("photosBack", photosBack.get(0) + "");
+            intent.putExtra("prod_Id", prod_Id + "");
+            intent.putExtra("priceIn", priceIn + "");
+            intent.putExtra("priceOut", priceOut + "");
+            Log.e("photosFront", photosFront.get(0) + "");
+            Log.e("photosBack", photosBack.get(0) + "");
+            startActivity(intent);
+            finish();
+        }else if (btnConfirmType==2){
+            onBackPressed();
+        }
     }
 
 
@@ -863,8 +940,10 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             seekbar_value = font_sizeSeekBar.getProgress();
             Log.e("seekbarff", seekbar_value + "");
             txt_front.setTextSize(seekbar_value + 1);
+            imagesBean.setText_size(String.valueOf(seekbar_value+1));
 //            textSize = String.valueOf(seekbar_value + 1);
         }else {
+            imagesBean2.setText_size(String.valueOf(seekbar_value+1));
             seekbar_value = font_sizeSeekBar.getProgress();
             Log.e("seekbarff", seekbar_value + "");
             txt_back.setTextSize(seekbar_value + 1);
@@ -896,6 +975,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 if (seekbar_color_value == i) {
                     Log.e("i", seekbar_color_value + "\n" + i);
                     txt_front.setTextColor(Color.parseColor("#" + ColorUtils.colorList()[seekbar_color_value]));
+                    imagesBean.setText_color("#" + ColorUtils.colorList()[seekbar_color_value]);
 //                    textColor = ColorUtils.colorList()[seekbar_color_value];
                     break;
                 }
@@ -906,6 +986,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
                 if (seekbar_color_value == i) {
                     Log.e("i", seekbar_color_value + "\n" + i);
                     txt_back.setTextColor(Color.parseColor("#" + ColorUtils.colorList()[seekbar_color_value]));
+                    imagesBean2.setText_color("#" + ColorUtils.colorList()[seekbar_color_value]);
 //                    textColor = ColorUtils.colorList()[seekbar_color_value];
                     break;
                 }
@@ -914,59 +995,49 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     }
 
     public void clickOnTextBottomHolder() {
-        if (flashType.equals("front")) {
         textBottomHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                linear_color_style.setVisibility(View.GONE);
-                above_bottom_linear.setVisibility(View.VISIBLE);
-                txt_front.setVisibility(View.VISIBLE);
+                if (flashType.equals("front")) {
+                    linear_color_style.setVisibility(View.GONE);
+                    above_bottom_linear.setVisibility(View.VISIBLE);
+                    txt_front.setVisibility(View.VISIBLE);
 //                txt_front.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
-                cover_view_text_front.setVisibility(View.GONE);
-            }
-        });
-    }else {
-            textBottomHolder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                    cover_view_text_front.setVisibility(View.GONE);
+                }else {
                     linear_color_style.setVisibility(View.GONE);
                     above_bottom_linear.setVisibility(View.VISIBLE);
                     txt_back.setVisibility(View.VISIBLE);
 //                    txt_back.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
                     cover_view_text_back.setVisibility(View.GONE);
                 }
-            });
-        }
+            }
+        });
     }
 
     public void clickCancelBottomHolder(){
-        if (flashType.equals("front")) {
-            applyBottomHolder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    txt_front.setVisibility(View.GONE);
-                    txt_front.setBackground(null);
-                    cover_view_text_front.setVisibility(View.VISIBLE);
+        applyBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flashType.equals("front")) {
+                    txt_front.setVisibility(View.VISIBLE);
+//                    txt_front.setBackground(null);
+//                    cover_view_text_front.setVisibility(View.VISIBLE);
                     linear_color_style.setVisibility(View.VISIBLE);
                     above_bottom_linear.setVisibility(View.GONE);
-                    txt_front.buildDrawingCache();
-                    cover_view_text_front.setImageBitmap(txt_front.getDrawingCache());
-                }
-            });
-        }else {
-            applyBottomHolder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    txt_back.setVisibility(View.GONE);
-                    txt_back.setBackground(null);
-                    cover_view_text_back.setVisibility(View.VISIBLE);
+//                    txt_front.buildDrawingCache();
+//                    cover_view_text_front.setImageBitmap(txt_front.getDrawingCache());
+                }else {
+                    txt_back.setVisibility(View.VISIBLE);
+//                    txt_back.setBackground(null);
+//                    cover_view_text_back.setVisibility(View.VISIBLE);
                     linear_color_style.setVisibility(View.VISIBLE);
                     above_bottom_linear.setVisibility(View.GONE);
-                    txt_back.buildDrawingCache();
-                    cover_view_text_back.setImageBitmap(txt_back.getDrawingCache());
+//                    txt_back.buildDrawingCache();
+//                    cover_view_text_back.setImageBitmap(txt_back.getDrawingCache());
                 }
-            });
-        }
+            }
+        });
     }
     public void clickColorsBottomHolder(){
         colorsBottomHolder.setOnClickListener(new View.OnClickListener() {
@@ -1011,6 +1082,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         });
     }
 
+
     public boolean onTouch(View view, MotionEvent event) {
         final int X = (int) event.getRawX();
         final int Y = (int) event.getRawY();
@@ -1051,18 +1123,22 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 
     public void editTextClick(){
         if (flashType.equals("front")) {
-            txt_front.setFocusable(true);
+//            txt_front.setFocusable(true);
 //            txt_front.setBackgroundColor(Color.TRANSPARENT);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(txt_front, InputMethodManager.SHOW_IMPLICIT);
-            txt_front.requestFocus();
+            if (txt_front.requestFocus()) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(txt_front, InputMethodManager.SHOW_IMPLICIT);
+            }
+//            txt_front.requestFocus();
 //            txt_front.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         }else {
-            txt_back.setFocusable(true);
+//            txt_back.setFocusable(true);
 //            txt_back.setBackgroundColor(Color.TRANSPARENT);
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(txt_back, InputMethodManager.SHOW_IMPLICIT);
-            txt_back.requestFocus();
+            if (txt_back.requestFocus()) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(txt_back, InputMethodManager.SHOW_IMPLICIT);
+            }
+//            txt_back.requestFocus();
 //            txt_back.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         }
     }
@@ -1075,8 +1151,10 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
 //        textFont=item.getFontName();
         if (flashType.equals("front")) {
             txt_front.setTypeface(face);
+            imagesBean.setText_font(face+"");
         }else {
             txt_back.setTypeface(face);
+            imagesBean2.setText_font(face+"");
         }
     }
 
@@ -1095,15 +1173,324 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         color_recyclerview.setNestedScrollingEnabled(false);
         color_recyclerview.setHasFixedSize(true);
         color_recyclerview.scrollToPosition(0);
-         flashMemorySizeAdapter = new FlashMemorySizeAdapter(this, flashMemorySizeModelList, this);
+        flashMemorySizeAdapter = new FlashMemorySizeAdapter(this, flashMemorySizeModelList, this);
         color_recyclerview.setAdapter(flashMemorySizeAdapter);
     }
 
     @Override
-    public void onSizeItemsClickFromAdapter(int position, String priceFlashIn, String priceFlashOut) {
+    public void onSizeItemsClickFromAdapter(int position, String priceFlashIn, String priceFlashOut,List<FlashMemorySizeModel> flashMemorySizeModelList2) {
+        priceIn=flashMemorySizeModelList2.get(position).getPriceIn();
+        priceOut=flashMemorySizeModelList2.get(position).getPriceOut();
         Toast.makeText(this, position+"\n"+priceIn+"\n"+priceOut+"", Toast.LENGTH_SHORT).show();
-        priceIn=priceFlashIn;
-        priceOut=priceFlashOut;
     }
+
+
+    @Override
+    public void returnUploadedImageForFront(ImageUploadResponseModel imageUploadResponseModel) {
+        Log.e("imageNameFont", imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState() == 5) {
+            String imageFrontName = imageUploadResponseModel.getFileName();
+            imagesBean.setDesignerFlag(0);
+            imagesBean.setDesignerID("0");
+            imagesBean.setStyle(styleNameFront);
+            imagesBean.setColor(colorNameFront);
+
+
+            imagesBean.setText(txt_front.getText().toString());
+            imagesBean.setPrintscreenImg(imageFrontName);
+            orderDetilsBean.setMainImage(imageFrontName);
+            if (imageFrontName !=null){
+                imagesBean.setPrintscreenImg(imageFrontName);
+            }
+            orderDetilsBean.setProductID(Integer.parseInt(prod_Id));
+            orderDetilsBean.setImages(images);
+            if (fileForCoverFront!=null){
+                mPresenter.returnUploadedImageForCoverFront(photosFront, fileForCoverFront);
+            }else {
+                Toast.makeText(this, "هناك خطا ما", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void returnUploadedImageForCoverFront(ImageUploadResponseModel imageUploadResponseModel) {
+        Log.e("imageNameFromCover", imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState() == 5) {
+            String imageCoverFrontName = imageUploadResponseModel.getFileName();
+            if (imageCoverFrontName !=null){
+                imagesBean.setImage(imageCoverFrontName);
+            }
+            images.add(imagesBean);
+            mPresenter.returnUploadedImageForBack(photosFront, fileForBack);
+        }
+    }
+
+    @Override
+    public void returnUploadedImageForBack(ImageUploadResponseModel imageUploadResponseModel) {
+        Log.e("imageNameFromBack", imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState() == 5) {
+            String imageBackName = imageUploadResponseModel.getFileName();
+//            imagesBean2=new MobileOrderRequest.OrderDetilsBean.ImagesBean();
+            imagesBean2.setDesignerFlag(1);
+            imagesBean2.setDesignerID("1");
+            imagesBean2.setStyle(styleNameBack);
+            imagesBean2.setColor(colorNameback);
+            imagesBean2.setText(txt_back.getText().toString());
+            if (imageBackName !=null){
+                imagesBean2.setPrintscreenImg(imageBackName);
+            }
+            orderDetilsBean.setImages(images);
+            mPresenter.returnUploadedImageForCoverBack(photosFront, fileForCoverBack);
+        }
+    }
+
+    @Override
+    public void returnUploadedImageForCoverBack(ImageUploadResponseModel imageUploadResponseModel) {
+        Log.e("imageNameFromCover", imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState() == 5) {
+            String imageCoverBackName = imageUploadResponseModel.getFileName();
+            if (imageCoverBackName !=null){
+                imagesBean2.setImage(imageCoverBackName);
+            }
+            images.add(imagesBean2);
+
+//            MobileOrderRequest.getInstance().getOrderDetils().add(orderDetilsBean);
+
+            navigateTo();
+
+
+        }
+    }
+
+
+    public void saveTempBitmapForFront(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForFront(bitmap);
+        } else {
+            //prompt the user or do something
+        }
+    }
+
+    public void saveTempBitmapForCoverFront(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForCoverFront(bitmap);
+        } else {
+            //prompt the user or do something
+        }
+    }
+
+    public void saveTempBitmapForBack(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForBack(bitmap);
+        } else {
+            //prompt the user or do something
+        }
+    }
+
+    public void saveTempBitmapForBackCover(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForCoverBack(bitmap);
+        } else {
+            //prompt the user or do something
+        }
+    }
+
+    public File saveImageForFront(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images1");
+        myDir.mkdirs();
+
+        String timeStamp =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        filename = timeStamp + ".jpg";
+
+        fileForFront = new File(myDir, filename);
+
+        if (fileForFront.exists()) fileForFront.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForFront);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            Log.e("fileGetting", fileForFront + "");
+//            saveImageForMobileForSending(finalBitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForFront;
+    }
+
+    public File saveImageForCoverFront(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images2");
+        myDir.mkdirs();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//         filename = "Shutta_"+ timeStamp +".jpg";
+        filename2 = timeStamp + ".jpg";
+
+        fileForCoverFront = new File(myDir, filename2);
+
+        if (fileForCoverFront.exists()) fileForCoverFront.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForCoverFront);
+//            FileOutputStream out = this.openFileOutput(filename , Context.MODE_PRIVATE);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+//            mobileBitmap.recycle();
+            Log.e("fileGetting", fileForCoverFront + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForCoverFront;
+    }
+
+
+    public File saveImageForBack(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images3");
+        myDir.mkdirs();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//         filename = "Shutta_"+ timeStamp +".jpg";
+        filename3 = timeStamp + ".jpg";
+
+        fileForBack = new File(myDir, filename3);
+
+        if (fileForBack.exists()) fileForBack.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForBack);
+//            FileOutputStream out = this.openFileOutput(filename , Context.MODE_PRIVATE);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+//            mobileBitmap.recycle();
+            Log.e("fileGetting", fileForBack + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForBack;
+    }
+
+
+    public File saveImageForCoverBack(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images4");
+        myDir.mkdirs();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//         filename = "Shutta_"+ timeStamp +".jpg";
+        filename4 = timeStamp + ".jpg";
+
+        fileForCoverBack = new File(myDir, filename4);
+
+        if (fileForCoverBack.exists()) fileForCoverBack.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForCoverBack);
+//            FileOutputStream out = this.openFileOutput(filename , Context.MODE_PRIVATE);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+//            mobileBitmap.recycle();
+            Log.e("fileGetting", fileForCoverBack + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForCoverBack;
+    }
+
+
+    @Override
+    public void showLoadingInner() {
+        showLoaderDialog();
+    }
+
+    @Override
+    public void hideLoadingInner() {
+        hideLoaderDialog();
+    }
+
+    private void showConfirmationDialog(Context context) {
+        Dialog mDialog = new Dialog(context);
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mDialog.getWindow().setGravity(Gravity.CENTER);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mDialog.setContentView(R.layout.complete_shipping_popup);
+        mDialog.setCancelable(false);
+
+
+        mDialog.findViewById(R.id.complete_shipping_btn).setOnClickListener(v -> {
+            try {
+                btnConfirmType=1;
+
+                sendBitmapImage();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.continue_shopping_btn).setOnClickListener(v -> {
+            try {
+                btnConfirmType=2;
+
+                sendBitmapImage();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.close_popup).setOnClickListener(view -> {
+            mDialog.dismiss();
+        });
+        if(!((Activity) context).isFinishing())
+        {
+            mDialog.show();
+        }
+    }
+
+    public void showMokupData(){
+        sampleMokupBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AndroidDialogTools.getMokupSamples(FlashMemoryActivity.this, new VerifyDialogInterfaceForText() {
+                    @Override
+                    public void onConfirmClick(String string) {
+
+                    }
+
+                    @Override
+                    public void onCancelClick(String string) {
+
+                    }
+                }, getMokupData());
+            }
+        });
+    }
+
+    public List<SampleMokupItems> getMokupData(){
+
+        List<SampleMokupItems>sampleMokupItemsList=new ArrayList<>();
+        SampleMokupItems sampleMokupItems1=new SampleMokupItems();
+        SampleMokupItems sampleMokupItems2=new SampleMokupItems();
+        SampleMokupItems sampleMokupItems3=new SampleMokupItems();
+        sampleMokupItems1.setMokupImage(R.drawable.tshirt_test);
+        sampleMokupItems2.setMokupImage(R.drawable.test);
+        sampleMokupItems3.setMokupImage(R.drawable.demo);
+        sampleMokupItemsList.add(sampleMokupItems1);
+        sampleMokupItemsList.add(sampleMokupItems2);
+        sampleMokupItemsList.add(sampleMokupItems3);
+
+        return sampleMokupItemsList;
+    }
+
 }
 

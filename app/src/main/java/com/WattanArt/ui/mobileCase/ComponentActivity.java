@@ -2,6 +2,8 @@ package com.WattanArt.ui.mobileCase;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,11 +15,16 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +43,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -46,12 +54,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.WattanArt.AndroidDialogTools;
 import com.WattanArt.Dagger.component.ActivityComponent;
 import com.WattanArt.R;
+import com.WattanArt.Utils.RoundedBitmapClass;
 import com.WattanArt.Utils.ViewHelper;
 import com.WattanArt.Utils.config.Constants;
 import com.WattanArt.Utils.widgets.CustomeTextView;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
+import com.WattanArt.VerifyDialogInterfaceForText;
 import com.WattanArt.artcomponent.AccessoriesView;
 import com.WattanArt.artcomponent.ColorUtils;
 import com.WattanArt.artcomponent.CoverView;
@@ -60,14 +71,21 @@ import com.WattanArt.artcomponent.ImageCaseComponent;
 import com.WattanArt.artcomponent.MyEditText;
 import com.WattanArt.artcomponent.ObjectView;
 import com.WattanArt.model.Response.ImageUploadResponseModel;
+import com.WattanArt.model.SampleMokupItems;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
 import com.WattanArt.ui.EditImage.ColorMatrixUtils;
 import com.WattanArt.ui.PublicShipping.PublicBitmapsModel;
+import com.WattanArt.ui.PublicShipping.PublicShippingActivity;
+import com.WattanArt.ui.ShippingForMobile.MobileOrderRequest;
 import com.WattanArt.ui.ShippingForMobile.ShippingMobileActivity;
 import com.WattanArt.ui.base.BaseActivity;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -125,8 +143,6 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     @BindView(R.id.color_recyclerview)
     RecyclerView color_recyclerview;
 
-    @BindView(R.id.linear_container)
-    View linear_container;
 
     @BindView(R.id.toolbar_image_view)
     ImageView mToolbarBackImageView;
@@ -145,11 +161,10 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     Intent intent;
     String colorSend="";
     String styleSend="";
-    ImageView lowPixelsIv;
     int colorOrStyle=0;
     SeekBar hueSeekBar,font_sizeSeekBar;
     MyEditText txt_mobile;
-    LinearLayout mLinearLayout;
+//    LinearLayout mLinearLayout;
     EditText editText;
     View viewCreatedEdutText;
     int seekbar_value,seekbar_color_value;
@@ -167,6 +182,15 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     CoverView cover_view_text;
 
     String text,textColor,textFont,textSize;
+    String filename, filename2;
+    File fileForMobile, fileForCover;
+
+    List<MobileOrderRequest.OrderDetilsBean.ImagesBean> image=new ArrayList<>();
+    MobileOrderRequest.OrderDetilsBean orderDetilsBean=new MobileOrderRequest.OrderDetilsBean();
+    MobileOrderRequest.OrderDetilsBean.ImagesBean imagesBean=new MobileOrderRequest.OrderDetilsBean.ImagesBean();
+
+    int btnConfirmType=0;
+    RelativeLayout sampleMokupBottomHolder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -197,11 +221,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         mToolbarBackImageView.setOnClickListener(v -> {
             onBackPressed();
         });
-        lowPixelsIv.setOnClickListener(v -> {
-            Toast toast = Toast.makeText(this, getString(R.string.img_resoluyion), Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        });
+
 
 //        addEditView();
 //        for (int i=0;i<mLinearLayout.getChildCount();i++) {
@@ -213,6 +233,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     void initView() {
         colorsArrayList = new ArrayList<>();
         fontTypeModelList = new ArrayList<>();
+        sampleMokupBottomHolder = findViewById(R.id.sampleMokupBottomHolder);
         cover_view_text = findViewById(R.id.cover_view_text);
         font_recycler_view = findViewById(R.id.font_recycler_view);
         WritingBottomHolder = findViewById(R.id.WritingBottomHolder);
@@ -228,8 +249,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         txt_mobile = findViewById(R.id.txt_mobile);
         hueSeekBar = findViewById(R.id.hueSeekBar);
         font_sizeSeekBar = findViewById(R.id.font_sizeSeekBar);
-        mLinearLayout = new LinearLayout(ComponentActivity.this);
-        mLinearLayout = (LinearLayout) findViewById(R.id.linear_mobile);
+//        mLinearLayout = new LinearLayout(ComponentActivity.this);
+//        mLinearLayout = (LinearLayout) findViewById(R.id.linear_mobile);
 
         font_sizeSeekBar.setProgress(12);
         hueSeekBar.setProgress(0);
@@ -237,8 +258,9 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         updateColorNow();
         complete_tv = findViewById(R.id.order_design_tv);
         component = findViewById(R.id.componentView);
-        lowPixelsIv = findViewById(R.id.lowPixelsIv);
 
+        txt_mobile.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        txt_mobile.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
         applyFontSizeMethod();
         applyColorTextMethod();
@@ -269,6 +291,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         txtProperties();
         doneOfTextClick();
         writingOnCover();
+
+        showMokupData();
     }
 
     public void checkisMobileOrTablet() {
@@ -387,20 +411,102 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
 
     @Override
     public void returnUploadedImageForMobile(ImageUploadResponseModel imageUploadResponseModel) {
-//        Log.e("imageNameFromMobile", imageUploadResponseModel.getFileName());
-//        if (imageUploadResponseModel.getState() == 5) {
-//            mobileName = imageUploadResponseModel.getFileName();
-//            mPresenter.returnUploadedImageForCover(photos, fileForCover);
-//        }
+        Log.e("imageNameFromMobile", imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState() == 5) {
+            String mobileName = imageUploadResponseModel.getFileName();
+            orderDetilsBean.setMainImage(mobileName);
+            if (mobileName != null) {
+                imagesBean.setPrintscreenImg(mobileName);
+            }
+            mPresenter.returnUploadedImageForCover(photos, fileForCover);
+        }
     }
 
     @Override
     public void returnUploadedImageForCover(ImageUploadResponseModel imageUploadResponseModel) {
-//        Log.e("imageNameFromCover", imageUploadResponseModel.getFileName());
-//        if (imageUploadResponseModel.getState() == 5) {
-//            coverName = imageUploadResponseModel.getFileName();
+        Log.e("imageNameFromCover", imageUploadResponseModel.getFileName());
+        if (imageUploadResponseModel.getState() == 5) {
+           String coverName = imageUploadResponseModel.getFileName();
+            if (coverName != null) {
+                imagesBean.setImage(coverName);
+            }
 //            sendBitmapImage();
-//        }
+            navigateTo();
+            showConfirmationDialog(ComponentActivity.this);
+        }
+    }
+
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void saveTempBitmapForMobile(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForMobile(bitmap);
+        } else {
+            //prompt the user or do something
+        }
+    }
+
+    public void saveTempBitmapForCover(Bitmap bitmap) {
+        if (isExternalStorageWritable()) {
+            saveImageForCover(bitmap);
+        } else {
+            //prompt the user or do something
+        }
+    }
+
+    public File saveImageForMobile(Bitmap finalBitmap) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images");
+        myDir.mkdirs();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        filename = timeStamp + ".jpg";
+        fileForMobile = new File(myDir, filename);
+        if (fileForMobile.exists()) fileForMobile.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForMobile);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            Log.e("fileGetting", fileForMobile + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForMobile;
+    }
+
+    public File saveImageForCover(Bitmap finalBitmap) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images2");
+        myDir.mkdirs();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        filename2 = timeStamp + ".jpg";
+        fileForCover = new File(myDir, filename2);
+        if (fileForCover.exists()) fileForCover.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(fileForCover);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            Log.e("fileGetting", fileForCover + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileForCover;
+    }
+
+    public void returnBitmapFromHelper(Bitmap mobile ,Bitmap cover) {
+        if (mobile != null) {
+            saveTempBitmapForMobile(mobile);
+        }
+        if (cover != null) {
+            saveTempBitmapForCover(cover);
+        }
     }
 
     @Override
@@ -494,6 +600,13 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
             if (!General_Style.isEmpty())
                 General_Style.clear();
         }
+//        if (publicBitmapsModels!=null){
+//            publicBitmapsModels.clear();
+//        }
+//        if (MobileOrderRequest.getInstance().getOrderDetils()!=null){
+//            MobileOrderRequest.getInstance().getOrderDetils().clear();
+//        }
+
         finish();
     }
 
@@ -543,59 +656,26 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         }
     }
 
-    public void submit(View view) {
+    public static Bitmap loadBitmapFromView2(View v) {
+        v.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        Canvas canvas = new Canvas(b);
+        v.layout(0, 0, v.getWidth(), v.getHeight());
+        v.draw(canvas);
+        return b;
+    }
 
-//    if (!show){
+
+
+
+    public void submit(View view) {
         if (cover.getDrawable() != null) {
 
-//            Bitmap bitmap = ((BitmapDrawable) cover.getDrawable()).getBitmap();
-//            currentBitmap = Bitmap.createBitmap(bitmap,
-//                    0, 0, bitmap.getWidth(),
-//                    bitmap.getHeight(), cover.getImageMatrix(), true);
-
-            if (BitmapMobileHelper.getInstance().getBitmapMobile()!=null){
-                BitmapMobileHelper.getInstance().setBitmapMobile(null);
-                BitmapMobileHelper.getInstance().clearInstance();
-            }
-            mobileBitmap = loadBitmapFromView(component);
-            currentBitmap = loadBitmapFromCover(cover);
-
-
-
-//            cropImage();
-
-            if (mobileBitmap != null && currentBitmap != null) {
-
-                BitmapMobileHelper.getInstance().setBitmapMobile(mobileBitmap);
-                BitmapMobileHelper.getInstance().setBitmapCover(currentBitmap);
-                PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmap);
-
-                publicBitmapsModels.add(new PublicBitmapsModel(1+"",mobileId,priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
-
-
-            HelperMobileRequest.getInstance().getIds().add(Integer.parseInt(mobileId));
-            HelperMobileRequest.getInstance().getCoverBitmaps().add(currentBitmap);
-            HelperMobileRequest.getInstance().getScreenShootBitmaps().add(mobileBitmap);
-
-
-            for (int i=0;i<HelperMobileRequest.getInstance().getIds().size();i++){
-                Log.e("kkkdhdhdhdh", HelperMobileRequest.getInstance().getIds().get(i) + "");
-            }
-            for (int i=0;i<HelperMobileRequest.getInstance().getIds().size();i++){
-                Log.e("ssssssss", HelperMobileRequest.getInstance().getCoverBitmaps().get(i) + "");
-            }
-            for (int i=0;i<HelperMobileRequest.getInstance().getIds().size();i++){
-                Log.e("wwwwwww", HelperMobileRequest.getInstance().getScreenShootBitmaps().get(i) + "");
-            }
-
-        }
-            sendBitmapImage();
-//            cropImages(this);
+        showConfirmationDialog(ComponentActivity.this);
         } else {
             hideLoaderDialog();
             Toast.makeText(this, getString(R.string.choose_bg), Toast.LENGTH_SHORT).show();
         }
-//    }
     }
 
 
@@ -647,6 +727,29 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     }
 
     public void sendBitmapImage() {
+
+        txt_mobile.setBackground(null);
+        if (BitmapMobileHelper.getInstance().getBitmapMobile()!=null){
+            BitmapMobileHelper.getInstance().setBitmapMobile(null);
+            BitmapMobileHelper.getInstance().clearInstance();
+        }
+        mobileBitmap = loadBitmapFromView2(component);
+        currentBitmap = loadBitmapFromCover(cover);
+
+//        txt_mobile.setVisibility(View.GONE);
+//        cover_view_text.setVisibility(View.VISIBLE);
+//        txt_mobile.buildDrawingCache();
+//        cover_view_text.setImageBitmap(txt_mobile.getDrawingCache());
+
+        mobileBitmap= RoundedBitmapClass.getRoundedCornerBitmap(mobileBitmap,(int) getResources().getDimension(R.dimen.radius)+60);
+        returnBitmapFromHelper(mobileBitmap,currentBitmap);
+
+        if (mobileBitmap != null && currentBitmap != null) {
+            BitmapMobileHelper.getInstance().setBitmapMobile(mobileBitmap);
+            BitmapMobileHelper.getInstance().setBitmapCover(currentBitmap);
+            PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmap);
+        }
+        publicBitmapsModels.add(new PublicBitmapsModel(1+"",mobileId,priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
         initColorRecyclerView();
         if (colorBgMobileAdapter != null) {
             color_recyclerview.setAdapter(colorBgMobileAdapter);
@@ -654,20 +757,59 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         if (fontTypeAdapter != null) {
             font_recycler_view.setAdapter(fontTypeAdapter);
         }
-//        Intent intent = new Intent(this, PublicShippingActivity.class);
-        Intent intent = new Intent(this, ShippingMobileActivity.class);
-        intent.putExtra("color", colorSend+"");
-        intent.putExtra("style", styleSend+"");
-        intent.putExtra("photos", photos.get(0)+"");
-        intent.putExtra("mobileId", mobileId+"");
-        intent.putExtra("priceIn", priceIn+"");
-        intent.putExtra("priceOut", priceOut+"");
-        intent.putExtra("text", txt_mobile.getText().toString()+"");
-        intent.putExtra("textColor", textColor+"");
-        intent.putExtra("textSize", textSize+"");
-        intent.putExtra("textFont", textFont+"");
-        Log.e("photos",photos.get(0)+"");
-        startActivity(intent);
+
+
+
+
+        if (fileForMobile!=null) {
+            mPresenter.returnUploadedImageForMobile(photos, fileForMobile);
+        }else {
+            Toast.makeText(this, "هناك خطا ما", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    void navigateTo(){
+        initColorRecyclerView();
+        if (colorBgMobileAdapter != null) {
+            color_recyclerview.setAdapter(colorBgMobileAdapter);
+        }
+        if (fontTypeAdapter != null) {
+            font_recycler_view.setAdapter(fontTypeAdapter);
+        }
+        orderDetilsBean.setProductID(Integer.parseInt(mobileId));
+        imagesBean.setText(txt_mobile.getText().toString());
+        imagesBean.setText_size(textSize);
+        imagesBean.setText_font(textFont);
+        imagesBean.setText_color(textColor);
+        imagesBean.setStyle(colorSend);
+        imagesBean.setColor(styleSend);
+        imagesBean.setDesignerID("0");
+        imagesBean.setDesignerFlag(0);
+        image.add(imagesBean);
+        orderDetilsBean.setImages(image);
+
+        MobileOrderRequest.getInstance().getOrderDetils().add(orderDetilsBean);
+
+        if (btnConfirmType==1) {
+            Intent intent = new Intent(this, PublicShippingActivity.class);
+//        Intent intent = new Intent(this, ShippingMobileActivity.class);
+            intent.putExtra("color", colorSend + "");
+            intent.putExtra("style", styleSend + "");
+            intent.putExtra("photos", photos.get(0) + "");
+            intent.putExtra("mobileId", mobileId + "");
+            intent.putExtra("priceIn", priceIn + "");
+            intent.putExtra("priceOut", priceOut + "");
+            intent.putExtra("text", txt_mobile.getText().toString() + "");
+            intent.putExtra("textColor", textColor + "");
+            intent.putExtra("textSize", textSize + "");
+            intent.putExtra("textFont", textFont + "");
+            Log.e("photos", photos.get(0) + "");
+            startActivity(intent);
+            finish();
+        }else if (btnConfirmType==2){
+            onBackPressed();
+        }
     }
 
 
@@ -761,7 +903,7 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
 //                    for(int m = 0; m < mLinearLayout.getChildCount(); ++m){
 //                        if (mLinearLayout.getChildAt(m).hasFocus()) {
                 txt_mobile.setTextColor(Color.parseColor("#" + ColorUtils.colorList()[seekbar_color_value]));
-                textColor=ColorUtils.colorList()[seekbar_color_value];
+                textColor = "#" +ColorUtils.colorList()[seekbar_color_value];
 //                        }
 //                    }
 
@@ -779,23 +921,73 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
                 above_bottom_linear.setVisibility(View.VISIBLE);
 //                addEditView();
                 txt_mobile.setVisibility(View.VISIBLE);
-                txt_mobile.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
+//                txt_mobile.setBackground(getResources().getDrawable(R.drawable.edit_text_background));
+                txt_mobile.setBackground(getResources().getDrawable(R.drawable.rounded_corners_white_transparent_50));
                 cover_view_text.setVisibility(View.GONE);
             }
         });
     }
 
+//    public void clickOnTextBottomHolder(){
+//        textBottomHolder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                linear_color_style.setVisibility(View.GONE);
+////                above_bottom_linear.setVisibility(View.VISIBLE);
+////                txt_mobile.setVisibility(View.VISIBLE);
+////                cover_view_text.setVisibility(View.GONE);
+//                textBottomHolder.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        txt_mobile.setVisibility(View.VISIBLE);
+//                        linear_color_style.setVisibility(View.GONE);
+//                        above_bottom_linear.setVisibility(View.VISIBLE);
+//                        cover_view_text.setVisibility(View.GONE);
+//
+//                        AndroidDialogTools.getTextOfUser(ComponentActivity.this, new VerifyDialogInterfaceForText() {
+//                            @Override
+//                            public void onConfirmClick(String string) {
+//                                txt_mobile.setVisibility(View.VISIBLE);
+//                                cover_view_text.setVisibility(View.VISIBLE);
+//                                txt_mobile.setText(string);
+//                                txt_mobile.buildDrawingCache();
+//                                cover_view_text.setImageBitmap(txt_mobile.getDrawingCache());
+//                                txt_mobile.setBackground(null);
+//                                Log.e("ggggg",""+string);
+//                                ViewHelper.hideKeyboard(ComponentActivity.this);
+//                            }
+//
+//                            @Override
+//                            public void onCancelClick(String string) {
+//                                txt_mobile.setVisibility(View.VISIBLE);
+//                                cover_view_text.setVisibility(View.VISIBLE);
+////                                txt_mobile.setText(string);
+//                                txt_mobile.buildDrawingCache();
+//                                cover_view_text.setImageBitmap(txt_mobile.getDrawingCache());
+//                                txt_mobile.setBackground(null);
+//                                Log.e("ggggg",""+string);
+//                                ViewHelper.hideKeyboard(ComponentActivity.this);
+//                                Log.e("cccccc","ccccc");
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
+//    }
+
     public void clickCancelBottomHolder(){
         applyBottomHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txt_mobile.setVisibility(View.GONE);
-                txt_mobile.setBackground(null);
-                cover_view_text.setVisibility(View.VISIBLE);
+                txt_mobile.setVisibility(View.VISIBLE);
+//                txt_mobile.setBackground(null);
+                cover_view_text.setVisibility(View.GONE);
                 linear_color_style.setVisibility(View.VISIBLE);
                 above_bottom_linear.setVisibility(View.GONE);
-                txt_mobile.buildDrawingCache();
-                cover_view_text.setImageBitmap(txt_mobile.getDrawingCache());
+
+//                txt_mobile.buildDrawingCache();
+//                cover_view_text.setImageBitmap(txt_mobile.getDrawingCache());
             }
         });
     }
@@ -862,12 +1054,12 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         for (int i=0;i<editTextList.size();i++) {
             Log.e("editTextListId", editTextList.get(i).getId()+"");
         }
-        mLinearLayout.setOrientation(LinearLayout.VERTICAL);
+//        mLinearLayout.setOrientation(LinearLayout.VERTICAL);
         editText.setGravity(Gravity.CENTER);
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setMaxLines(10);
-        mLinearLayout.addView(editText);
+//        mLinearLayout.addView(editText);
 
 //        editText.setFocusable(false);
 //        editText.setCursorVisible(false);
@@ -905,16 +1097,22 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
 
 
     public void editTextClick(){
-//            for(int i = 0; i < editTextList.size(); ++i) {
-//                if (txt_mobile.getId() == editTextList.get(i).getId()) {
-                    txt_mobile.setFocusable(true);
-        txt_mobile.setBackgroundColor(Color.TRANSPARENT);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(txt_mobile, InputMethodManager.SHOW_IMPLICIT);
-                    txt_mobile.requestFocus();
-                    txt_mobile.getBackground().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+//        txt_mobile.setFocusable(true);
+//        txt_mobile.setBackgroundColor(Color.TRANSPARENT);
+//        txt_mobile.setBackground(getResources().getDrawable(R.drawable.rounded_corners_white_transparent_50));
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(txt_mobile, InputMethodManager.SHOW_IMPLICIT);
+//        txt_mobile.setImeOptions(EditorInfo.IME_ACTION_DONE);
+//        txt_mobile.setRawInputType(InputType.TYPE_CLASS_TEXT);
+//        txt_mobile.requestFocus();
 
-//            }}
+        if (txt_mobile.requestFocus()) {
+            txt_mobile.setBackground(getResources().getDrawable(R.drawable.rounded_corners_white_transparent_50));
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(txt_mobile, InputMethodManager.SHOW_IMPLICIT);
+            txt_mobile.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            txt_mobile.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        }
     }
 
     public void doneOfTextClick(){
@@ -924,8 +1122,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
                         @Override
                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                                txt_mobile.setFocusable(false);
-                                txt_mobile.setBackgroundColor(Color.TRANSPARENT);
+//                                txt_mobile.setFocusable(false);
+//                                txt_mobile.setBackgroundColor(Color.TRANSPARENT);
                                 ViewHelper.hideKeyboard(ComponentActivity.this);
                             }
                             return false;
@@ -944,4 +1142,82 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
     }
 
 
+    private void showConfirmationDialog(Context context) {
+        Dialog mDialog = new Dialog(context);
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mDialog.getWindow().setGravity(Gravity.CENTER);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mDialog.setContentView(R.layout.complete_shipping_popup);
+        mDialog.setCancelable(false);
+
+
+        mDialog.findViewById(R.id.complete_shipping_btn).setOnClickListener(v -> {
+            try {
+                btnConfirmType=1;
+
+                sendBitmapImage();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.continue_shopping_btn).setOnClickListener(v -> {
+            try {
+                btnConfirmType=2;
+
+                sendBitmapImage();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            mDialog.dismiss();
+        });
+
+        mDialog.findViewById(R.id.close_popup).setOnClickListener(view -> {
+            mDialog.dismiss();
+        });
+        if(!((Activity) context).isFinishing())
+        {
+            mDialog.show();
+        }
+    }
+
+
+    public void showMokupData(){
+        sampleMokupBottomHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AndroidDialogTools.getMokupSamples(ComponentActivity.this, new VerifyDialogInterfaceForText() {
+                    @Override
+                    public void onConfirmClick(String string) {
+
+                    }
+
+                    @Override
+                    public void onCancelClick(String string) {
+
+                    }
+                }, getMokupData());
+            }
+        });
+    }
+
+    public List<SampleMokupItems> getMokupData(){
+
+        List<SampleMokupItems>sampleMokupItemsList=new ArrayList<>();
+        SampleMokupItems sampleMokupItems1=new SampleMokupItems();
+        SampleMokupItems sampleMokupItems2=new SampleMokupItems();
+        SampleMokupItems sampleMokupItems3=new SampleMokupItems();
+        sampleMokupItems1.setMokupImage(R.drawable.tshirt_test);
+        sampleMokupItems2.setMokupImage(R.drawable.test);
+        sampleMokupItems3.setMokupImage(R.drawable.demo);
+        sampleMokupItemsList.add(sampleMokupItems1);
+        sampleMokupItemsList.add(sampleMokupItems2);
+        sampleMokupItemsList.add(sampleMokupItems3);
+
+        return sampleMokupItemsList;
+    }
 }

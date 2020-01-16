@@ -84,6 +84,7 @@ import retrofit2.Callback;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingFlashRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingMobileRegister;
 import static com.WattanArt.ui.Register.RegisterActivity.ShippingRegister;
+import static com.WattanArt.ui.Register.RegisterActivity.publicShipping;
 import static com.WattanArt.ui.Shipping.ShippingActivity.OPEN_REGISTERATION_CODE;
 import static com.WattanArt.ui.Shipping.ShippingActivity.REQUEST_STORAGE_READ_ACCESS_PERMISSION;
 
@@ -743,6 +744,7 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                 intent.putExtra(ShippingRegister, true);
                 intent.putExtra(ShippingMobileRegister, false);
                 intent.putExtra(ShippingFlashRegister, false);
+                intent.putExtra(publicShipping, false);
                 ((Activity) coontext).startActivityForResult(intent, OPEN_REGISTERATION_CODE);
 
 //                getMvpView().showMessage("This feature is under developement");
@@ -1291,18 +1293,30 @@ ShippingPresenter<V extends ShippingMvpView> extends BasePresenter<V>
                 if (response.code() == 200) {
                     if (response.body().getState() == 1) {
                         //could not find file
-                        Toast.makeText(MyApplication.getAppContext(), "Error 1", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MyApplication.getAppContext(), "Error 1", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getAppContext(),
+                                MyApplication.getAppContext().getString(R.string.slow_connection)
+                                , Toast.LENGTH_SHORT).show();
+
 
                     } else if (response.body().getState() == 2) {
                         //part file catch from service
-                        Toast.makeText(MyApplication.getAppContext(), "Error 2", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MyApplication.getAppContext(), "Error 2", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getAppContext(),
+                                MyApplication.getAppContext().getString(R.string.slow_connection)
+                                , Toast.LENGTH_SHORT).show();
+
 
                     } else if (response.body().getState() == 3) {
                         //success in part and complete upload other parts , file name is uploaded parts concatenated with ,
                         uploadFile(listPaths);
                     } else if (response.body().getState() == 4) {
                         //all parts uploaded but error to join them by service
-                        Toast.makeText(MyApplication.getAppContext(), "Error 4", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MyApplication.getAppContext(), "Error 4", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getAppContext(),
+                                MyApplication.getAppContext().getString(R.string.slow_connection)
+                                , Toast.LENGTH_SHORT).show();
+
 
                     } else if (response.body().getState() == 5) {
                         //image completed successfully

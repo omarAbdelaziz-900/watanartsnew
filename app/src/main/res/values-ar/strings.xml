@@ -116,6 +116,9 @@
     <string name="confirm_replace">هل انت متاكد من رغبتك باستبدال الصورة ؟  </string>
     <string name="confirm_delete">هل انت متاكد من رغبتك بحذف الصورة ؟ </string>
 
+    <string name="confirm_shipping">هل تريد حقًا إضافة المنتج إلى سلة التسوق؟</string>
+
+    <string name="confirm_delete_product">هل انت متاكد من رغبتك بحذف المنتج ؟ </string>
     <string name="no_Of_order_">رقم الطلب : </string>
     <string name="no_of_Canvas">عدد القطع :  </string>
     <string name="ratio">النسبة :</string>
@@ -147,8 +150,14 @@
     <string name="complete">إكمال</string>
     <string name="title_shipping_order">الطلبيه</string>
     <string name="delete">مسح الصوره</string>
+    <string name="delete_product">مسح المنتج</string>
     <string name="delete_all">مسح الكل</string>
     <string name="cancel">إلغاء</string>
+
+    <string name="continue_shopping">استمرار التسوق</string>
+    <string name="complete_shipping">اكمال الشراء</string>
+
+
     <string name="ok">موافق</string>
     <string name="add">إضافه صور</string>
     <string name="title_edit_images">تعديل الصور</string>
@@ -187,7 +196,7 @@
  من فضلك قم بمشاركة هذا الكود لتحصل علي رصيد أكثر . </string>
 
     <string name="pick_from_gallery">Select image</string>
-    <string name="choose_what">قم باختيار ما تريد انشاءه</string>
+    <string name="choose_what">قم باختيار المنتج الذي تريد طباعته</string>
 
     <string name="my_account">My Account</string>
 
