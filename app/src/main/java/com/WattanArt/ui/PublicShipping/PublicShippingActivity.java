@@ -45,6 +45,7 @@ import com.WattanArt.model.Response.ImageUploadResponseModel;
 import com.WattanArt.model.Response.SelectCountryCitiyListsResponseModel;
 import com.WattanArt.ui.Category.ColorBgMobileAdapter;
 import com.WattanArt.ui.Home.HomeActivity;
+import com.WattanArt.ui.MyOrdersActivity;
 import com.WattanArt.ui.Payment.WebviewActivity;
 import com.WattanArt.ui.ShippingForMobile.MobileOrderRequest;
 import com.WattanArt.ui.ShippingForMobile.MobileOrderResponse;
@@ -199,7 +200,6 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     @Override
     public void onItemRemoved(int position) {
         showDeleteDialog(PublicShippingActivity.this,position);
-
     }
 
     private void showDeleteDialog(Context context, int position) {
@@ -220,9 +220,10 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
 
                 publicBitmapsModels.remove(position);
                 MobileOrderRequest.getInstance().getOrderDetils().remove(position);
-                Log.e("getOrderDetilsSize",MobileOrderRequest.getInstance().getOrderDetils().size()+"");
-                Log.e("publicBitmapsModelsSize",publicBitmapsModels.size()+"");
-                recycler_view.removeViewAt(position);
+//                Log.e("getOrderDetilsSize",MobileOrderRequest.getInstance().getOrderDetils().size()+"");
+//                Log.e("publicBitmapsModelsSize",publicBitmapsModels.size()+"");
+//                recycler_view.removeViewAt(position);
+
                 publicShippingAdapter.notifyItemRemoved(position);
                 publicShippingAdapter.notifyItemRangeChanged(position, publicBitmapsModels.size());
 
@@ -322,6 +323,8 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     }
 
     public void calculateInPriceOnCreatte(List<PublicBitmapsModel> mValues){
+        Log.e("mValues",mValues+"");
+        Log.e("mValues",MobileOrderRequest.getInstance().getOrderDetils()+"");
         double price=0;
         for (int i=0;i<mValues.size();i++){
             if (isInEgypt) {
@@ -732,6 +735,10 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     }
 
     public void completeOrder(View view) {
+
+        Log.e("publicBitmapsModelsSize",publicBitmapsModels.size()+"");
+        Log.e("publicBitmapsModelsSize222",MobileOrderRequest.getInstance().getOrderDetils().size()+"");
+
         completeOrder();
     }
 
@@ -777,13 +784,24 @@ public class PublicShippingActivity extends BaseActivity implements PublicShippi
     }
 
     public void navigateFromOrderId(int orderId) {
+
+        if (MobileOrderRequest.getInstance()!=null){
+            MobileOrderRequest.getInstance().clearInstance();
+        }
+        if (publicBitmapsModels!=null){
+            publicBitmapsModels.clear();
+        }
         if (radioGroupPayment.getCheckedRadioButtonId() == R.id.cashRadioButton) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("From", " shipping order");
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            clearData();
+//            Intent intent = new Intent(this, HomeActivity.class);
+//            intent.putExtra("From", " shipping order");
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            clearData();
+//            startActivity(intent);
+
+            Intent intent = new Intent(this, MyOrdersActivity.class);
             startActivity(intent);
+            finish();
         } else {
             clearData();
             Intent intent = new Intent(this, WebviewActivity.class);

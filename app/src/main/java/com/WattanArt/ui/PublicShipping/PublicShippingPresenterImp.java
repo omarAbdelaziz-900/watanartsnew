@@ -443,6 +443,8 @@ public class PublicShippingPresenterImp <V extends PublicShippingMvpView> extend
                         MyApplication.getAppContext().getString(R.string.slow_connection)
                         , Toast.LENGTH_SHORT).show();
 
+
+
                 getMvpView().hideLoadingInner();
 
             }
@@ -543,6 +545,7 @@ public class PublicShippingPresenterImp <V extends PublicShippingMvpView> extend
                 Toast.makeText(MyApplication.getAppContext(),
                         MyApplication.getAppContext().getString(R.string.slow_connection)
                         , Toast.LENGTH_SHORT).show();
+
 
                 getMvpView().hideLoadingInner();
 

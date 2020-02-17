@@ -372,6 +372,7 @@
 
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/sampleMokupBottomHolder"
                 android:layout_width="@dimen/_45sdp"
                 android:layout_height="@dimen/_45sdp"

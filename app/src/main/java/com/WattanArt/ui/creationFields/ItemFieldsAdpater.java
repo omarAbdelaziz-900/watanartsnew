@@ -85,6 +85,7 @@ public class ItemFieldsAdpater extends RecyclerView.Adapter<ItemFieldsAdpater.My
 
 
         holder.textView.setText(item.getName());
+        Log.e("imageViewimageView",item.getImage());
         loadImage(item.getImage(),holder.imageView);
 
 

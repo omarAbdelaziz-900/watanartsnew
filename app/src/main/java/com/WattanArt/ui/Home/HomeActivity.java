@@ -2,13 +2,19 @@ package com.WattanArt.ui.Home;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,32 +23,72 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.WattanArt.BuildConfig;
 import com.WattanArt.R;
+import com.WattanArt.UpdateApp.HttpHandler;
 import com.WattanArt.Utils.BottomNavigationViewHelper;
 import com.WattanArt.Utils.SharedPrefTool.UserData;
 import com.WattanArt.Utils.UtilitiesManager;
+import com.WattanArt.Utils.config.Constants;
 import com.WattanArt.Utils.widgets.CustomeTextViewBold;
+import com.WattanArt.artcomponent.ImageCaseComponent;
 import com.WattanArt.ui.ActivityFeed.ActivityFeedFragment;
 import com.WattanArt.ui.Category.CategoryActivity;
 import com.WattanArt.ui.HomeFragment.HomeFragment;
 import com.WattanArt.ui.Order.OrderHistory.OrderHistoryFragment;
+import com.WattanArt.ui.PublicShipping.PublicBitmapsModel;
+import com.WattanArt.ui.PublicShipping.PublicShippingActivity;
 import com.WattanArt.ui.Setting.SettingFragment;
 import com.WattanArt.ui.Shipping.ShippingActivity;
 import com.WattanArt.ui.base.BaseActivity;
 import com.WattanArt.ui.myAccount.MyAccountFragment;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.iwf.photopicker.PhotoPicker;
 
+import static com.WattanArt.ui.PublicShipping.PublicShippingActivity.publicBitmapsModels;
+
 public class HomeActivity extends BaseActivity {
+
+//    private static  String url = "http://androidmkab.com/paperVersion.json";
+    private static  String url = Constants.BASE_URL+"api/SettingApi/GetVersions";
+    String VersionUpdate;
+
     UserData userData;
     String userId;
     BottomNavigationView navigation;
 
+
+    @BindView(R.id.container)
+    public RelativeLayout container;
 
     @BindView(R.id.toolbar_image_view)
     public ImageView mToolbarBackImageView;
@@ -65,9 +111,14 @@ public class HomeActivity extends BaseActivity {
                         pickFromGallery();
                     } else {
                         if (isNetworkConnected()) {
-                            startActivity(new Intent(HomeActivity.this, HomeActivity.class));
-                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                            finish();
+                            Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_holder);
+                            if (f instanceof HomeFragment) {
+
+                            }else {
+                                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                                finish();
+                            }
                         } else {
                             showMessage(getString(R.string.error_no_internet_connection));
 
@@ -89,18 +140,39 @@ public class HomeActivity extends BaseActivity {
                     return false;
 
                 case R.id.navigation_history:
-                    userId = userData.getUserID(HomeActivity.this);
-                    if (!userId.isEmpty()) {
+
                         if (isNetworkConnected()) {
-                            openFragment(OrderHistoryFragment.class, null);
+//                            openFragment(OrderHistoryFragment.class, null);
+
+                            if (publicBitmapsModels!=null) {
+                                if (!publicBitmapsModels.isEmpty()) {
+                                    Intent intent = new Intent(HomeActivity.this, PublicShippingActivity.class);
+                                    startActivity(intent);
+                                    Log.e("ddddddd22",publicBitmapsModels.size()+"");
+                                    return true;
+                                }else {
+                                    showMessage(R.string.no_cart);
+                                    return false;
+                                }
+                            }else {
+                                Log.e("ddddddd",publicBitmapsModels.size()+"");
+                                showMessage(R.string.no_cart);
+                                return false;
+                            }
                         } else {
                             showMessage(R.string.error_no_internet_connection);
                         }
-                    } else {
-                        showMessage(R.string.login_before);
-//                        navigation.setSelectedItemId(R.id.navigation_history);
-                    }
 
+//                    if (!userId.isEmpty()) {
+//                        if (isNetworkConnected()) {
+//                            openFragment(OrderHistoryFragment.class, null);
+//                        } else {
+//                            showMessage(R.string.error_no_internet_connection);
+//                        }
+//                    } else {
+//                        showMessage(R.string.login_before);
+////                        navigation.setSelectedItemId(R.id.navigation_history);
+//                    }
 
                     return true;
                 case R.id.navigation_setting:
@@ -150,6 +222,17 @@ public class HomeActivity extends BaseActivity {
 //        }
 //    }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -190,11 +273,12 @@ public class HomeActivity extends BaseActivity {
         BottomNavigationViewHelper.removeShiftMode(navigation);
         if (getIntent().hasExtra("From")) {
             navigation.setSelectedItemId(R.id.navigation_history);
-        } else
+        } else {
             openFragment(HomeFragment.class, null);
+        }
 //            openFragment(ActivityFeedFragment.class, null);
 
-
+        new VersionCheck().execute();
     }
 
     @Override
@@ -205,24 +289,36 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
 
-//        for (Fragment fragment  : getSupportFragmentManager().getFragments()){
-//            if (fragment!=null){
-//                fragment.onActivityResult(requestCode, resultCode ,data);
-//            }
+//        switch (requestCode) {
+//
+//            case REQ_CODE_VERSION_UPDATE:
+//                if (resultCode != RESULT_OK) { //RESULT_OK / RESULT_CANCELED / RESULT_IN_APP_UPDATE_FAILED
+//                    Log.d("Update flow failed! Result code: " , resultCode+"");
+//                    // If the update is cancelled or fails,
+//                    // you can request to start the update again.
+//                    unregisterInstallStateUpdListener();
+//                }
+//
+//                break;
+//
+//            case PhotoPicker.REQUEST_CODE:
+//                if (data != null) {
+//                    ArrayList<String> photos =
+//                            data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+//                    Intent intent = new Intent(HomeActivity.this, ShippingActivity.class);
+//                    intent.putStringArrayListExtra("photos_list", photos);
+//                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//                    startActivity(intent);
+//                }
+//                break;
 //        }
-
+//
         if (resultCode == RESULT_OK) {
             if (requestCode == PhotoPicker.REQUEST_CODE) {
                 if (data != null) {
                     ArrayList<String> photos =
                             data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-
-//                    ArrayList<ImageModel> imageModels = new ArrayList<>();
-//                    for (String path : photos){
-//                        imageModels.add(new ImageModel(path));
-//                    }
                     Intent intent = new Intent(HomeActivity.this, ShippingActivity.class);
                     intent.putStringArrayListExtra("photos_list", photos);
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -281,6 +377,125 @@ public class HomeActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_holder, fragment).commit();
+    }
 
+
+
+    public class VersionCheck extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            HttpHandler sh = new HttpHandler();
+
+
+            String jsonStr = sh.makeServiceCall(url);
+            if (jsonStr != null){
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONObject jsonObject = jsonObj.getJSONObject("result");
+                    JSONArray version = jsonObject.getJSONArray("Version");
+                    for (int i = 0; i < version.length(); i++){
+
+                        JSONObject v = version.getJSONObject(i);
+
+                        VersionUpdate = v.getString("version");
+                        Log.e("VersionUpdateeed",VersionUpdate);
+                        VersionUpdate="1.20";
+                    }
+                }catch (final JSONException e) {
+                    // Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Toast.makeText(getApplicationContext(),
+//                                    "Json parsing error: " + e.getMessage(),
+//                                    Toast.LENGTH_LONG)
+//                                    .show();
+                        }
+                    });
+                }
+            } else {
+                //Log.e(TAG, "Couldn't get json from server.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Toast.makeText(getApplicationContext(),
+//                                "Couldn't get json from server. Check LogCat for possible errors!",
+//                                Toast.LENGTH_LONG)
+//                                .show();
+                    }
+                });
+
+            }
+
+//            VersionUpdate="17";
+//            VersionUpdate="1.20";
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+
+            String VersionName = BuildConfig.VERSION_NAME;
+            Log.e("VersionName",VersionName);
+
+            if (VersionUpdate!=null) {
+                if (VersionUpdate.equals(VersionName)) {
+
+                    //Do Nothing
+                } else {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                    builder.setTitle("Our App got Update");
+                    builder.setIcon(R.mipmap.ic_launcher);
+                    builder.setCancelable(false);
+                    builder.setMessage("New version available, select update to update our app")
+                            .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    final String appName = getPackageName();
+
+                                    try {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.wattanart")));
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appName)));
+                                        Log.e("aaaaaaaa", "aaaaaaaa");
+                                    } catch (android.content.ActivityNotFoundException anfe) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appName)));
+                                        Log.e("bbbbbbbb", "bbbbbbbbb");
+                                    }
+
+                                    finish();
+
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                        builder.setCancelable(true);
+                            dialog.cancel();
+
+                        }
+                    });
+//                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() { // define the 'Cancel' button
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        builder.ca
+//                    }
+//                });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+
+                }
+
+            }
+        }
     }
 }

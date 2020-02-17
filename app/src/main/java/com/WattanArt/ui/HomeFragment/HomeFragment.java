@@ -188,6 +188,8 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
                 pickFromGallery();
             }
         });
+
+
         return view;
     }
 
@@ -380,6 +382,7 @@ public class HomeFragment extends BaseFragment implements HomeMvpView ,ItemField
             });
         }
     }
+
 
 
     public void itemFielsdsList2(){

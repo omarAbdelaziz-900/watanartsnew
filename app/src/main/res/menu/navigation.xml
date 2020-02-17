@@ -14,10 +14,16 @@
         android:title="@string/title_meshCanvas"
             app:showAsAction="always|withText" />
 
+<!--    <item-->
+<!--        android:id="@+id/navigation_history"-->
+<!--        android:icon="@drawable/ic_order_history_unactive"-->
+<!--        android:title="@string/title_history"-->
+<!--        app:showAsAction="always|withText" />-->
+
     <item
         android:id="@+id/navigation_history"
-        android:icon="@drawable/ic_order_history_unactive"
-        android:title="@string/title_history"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
+        android:title="@string/title_cart"
         app:showAsAction="always|withText" />
 
     <item

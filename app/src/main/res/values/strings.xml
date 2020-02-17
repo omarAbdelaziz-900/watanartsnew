@@ -107,6 +107,7 @@
     <string name="title_home">Home</string>
     <string name="title_meshCanvas">Watan Art</string>
     <string name="title_history">My Orders</string>
+    <string name="title_cart">My Cart</string>
     <string name="title_setting">Settings</string>
     <string name="title_account">Account</string>
     <string name="title_canvas_print">Board Print</string>
@@ -243,15 +244,15 @@
     <string name="days">Days</string>
     <string name="or">OR</string>
     <!--======================================-->
-
+    0
 
     <string name="qty">Qty</string>
     <string name="low_reselution">Low Resolution Images detected</string>
 
-    <!--<string name="facebook_app_id" translatable="false">108822879979679</string>-->
-    <string name="facebook_app_id" translatable="false">427047514523802</string>
-    <!--<string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>-->
-    <string name="fb_login_protocol_scheme" translatable="false">fb427047514523802</string>
+<!--    <string name="facebook_app_id" translatable="false">108822879979679</string>-->
+        <string name="facebook_app_id" translatable="false">427047514523802</string>
+<!--    <string name="fb_login_protocol_scheme" translatable="false">fb108822879979679</string>-->
+        <string name="fb_login_protocol_scheme" translatable="false">fb427047514523802</string>
 
     <string name="get_10_egp_free_Credit1">Get your</string>
     <string name="get_10_egp_free_Credit2"> free credits!</string>
@@ -314,4 +315,7 @@
     <string name="coster">Coaster</string>
     <string name="edit_design">Edit design</string>
     <string name="nodata_txt">not available now</string>
+    <string name="update_downloaded">Please update for new Version</string>
+
+    <string name="no_cart">cart is empty</string>
 </resources>

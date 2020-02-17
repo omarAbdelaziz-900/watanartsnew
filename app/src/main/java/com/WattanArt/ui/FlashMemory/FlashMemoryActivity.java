@@ -518,7 +518,8 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
         colorOrStyle=2;
         if (flashType.equals("front")){
             objectView_front.setBackgroundColor(0x00000000);
-            String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
+//            String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
+            String imgName=Constants.BASE_URL+"UploadedImages/" +General_Style.get(position);
             Log.e("colorPosotion",stylePostionFront+"");
             Log.e("position",position+"");
             if (position!=stylePostionFront) {
@@ -529,7 +530,8 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
             styleNameFront=General_Style.get(position);
         }else if (flashType.equals("back")){
             objectView_back.setBackgroundColor(0x00000000);
-            String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
+//            String imgName="http://23.236.154.106:8063/UploadedImages/"+General_Style.get(position);
+            String imgName=Constants.BASE_URL+"UploadedImages/"+General_Style.get(position);
             Log.e("colorPosotion",stylePostionback+"");
             Log.e("position",position+"");
             if (position!=stylePostionback) {
@@ -1181,7 +1183,7 @@ public class FlashMemoryActivity extends BaseActivity implements FlashMemoryMvpV
     public void onSizeItemsClickFromAdapter(int position, String priceFlashIn, String priceFlashOut,List<FlashMemorySizeModel> flashMemorySizeModelList2) {
         priceIn=flashMemorySizeModelList2.get(position).getPriceIn();
         priceOut=flashMemorySizeModelList2.get(position).getPriceOut();
-        Toast.makeText(this, position+"\n"+priceIn+"\n"+priceOut+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, position+"\n"+priceIn+"\n"+priceOut+"", Toast.LENGTH_SHORT).show();
     }
 
 

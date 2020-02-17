@@ -147,6 +147,7 @@
     <string name="enter_password">أدخل كلمة المرور</string>
     <string name="enter_full_name">أدخل اسمك بالكامل</string>
     <string name="title_history">طلبياتي</string>
+    <string name="title_cart">طلبياتي</string>
     <string name="complete">إكمال</string>
     <string name="title_shipping_order">الطلبيه</string>
     <string name="delete">مسح الصوره</string>
@@ -228,4 +229,7 @@
     <string name="coster"> كوستر</string>
     <string name="edit_design">تعديل التصميم</string>
     <string name="nodata_txt">غير متوفر الان</string>
+
+    <string name="update_downloaded">قم بتحديث التطبيق لتحصل علي تحديثات جديده</string>
+    <string name="no_cart">لا يوجد طلبيات</string>
 </resources>

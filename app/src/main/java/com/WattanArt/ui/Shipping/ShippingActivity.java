@@ -462,6 +462,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
     public void onBackPressed() {
         super.onBackPressed();
         imageModelList.clear();
+        //        ده اللي انا شيلته
         InEgyptHelper.getInstance().setInEgypt(true);
     }
 
@@ -767,6 +768,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
 //        finish();
 
         imageModelList.clear();
+        //        ده اللي انا شيلته
         if (radioGroupPayment.getCheckedRadioButtonId() == R.id.cashRadioButton) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("From", " shipping order");
@@ -1313,6 +1315,7 @@ public class ShippingActivity extends BaseActivity implements ShippingMvpView,
     protected void onDestroy() {
         super.onDestroy();
         imageModelList.clear();
+//        ده اللي انا شيلته
     }
 
     @Override

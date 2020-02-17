@@ -20,11 +20,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.PublicShipping.PublicShippingActivity"
+        <activity android:name=".ui.MyOrdersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_NoTitlebar"/>
+        <activity
+            android:name=".ui.PublicShipping.PublicShippingActivity"
             android:configChanges="locale|touchscreen|orientation|screenLayout|screenSize|keyboardHidden|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.ShippingT_Shirt.ShippingT_ShirtActivity"
             android:configChanges="locale|touchscreen|orientation|screenLayout|screenSize|keyboardHidden|uiMode"
@@ -100,8 +104,7 @@
             android:name=".ui.mobileCase.ComponentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme_NoTitlebar"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.Home.HomeActivity"
             android:screenOrientation="portrait"

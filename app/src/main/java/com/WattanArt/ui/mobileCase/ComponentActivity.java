@@ -541,7 +541,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         colorOrStyle=2;
         objectView.setBackgroundColor(0x00000000);
 //        cover.layout(0, 0, linear_container.getLayoutParams().width, linear_container.getLayoutParams().height);
-        String imgName = "http://23.236.154.106:8063/UploadedImages/" + General_Style.get(position);
+//        String imgName = "http://23.236.154.106:8063/UploadedImages/" + General_Style.get(position);
+        String imgName = Constants.BASE_URL+"UploadedImages/" + General_Style.get(position);
         Log.e("colorPosotion", stylePostion + "");
         Log.e("position", position + "");
         if (position != stylePostion) {
@@ -560,7 +561,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         Bundle args = intent.getBundleExtra("BUNDLE");
         if (intent.hasExtra("mobileImage")) {
             mobileImage = intent.getStringExtra("mobileImage");
-            mobileImageUrl = "http://23.236.154.106:8063/UploadedImages/" + mobileImage;
+//            mobileImageUrl = "http://23.236.154.106:8063/UploadedImages/" + mobileImage;
+            mobileImageUrl =Constants.BASE_URL+"UploadedImages/" + mobileImage;
             component.initUrlData(dimensionData, new Pair<>(mobileImageUrl, mobileImageUrl));
             objectView.setBackgroundColor(Color.parseColor("#cf878787"));
             Log.e("mobileImage", mobileImage + "");
@@ -749,7 +751,9 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
             BitmapMobileHelper.getInstance().setBitmapCover(currentBitmap);
             PublicBitmapsModel.getInstance().setBitmapFront(mobileBitmap);
         }
-        publicBitmapsModels.add(new PublicBitmapsModel(1+"",mobileId,priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
+
+//        publicBitmapsModels.add(new PublicBitmapsModel(1+"",mobileId,priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
+
         initColorRecyclerView();
         if (colorBgMobileAdapter != null) {
             color_recyclerview.setAdapter(colorBgMobileAdapter);
@@ -789,6 +793,8 @@ public class ComponentActivity extends BaseActivity implements MobileMvpView, Co
         image.add(imagesBean);
         orderDetilsBean.setImages(image);
 
+
+        publicBitmapsModels.add(new PublicBitmapsModel(1+"",mobileId,priceIn,priceOut,PublicBitmapsModel.getInstance().getBitmapFront()));
         MobileOrderRequest.getInstance().getOrderDetils().add(orderDetilsBean);
 
         if (btnConfirmType==1) {
