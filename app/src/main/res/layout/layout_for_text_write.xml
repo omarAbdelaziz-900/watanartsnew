@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/_4sdp">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/cancel_text_img"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_close"
+            />
+
+        <EditText
+            android:layout_below="@id/cancel_text_img"
+            android:padding="@dimen/_16sdp"
+            android:id="@+id/text_for_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            />
+
+        <Button
+            android:layout_below="@id/text_for_user"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ok"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp"
+            android:textAllCaps="false"
+            android:background="@drawable/signup_btn_background"/>
+    </RelativeLayout>
+</RelativeLayout>

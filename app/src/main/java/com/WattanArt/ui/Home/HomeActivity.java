@@ -78,7 +78,7 @@ import static com.WattanArt.ui.PublicShipping.PublicShippingActivity.publicBitma
 
 public class HomeActivity extends BaseActivity {
 
-//    private static  String url = "http://androidmkab.com/paperVersion.json";
+//  private static  String url = "http://androidmkab.com/paperVersion.json";
     private static  String url = Constants.BASE_URL+"api/SettingApi/GetVersions";
     String VersionUpdate;
 
